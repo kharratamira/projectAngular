@@ -1,0 +1,28 @@
+/* Centrer le formulaire */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Prend toute la hauteur de la page */
+  }
+  
+  /* Limiter la largeur du formulaire */
+  .form-container form {
+    width: 50%; /* Ajustez la largeur selon vos besoins */
+    max-width: 600px; /* Largeur maximale */
+  }
+  /* Réduire la hauteur des champs de formulaire */
+.form-control {
+    height: 36px; /* Ajustez la hauteur selon vos besoins */
+    padding: 6px 12px; /* Ajustez le padding pour un meilleur rendu */
+  }
+  
+  /* Réduire la hauteur du textarea */
+  textarea.form-control {
+    height: 80px; /* Ajustez la hauteur selon vos besoins */
+  }
+  
+  /* Réduire l'espacement entre les éléments */
+  .form-group {
+    margin-bottom: 0.5rem; /* Ajustez l'espacement selon vos besoins */
+  }

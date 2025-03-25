@@ -1,0 +1,81 @@
+<div class="container mt-5" style="max-width: 500px;">
+    <div class="card shadow-lg p-4 rounded">
+      <h2 class="text-center mb-4">Ajouter un Utilisateur</h2>
+  
+      <form [formGroup]="addUserForm" (ngSubmit)="onSubmit()">
+  
+        <!-- Select user type -->
+        <div class="mb-3">
+          <label for="user_type" class="form-label">Type d'utilisateur</label>
+          <select
+            id="user_type"
+            class="form-control"
+            formControlName="user_type"
+          >
+            <option value="">Sélectionnez un rôle</option>
+            <option value="technicien">Technicien</option>
+            <option value="commercial">Commercial</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+  
+        <div class="mb-3">
+          <label for="nom" class="form-label">Nom</label>
+          <input type="text" id="nom" class="form-control" formControlName="nom" />
+        </div>
+  
+        <div class="mb-3">
+          <label for="prenom" class="form-label">Prénom</label>
+          <input type="text" id="prenom" class="form-control" formControlName="prenom" />
+        </div>
+  
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" class="form-control" formControlName="email" />
+        </div>
+  
+        <div class="mb-3">
+          <label for="numTel" class="form-label">Numéro de téléphone</label>
+          <input type="text" id="numTel" class="form-control" formControlName="numTel" />
+        </div>
+  
+        <div class="mb-3">
+          <label for="password" class="form-label">Mot de passe</label>
+          <input type="password" id="password" class="form-control" formControlName="password" />
+        </div>
+  
+        <!-- Champs spécifiques Technicien -->
+        <div *ngIf="addUserForm.get('user_type')?.value === 'technicien'">
+          <div class="mb-3">
+            <label for="specialite" class="form-label">Spécialité</label>
+            <input type="text" id="specialite" class="form-control" formControlName="specialite" />
+          </div>
+  
+          <div class="form-check mb-3">
+            <input type="checkbox" id="disponibilite" class="form-check-input" formControlName="disponibilite" />
+            <label for="disponibilite" class="form-check-label">Disponible</label>
+          </div>
+        </div>
+  
+        <!-- Champs spécifiques Commercial -->
+        <div *ngIf="addUserForm.get('user_type')?.value === 'commercial'">
+          <div class="mb-3">
+            <label for="region" class="form-label">Région</label>
+            <input type="text" id="region" class="form-control" formControlName="region" />
+          </div>
+        </div>
+  
+        <button type="submit" class="btn btn-primary w-100" [disabled]="addUserForm.invalid">
+          Ajouter l'utilisateur
+        </button>
+  
+        <div *ngIf="successMessage" class="alert alert-success mt-3 text-center">
+          {{ successMessage }}
+        </div>
+        <div *ngIf="errorMessage" class="alert alert-danger mt-3 text-center">
+          {{ errorMessage }}
+        </div>
+      </form>
+    </div>
+  </div>
+  

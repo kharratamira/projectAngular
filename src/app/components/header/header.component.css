@@ -1,0 +1,26 @@
+.top-bar {
+    background-color: #000000; /* Couleur du fond */
+    color: rgb(249, 245, 245);
+    padding: 5px 20px;
+    font-size: 14px;
+}
+.top-bar a {
+    color: rgb(254, 251, 251);
+    text-decoration: none;
+    margin: 0 10px;
+}
+.top-bar a:hover {
+    color: #f7f0f0;
+}
+.dropdown-menu {
+    background-color: #343a40; /* Fond sombre */
+    border: 1px solid #495057; /* Bordure grise */
+}
+
+.dropdown-menu .dropdown-item {
+    color: white; /* Texte en blanc */
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #495057; /* Couleur au survol */
+}

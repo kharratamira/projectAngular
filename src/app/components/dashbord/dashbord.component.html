@@ -1,0 +1,22 @@
+
+<div class="dashboard-container">
+  <!-- <app-header></app-header> -->
+  <div class="dashboard-main">
+    <aside class="sidebar">
+      <!-- Sidebar menu items -->
+      <ul>
+        <li><a routerLink="/acceuil">Accueil</a></li>
+        <li><a routerLink="listeClients">ListeClients</a></li>
+        <li><a routerLink="listeDemande">ListeDemandes</a></li>
+        <li><a routerLink="demande-intervention">Intervention</a></li>
+        <li><a routerLink="AjouterUser">AjouterUtilisateur</a></li>
+      </ul>
+    </aside>
+
+    <section class="content">
+      <!-- Ici s'affichent les routes enfants du dashboard -->
+      <router-outlet></router-outlet>
+    </section>
+    
+  </div>
+</div>

@@ -1,0 +1,114 @@
+<div class="container mt-5" style="max-width: 500px;">
+    <div class="card shadow-lg p-4 rounded">
+      <h2 class="text-center mb-4">Inscription Client</h2>
+  
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+  
+        <div class="mb-3">
+          <label for="nom" class="form-label">Nom</label>
+          <input
+            type="text"
+            id="nom"
+            class="form-control"
+            formControlName="nom"
+            [ngClass]="{'is-invalid': signupForm.get('nom')?.invalid && signupForm.get('nom')?.touched}"
+          />
+          <div class="invalid-feedback">
+            Le nom est requis.
+          </div>
+        </div>
+  
+        <div class="mb-3">
+          <label for="prenom" class="form-label">Prénom</label>
+          <input
+            type="text"
+            id="prenom"
+            class="form-control"
+            formControlName="prenom"
+            [ngClass]="{'is-invalid': signupForm.get('prenom')?.invalid && signupForm.get('prenom')?.touched}"
+          />
+          <div class="invalid-feedback">
+            Le prénom est requis.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="numTel" class="form-label">Numéro de téléphone</label>
+          <input
+            type="text"
+            id="numTel"
+            class="form-control"
+            formControlName="numTel"
+            [ngClass]="{'is-invalid': signupForm.get('numTel')?.invalid && signupForm.get('numTel')?.touched}"
+          />
+          <div class="invalid-feedback">
+            Numéro de téléphone invalide.
+          </div>
+        <div class="mb-3">
+          <label for="adresse" class="form-label">Adresse</label>
+          <input
+            type="text"
+            id="adresse"
+            class="form-control"
+            formControlName="adresse"
+          />
+        </div>
+  
+        
+        </div>
+  <div class="mb-3">
+          <label for="entreprise" class="form-label">Entreprise</label>
+          <input
+            type="text"
+            id="entreprise"
+            class="form-control"
+            formControlName="entreprise"
+          />
+        </div>
+  
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            formControlName="email"
+            [ngClass]="{'is-invalid': signupForm.get('email')?.invalid && signupForm.get('email')?.touched}"
+          />
+          <div class="invalid-feedback">
+            Adresse email invalide.
+          </div>
+        </div>
+  
+        <div class="mb-3">
+          <label for="password" class="form-label">Mot de passe</label>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            formControlName="password"
+            [ngClass]="{'is-invalid': signupForm.get('password')?.invalid && signupForm.get('password')?.touched}"
+          />
+          <div class="invalid-feedback">
+            Le mot de passe doit contenir au moins 6 caractères.
+          </div>
+        </div>
+  
+        <button
+          type="submit"
+          class="btn btn-primary w-100"
+          [disabled]="signupForm.invalid"
+        >
+          S'inscrire
+        </button>
+  
+        <div *ngIf="successMessage" class="alert alert-success mt-3 text-center">
+          {{ successMessage }}
+        </div>
+        <div *ngIf="errorMessage" class="alert alert-danger mt-3 text-center">
+          {{ errorMessage }}
+        </div>
+  
+      </form>
+    </div>
+  </div>
+  

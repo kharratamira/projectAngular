@@ -1,0 +1,93 @@
+<div class="container mt-4">
+  <h2>Liste des Clients</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Téléphone</th>
+        <th>Email</th>
+        <th>Entreprise</th>
+        <th>Adresse</th>
+        <th>Action</th>
+      </tr>
+      <tr>
+        <th><input class="form-control" type="text" [(ngModel)]="filters.id" placeholder="Rechercher par id" /></th>
+        <th><input class="form-control" type="text" [(ngModel)]="filters.nom" placeholder="Rechercher par Nom" /></th>
+        <th><input class="form-control" type="text" [(ngModel)]="filters.prenom" placeholder="Rechercher par Prénom" /></th>
+        <th><input class="form-control" type="text" [(ngModel)]="filters.numTel" placeholder="Rechercher par Téléphone" /></th>
+        <th><input class="form-control" type="text" [(ngModel)]="filters.email" placeholder="Rechercher par Email" /></th>
+        <th><input class="form-control" type="text" [(ngModel)]="filters.entreprise" placeholder="Rechercher par entreprise" /></th>
+        <th><input class="form-control" type="text" [(ngModel)]="filters.adresse" placeholder="Rechercher par Adresse" /></th>
+        
+       
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let client of getFilteredClients()">
+        <td>{{ client.id }}</td>
+        <td>{{ client.nom }}</td>
+        <td>{{ client.prenom }}</td>
+        <td>{{ client.numTel }}</td>
+        <td>{{ client.email }}</td>
+        <td>{{ client.entreprise }}</td>
+        <td>{{ client.adresse }}</td>
+        
+        
+        <td>
+          <button class="btn btn-primary" (click)="editClient(client)">Modifier</button>
+          <!-- <button class="btn btn-danger" (click)="deleteClient(client.id)">Supprimer</button> -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Client Editing Form -->
+  <div *ngIf="selectedClient" class="container my-4 p-4 border rounded shadow-sm bg-light">
+    <h3 class="mb-4 text-primary">Modifier le Client</h3>
+    <form (ngSubmit)="updateClient(selectedClient)">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="nom" class="form-label">Nom</label>
+          <input type="text" class="form-control" [(ngModel)]="selectedClient.nom" name="nom" />
+        </div>
+      </div>
+    
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="prenom" class="form-label">Prénom</label>
+          <input type="text" class="form-control" [(ngModel)]="selectedClient.prenom" name="prenom" />
+        </div>
+        <div class="col-md-6">
+          <label for="numTel" class="form-label">Téléphone</label>
+          <input type="tel" class="form-control" [(ngModel)]="selectedClient.numTel" name="numTel" />
+        </div>
+      </div>
+    
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" [(ngModel)]="selectedClient.email" name="email" />
+        </div>
+      </div>
+    
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="entreprise" class="form-label">Entreprise</label>
+          <input type="text" class="form-control" [(ngModel)]="selectedClient.entreprise" name="entreprise" />
+        </div>
+      </div>
+    
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="adresse" class="form-label">Adresse</label>
+          <input type="text" class="form-control" [(ngModel)]="selectedClient.adresse" name="adresse" />
+        </div>
+      </div>
+    
+      <button type="submit" class="btn btn-primary w-100">Mettre à jour</button>
+    </form>
+      </div>
+</div>
