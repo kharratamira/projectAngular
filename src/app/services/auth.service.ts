@@ -18,7 +18,7 @@ export class AuthService {
     return throwError(() => new Error('Email and password are required'));
   }
 
-  return this.http.post(`${this.apiUrl}login_client`, { email, password }).pipe(
+  return this.http.post(`${this.apiUrl}login`, { email, password }).pipe(
     tap((response: any) => {
       // Stocker les informations de l'utilisateur dans sessionStorage
       sessionStorage.setItem('userId', response.user.id);
@@ -145,4 +145,17 @@ cancelDemande(demandeId: number): Observable<any> {
 }
 
 
+ 
+
+getTechnicien(): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}getTechnicien`);
+}
+updateTechnicien(id: number, user: any): Observable<any> {
+  const url = `${this.apiUrl}updateTechnicien/${id}`;
+  return this.http.put(url, user);
+}
+deleteTechnicien(id: number): Observable<any> {
+  const url = `${this.apiUrl}deleteTechnicien/${id}`;
+  return this.http.delete(url);
+}
 }

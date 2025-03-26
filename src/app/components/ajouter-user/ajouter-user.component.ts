@@ -55,6 +55,7 @@ export class AjouterUserComponent {
       delete userData.specialite;
       delete userData.disponibilite;
     }
+    console.log('Sending user data:', userData); // Log the user data being sent
 
     this.authService.signupUser(userData).subscribe({
       next: () => {
@@ -62,7 +63,7 @@ export class AjouterUserComponent {
         this.addUserForm.reset({ disponibilite: true }); // On garde la dispo à true pour technicien
       },
       error: (error) => {
-        console.error(error);
+        console.error('Signup error:', error); // Log the error response
         this.errorMessage = error.error?.message || 'Erreur lors de la création';
       }
     });

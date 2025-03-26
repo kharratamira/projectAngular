@@ -8,32 +8,32 @@ import { SingupComponent } from './components/singup/singup.component';
 import { DashbordComponent } from './components/dashbord/dashbord.component';
 import { AjouterUserComponent } from './components/ajouter-user/ajouter-user.component';
 import { AuthGuard } from './services/core/guards/AuthGuard';
+import { ListeCompteComponent } from './components/liste-compte/liste-compte.component';
 
 export const routes: Routes = [
-    { path: 'acceuil', component: AccueillComponent },
-    
-   // { path: 'listeClients', component: ListeClientsComponent },
-    //{ path: 'listeDemande', component: ListeDemandeComponent },
-    { path: '',   redirectTo: '/acceuil', pathMatch: 'full' },
-    
-    { path: 'login', component: LoginComponent },
-    { path: 'signup', component: SingupComponent },
-    
-    {
-        path: 'dashboard',
-        component: DashbordComponent,
-        //canActivate: [AuthGuard],
-        children: [
-          //{ path: '', redirectTo: 'acceuil', pathMatch: 'full' },
-         // { path: 'acceuil', component: AccueillComponent },
-          { path: 'listeClients', component: ListeClientsComponent },
-          { path: 'listeDemande', component: ListeDemandeComponent },
-          { path: 'demande-intervention', component: DemandeInterventionComponent },
-          { path: 'AjouterUser', component: AjouterUserComponent
+  { path: 'acceuil', component: AccueillComponent },
 
-           },
+  // { path: 'listeClients', component: ListeClientsComponent },
+  //{ path: 'listeDemande', component: ListeDemandeComponent },
+  { path: '', redirectTo: '/acceuil', pathMatch: 'full' },
 
-        ]
-      }
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SingupComponent },
+
+  {
+    path: 'dashboard',
+    component: DashbordComponent,
+    //canActivate: [AuthGuard],
+    children: [
+      //{ path: '', redirectTo: 'acceuil', pathMatch: 'full' },
+      // { path: 'acceuil', component: AccueillComponent },
+      { path: 'listeClients', component: ListeClientsComponent },
+      { path: 'listeDemande', component: ListeDemandeComponent },
+      { path: 'demande-intervention', component: DemandeInterventionComponent },
+      { path: 'AjouterUser', component: AjouterUserComponent },
+      { path: 'liste_compte', component: ListeCompteComponent },
+
+    ]
+  }
 
 ];

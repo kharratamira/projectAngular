@@ -30,4 +30,48 @@
     padding: 1rem;
     background-color: #f8f9fa;
   }
+  .dark-gray-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #999fa3;
+    padding: 8px 0;
+    font-weight: 500; /* Dark gray color */
+  }
+  .dark-gray-title:hover {
+    color: #0d6efd;
+  }
+  .dark-title {
+    color: #d8d4d4;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  margin: 1rem 0 0.5rem 0;/* Dark gray color */
+  }
+  .nav-link {
+    color: #f2f5f9;
+    padding: 6px 0;
+    text-decoration: none;
+  }
+  
+  .nav-link:hover {
+    color: #9c9fa2;
+  }
+  
+  .sidenav-collapse-arrow {
+    transition: transform 0.2s;
+  }
+  
+  .collapsed .sidenav-collapse-arrow {
+    transform: rotate(-90deg);
+  }
+  
+  .ms-3 {
+    margin-left: 1rem;
+  }
+  .arrow-icon {
+    transition: transform 0.2s ease;
+  }
+  [aria-expanded="true"] .arrow-icon {
+    transform: rotate(180deg);
+  }
   

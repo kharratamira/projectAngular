@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink} from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-header',
@@ -12,7 +12,7 @@ export class HeaderComponent {
   userNom: string | null = '';
   userPrenom: string | null = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
   ngOnInit(): void {
     this.userNom = sessionStorage.getItem('userNom');
     this.userPrenom = sessionStorage.getItem('userPrenom');

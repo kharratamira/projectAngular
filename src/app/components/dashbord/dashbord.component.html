@@ -1,22 +1,46 @@
 
 <div class="dashboard-container">
-  <!-- <app-header></app-header> -->
   <div class="dashboard-main">
     <aside class="sidebar">
-      <!-- Sidebar menu items -->
-      <ul>
-        <li><a routerLink="/acceuil">Accueil</a></li>
-        <li><a routerLink="listeClients">ListeClients</a></li>
-        <li><a routerLink="listeDemande">ListeDemandes</a></li>
-        <li><a routerLink="demande-intervention">Intervention</a></li>
-        <li><a routerLink="AjouterUser">AjouterUtilisateur</a></li>
+      <ul class="navbar-nav">
+        <h1 class="dark-title mt-3">Table de bord</h1>
+        <!-- Menu "Gérer compte" avec sous-menus -->
+        <li class="nav-item">
+          <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseAccount" style="cursor: pointer;">
+            Gérer compte
+            <div class="sidenav-collapse-arrow">
+              <svg class="sidenav-collapse-arrow" width="16" height="16" viewBox="0 0 384 512" fill="currentColor">
+                <path d="M169.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 274.7 54.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
+              </svg>
+            </div>
+          </span>
+          
+          <div class="collapse" id="collapseAccount">
+            <ul class="nav flex-column ms-3">
+              <li class="nav-item">
+                <a class="nav-link" routerLink="liste_compte">Liste Technicien</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="listeClients">Liste Clients</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="AjouterUser">AjouterUtilisateur</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <!-- Autres menus -->
+        
+        <!-- <li ><a class="nav-link" routerLink="/acceuil">Accueil</a></li> -->
+        <li><a class="nav-link" routerLink="listeDemande">ListeDemandes</a></li>
+        <li><a class="nav-link" routerLink="demande-intervention">Intervention</a></li>
+        <!-- <li><a class="nav-link" routerLink="AjouterUser">AjouterUtilisateur</a></li> -->
       </ul>
     </aside>
 
     <section class="content">
-      <!-- Ici s'affichent les routes enfants du dashboard -->
       <router-outlet></router-outlet>
     </section>
-    
   </div>
 </div>
