@@ -149,11 +149,14 @@ export class ListeDemandeComponent implements OnInit {
       if (result.isConfirmed) {
         this.authService.deleteDemande(demandeId).subscribe({
           next: () => {
-            Swal.fire(
-              'Supprimé !',
-              'La demande a été supprimée avec succès.',
-              'success'
-            );
+            Swal.fire({
+              icon: 'success',
+              title: 'Supprimé ',
+              text: 'La demande a été supprimée avec succès.',
+              timer: 3000,
+              timerProgressBar: true
+            });
+            
             this.loadDemandes(); // Reload after deletion
           },
           error: (error) => {

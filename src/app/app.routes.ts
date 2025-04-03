@@ -9,6 +9,7 @@ import { DashbordComponent } from './components/dashbord/dashbord.component';
 import { AjouterUserComponent } from './components/ajouter-user/ajouter-user.component';
 import { AuthGuard } from './services/core/guards/AuthGuard';
 import { ListeCompteComponent } from './components/liste-compte/liste-compte.component';
+import { ListeCommercialComponent } from './components/liste-commercial/liste-commercial.component';
 
 export const routes: Routes = [
   { path: 'acceuil', component: AccueillComponent },
@@ -32,6 +33,7 @@ export const routes: Routes = [
       { path: 'demande-intervention', component: DemandeInterventionComponent },
       { path: 'AjouterUser', component: AjouterUserComponent },
       { path: 'liste_compte', component: ListeCompteComponent },
+      { path: 'liste_Commercial', component: ListeCommercialComponent },
 
     ]
   }

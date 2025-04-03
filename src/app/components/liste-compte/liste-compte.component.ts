@@ -66,7 +66,19 @@ export class ListeCompteComponent implements OnInit {
       (this.filters.date_creation ? user.date_creation.toLowerCase().includes(this.filters.date_creation.toLowerCase()) : true)
     );
   }
-
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (this.selectedUser) {
+          this.selectedUser.photo = reader.result as string;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }
   editUser(user: any) {
     this.selectedUser = { ...user };
   }

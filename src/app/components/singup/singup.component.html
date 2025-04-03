@@ -92,6 +92,17 @@
             Le mot de passe doit contenir au moins 6 caractères.
           </div>
         </div>
+        <div class="mb-3">
+          <label for="photo" class="form-label">Photo de profil</label>
+          <input
+            type="file"
+            id="photo"
+            class="form-control"
+            (change)="onFileSelected($event)"
+            accept="image/*"
+          />
+        </div>
+        
   
         <button
           type="submit"

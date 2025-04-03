@@ -1,0 +1,19 @@
+.table {
+    font-size: 0.65vrem; /* Further reduce font size */
+  }
+  
+  .table th, .table td {
+    padding: 0.25rem; /* Further reduce padding */
+  }
+  
+  .table input {
+    font-size: 0.65rem; /* Further reduce input font size */
+    padding: 0.1rem; /* Further reduce input padding */
+    height: auto; /* Adjust input height */
+  }
+  .pagination-container {
+    display: flex;
+    justify-content: flex-end; /* Aligner à droite */
+    margin-top: 10px; /* Espacement au-dessus */
+  }
+  

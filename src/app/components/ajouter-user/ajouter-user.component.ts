@@ -15,6 +15,7 @@ export class AjouterUserComponent {
   addUserForm!: FormGroup;
   successMessage = '';
   errorMessage = '';
+  selectedPhotoBase64: string | null = null;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -31,8 +32,21 @@ export class AjouterUserComponent {
       // Champs spécifiques selon le type de user
       specialite: [''],
       disponibilite: [true],
-      region: ['']
+      region: [''],
+      photo: [''] 
     });
+  }
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.selectedPhotoBase64 = (reader.result as string).split(',')[1]; // Extraction de la partie Base64
+        this.addUserForm.patchValue({ photo: this.selectedPhotoBase64 });
+      };
+      reader.readAsDataURL(file); // Lecture du fichier en Base64
+    }
   }
   onSubmit(): void {
     this.successMessage = '';

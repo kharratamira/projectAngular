@@ -4,16 +4,17 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Nom</th>
-        <th>Prénom</th>
-        <th>Email</th>
-        <th>Numéro de Téléphone</th>
-        <th>Type d'utilisateur</th>
-        <th>Disponible</th>
-        <th>Specialite</th>
-        <th>Date de Création</th>
-        <th>Actions</th>
+      <th style="font-size: 12px;">ID</th>
+      <th style="font-size: 12px;">Nom</th>
+      <th style="font-size: 12px;">Prénom</th>
+      <th style="font-size: 12px;">Email</th>
+      <th style="font-size: 12px;">Numéro de Téléphone</th>
+      <th style="font-size: 12px;">Type d'utilisateur</th>
+      <th style="font-size: 12px;">Disponible</th>
+      <th style="font-size: 12px;">Specialite</th>
+      <th style="font-size: 12px;">Date de Création</th>
+      <th style="font-size: 12px;">Photo</th>
+      <th style="font-size: 12px;">Actions</th>
       </tr>
       <tr>
         <th><input type="text" [(ngModel)]="filters.id" (input)="applyFilters()" placeholder="Filtrer par ID"></th>
@@ -38,6 +39,7 @@
         <td>{{ user.disponibilite }}</td>
         <td>{{ user.specialite }}</td>
         <td>{{ user.date_creation }}</td>
+        <td><img [src]="user.photo" alt="User Photo" style="width: 50px; height: 50px;"></td>
         <td>
           <button class="btn btn-primary btn-sm" (click)="editUser(user)">Edit</button>
           <button class="btn btn-danger btn-sm" (click)="deleteTechnician(user.id)">Delete</button>
@@ -74,6 +76,16 @@
       <div class="form-group">
         <label for="specialite">Specialite</label>
         <input type="text" id="specialite" [(ngModel)]="selectedUser.specialite" name="specialite" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="photo">Photo</label>
+        <input
+          type="file"
+          id="photo"
+          class="form-control"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+        />
       </div>
       <button type="submit" class="btn btn-primary">Save</button>
     </form>

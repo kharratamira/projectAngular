@@ -18,7 +18,7 @@ export class AuthService {
     return throwError(() => new Error('Email and password are required'));
   }
 
-  return this.http.post(`${this.apiUrl}login`, { email, password }).pipe(
+  return this.http.post(`${this.apiUrl}login_client`, { email, password }).pipe(
     tap((response: any) => {
       // Stocker les informations de l'utilisateur dans sessionStorage
       sessionStorage.setItem('userId', response.user.id);
@@ -74,10 +74,18 @@ logout(): void {
   //   // Optionnel : tu peux aussi vérifier si le token est expiré
   //   return !!token; // true si token existe, false sinon
   // }
-  signup(data: any): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post(`${this.apiUrl}signup_client`, data, { headers });
+  signupClient(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}signup_client`, formData).pipe(
+      catchError(error => {
+        // Gestion des erreurs spécifiques
+        if (error.error?.error) {
+          throw error.error.error;
+        }
+        throw 'Une erreur inconnue est survenue';
+      })
+    );
   }
+
   // auth.service.ts
 
   saveDemandeAvecClient(formData: any): Observable<any> {
@@ -156,6 +164,18 @@ updateTechnicien(id: number, user: any): Observable<any> {
 }
 deleteTechnicien(id: number): Observable<any> {
   const url = `${this.apiUrl}deleteTechnicien/${id}`;
+  return this.http.delete(url);
+}
+
+getCommercial(): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}getCommercial`);
+}
+updateCommercial(id: number, user: any): Observable<any> {
+  const url = `${this.apiUrl}updateCommercial/${id}`;
+  return this.http.put(url, user);
+}
+deleteCommercial(id: number): Observable<any> {
+  const url = `${this.apiUrl}deleteCommercial/${id}`;
   return this.http.delete(url);
 }
 }

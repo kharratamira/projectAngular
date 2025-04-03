@@ -1,5 +1,5 @@
 .table {
-  font-size: 0.69rem; /* Further reduce font size */
+  font-size: 0.65vrem; /* Further reduce font size */
 }
 
 .table th, .table td {
@@ -7,7 +7,7 @@
 }
 
 .table input {
-  font-size: 0.69rem; /* Further reduce input font size */
+  font-size: 0.65rem; /* Further reduce input font size */
   padding: 0.1rem; /* Further reduce input padding */
   height: auto; /* Adjust input height */
 }

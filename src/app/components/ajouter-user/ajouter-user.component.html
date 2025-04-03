@@ -64,6 +64,17 @@
             <input type="text" id="region" class="form-control" formControlName="region" />
           </div>
         </div>
+        <div class="mb-3">
+          <label for="photo" class="form-label">Photo de profil</label>
+          <input
+            type="file"
+            id="photo"
+            class="form-control"
+            (change)="onFileSelected($event)"
+            accept="image/*"
+          />
+        </div>
+        
   
         <button type="submit" class="btn btn-primary w-100" [disabled]="addUserForm.invalid">
           Ajouter l'utilisateur

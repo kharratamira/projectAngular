@@ -20,7 +20,7 @@ export class DemandeInterventionComponent implements OnInit {
 
   ngOnInit() {
     // Vérifier si l'utilisateur est connecté en récupérant l'email
-    this.emailUtilisateur = localStorage.getItem('userEmail');
+    this.emailUtilisateur = sessionStorage.getItem('userEmail');
 
     if (!this.emailUtilisateur) {
       // Si aucun email trouvé dans localStorage, rediriger vers la page de connexion
