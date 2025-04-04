@@ -20,6 +20,7 @@ export class ListeCompteComponent implements OnInit {
   currentPage: number = 1;
   selectedUser: any = null;
   isEditing: boolean = false;
+  baseUrl = 'http://localhost:8000/uploads/users/';
 
   constructor(private authService: AuthService, private http: HttpClient) { }
 

@@ -34,7 +34,7 @@ export class LoginComponent {
          sessionStorage.setItem('userEmail', email);
         sessionStorage.setItem('userNom', response.user.nom);
         sessionStorage.setItem('userPrenom', response.user.prenom);
-        
+        sessionStorage.setItem('userPhoto', response.user.photo); 
 
         console.log('Email stocké dans sessionStorage :', sessionStorage.getItem('userEmail'));
         console.log('Nom stocké dans sessionStorage :', sessionStorage.getItem('userNom'));

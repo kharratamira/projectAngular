@@ -31,7 +31,7 @@ export class ListeCommercialComponent implements OnInit {
     region: '',
     date_creation: ''
   };
-
+  baseUrl = 'http://localhost:8000/uploads/users/';
   constructor(private authService: AuthService, private http: HttpClient) { }
 
   ngOnInit() {

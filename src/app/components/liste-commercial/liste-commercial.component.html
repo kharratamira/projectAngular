@@ -36,8 +36,14 @@
           <td>{{ user.user_type }}</td>
           <td>{{ user.region }}</td>
           <td>{{ user.date_creation }}</td>
-          <td><img [src]="user.photo" alt="User Photo" style="width: 50px; height: 50px;"></td>
-          
+          <td>
+            <img [src]="baseUrl + user.photo" *ngIf="user.photo" 
+                 alt="User Photo" style="width: 50px; height: 50px; object-fit: cover;">
+            <div *ngIf="!user.photo" style="width: 50px; height: 50px; background: #eee; display: flex; align-items: center; justify-content: center;">
+              Pas de photo
+            </div>
+          </td>
+                    
           <td>
             <button class="btn btn-primary btn-sm" (click)="editCommercial(user)">Edit</button>
             <button class="btn btn-danger btn-sm" (click)="deleteCommercial(user.id)">Delete</button>
