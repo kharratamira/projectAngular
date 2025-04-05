@@ -3,30 +3,6 @@
     <h2 class="text-center mb-3">Déposer une demande d'Intervention</h2>
 
     <form *ngIf="demandeForm" [formGroup]="demandeForm" (ngSubmit)="onSubmit()">
-
-      <!-- <div class="mb-2">
-        <label class="form-label">Email</label>
-        <input class="form-control py-2" formControlName="email" required>
-        <div class="text-danger"
-          *ngIf="demandeForm.get('email')?.touched && demandeForm.get('email')?.invalid">
-          <small *ngIf="demandeForm.get('email')?.errors?.['required']">L'email est requis.</small>
-          <small *ngIf="demandeForm.get('email')?.errors?.['email']">Email invalide.</small>
-        </div>
-      </div> -->
-      
-      
-      <!-- Nom Société -->
-      <!-- <div class="mb-2">
-        <label class="form-label">Nom Société</label>
-        <input class="form-control py-2" formControlName="nomSociete" required>
-        <div class="text-danger"
-          *ngIf="demandeForm.get('nomSociete')?.touched && demandeForm.get('nomSociete')?.invalid">
-          <small>Nom de la société est requis.</small>
-        </div>
-      </div> -->
-
-      <!-- Numéro Téléphone -->
-      
       <!-- Description -->
       <div class="mb-2">
         <label class="form-label" for="description">Description:</label>
