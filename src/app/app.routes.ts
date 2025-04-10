@@ -19,7 +19,7 @@ export const routes: Routes = [
   { path: '', redirectTo: '/acceuil', pathMatch: 'full' },
 
   { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SingupComponent },
+ 
 
   {
     path: 'dashboard',
@@ -34,6 +34,7 @@ export const routes: Routes = [
       { path: 'AjouterUser', component: AjouterUserComponent },
       { path: 'liste_compte', component: ListeCompteComponent },
       { path: 'liste_Commercial', component: ListeCommercialComponent },
+      { path: 'signup', component: SingupComponent },
 
     ]
   }

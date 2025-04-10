@@ -128,44 +128,80 @@ updateClient(client: any): void {
 
 
 
-  // Delete client by ID
-  
+desactiverClient(client: any) {
+  Swal.fire({
+    title: 'Êtes-vous sûr ?',
+    text: 'Cette action désactivera le compte du client.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Oui, désactiver',
+    cancelButtonText: 'Annuler'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.authService.desactiverUser(client.id).subscribe({
+        next: () => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Désactivé !',
+            text: 'Le compte du client a été désactivé avec succès.',
+            timer: 3000,
+            timerProgressBar: true
+          });
+          client.isActive = false; // Mettre à jour l'état localement
+        },
+        error: (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Une erreur s\'est produite lors de la désactivation.',
+            confirmButtonColor: '#d33'
+          });
+          console.error('Erreur lors de la désactivation du client :', error);
+        }
+      });
+    }
+  });
+}
 
-// deleteClient(clientId: number) {
-//   Swal.fire({
-//     title: 'Êtes-vous sûr ?',
-//     text: 'Cette action supprimera définitivement le client.',
-//     icon: 'warning',
-//     showCancelButton: true,
-//     confirmButtonColor: '#3085d6', // Bleu
-//     cancelButtonColor: '#d33',     // Rouge
-//     confirmButtonText: 'Oui, supprimer',
-//     cancelButtonText: 'Annuler'
-//   }).then((result) => {
-//     if (result.isConfirmed) {
-//       this.authService.deleteClient(clientId).subscribe({
-//         next: (response) => {
-//           console.log('Client supprimé avec succès', response);
-//           Swal.fire(
-//             'Supprimé !',
-//             'Le client a été supprimé avec succès.',
-//             'success'
-//           );
-//           this.ngOnInit(); // Refresh the client list
-//         },
-//         error: (error) => {
-//           console.error('Erreur lors de la suppression du client', error);
-//           Swal.fire(
-//             'Erreur',
-//             'Une erreur est survenue lors de la suppression.',
-//             'error'
-//           );
-//         }
-//       });
-//     }
-//   });
-// }
-// Filtres pour chaque colonne
+activerClient(client: any) {
+  Swal.fire({
+    title: 'Êtes-vous sûr ?',
+    text: 'Cette action activera le compte du client.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Oui, activer',
+    cancelButtonText: 'Annuler'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.authService.activeUser(client.id).subscribe({
+        next: () => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Activé !',
+            text: 'Le compte du client a été activé avec succès.',
+            timer: 3000,
+            timerProgressBar: true
+          });
+          client.isActive = true; // Mettre à jour l'état localement
+        },
+        error: (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Une erreur s\'est produite lors de l\'activation.',
+            confirmButtonColor: '#d33'
+          });
+          console.error('Erreur lors de l\'activation du client :', error);
+        }
+      });
+    }
+  });
+}
+   
 
 searchTerm: string = '';
 

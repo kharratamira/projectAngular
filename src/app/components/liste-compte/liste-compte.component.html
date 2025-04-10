@@ -9,8 +9,8 @@
         <th style="font-size: 12px;">Prénom</th>
         <th style="font-size: 12px;">Email</th>
         <th style="font-size: 12px;">Numéro de Téléphone</th>
-        <th style="font-size: 12px;">Type d'utilisateur</th>
-        <th style="font-size: 12px;">Disponible</th>
+        <!-- <th style="font-size: 12px;">Type d'utilisateur</th>
+        <th style="font-size: 12px;">Disponible</th> -->
         <th style="font-size: 12px;">Specialite</th>
         <th style="font-size: 12px;">Date de Création</th>
         <th style="font-size: 12px;">Photo</th>
@@ -23,12 +23,12 @@
         </th>
         <th><input type="text" [(ngModel)]="filters.email" (input)="applyFilters()" placeholder="Filtrer par Email">
         </th>
-        <th><input type="text" [(ngModel)]="filters.numTel" (input)="applyFilters()"
+        <!-- <th><input type="text" [(ngModel)]="filters.numTel" (input)="applyFilters()"
             placeholder="Filtrer par Téléphone"></th>
         <th><input type="text" [(ngModel)]="filters.user_type" (input)="applyFilters()" placeholder="Filtrer par Type">
         </th>
         <th><input type="text" [(ngModel)]="filters.disponibilite" (input)="applyFilters()"
-            placeholder="Filtrer par Disponibilité"></th>
+            placeholder="Filtrer par Disponibilité"></th> -->
         <th><input type="text" [(ngModel)]="filters.specialite" (input)="applyFilters()"
             placeholder="Filtrer par Spécialité"></th>
         <th><input type="text" [(ngModel)]="filters.date_creation" (input)="applyFilters()"
@@ -42,8 +42,8 @@
         <td>{{ user.prenom }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.numTel }}</td>
-        <td>{{ user.user_type }}</td>
-        <td>{{ user.disponibilite }}</td>
+        <!-- <td>{{ user.user_type }}</td>
+        <td>{{ user.disponibilite }}</td> -->
         <td>{{ user.specialite }}</td>
         <td>{{ user.date_creation }}</td>
         <td>
@@ -52,9 +52,27 @@
           <div *ngIf="!user.photo" style="width: 50px; height: 50px; background: #eee; display: flex; align-items: center; justify-content: center;">
             Pas de photo
           </div>
-        </td>        <td>
-          <button class="btn btn-primary btn-sm" (click)="editUser(user)">Edit</button>
-          <button class="btn btn-danger btn-sm" (click)="deleteTechnician(user.id)">Delete</button>
+        </td>  
+        <td>
+          <button class="btn btn-primary btn-sm" (click)="editUser(user)">Modifier</button>
+          <!-- Afficher Désactiver si isActive est true ou undefined (comportement par défaut) -->
+          <td>
+            <!-- Afficher le bouton "Désactiver" si le compte est actif -->
+            <button 
+              *ngIf="user.isActive" 
+              class="btn btn-danger btn-sm" 
+              (click)="desactiverUser(user)">
+              Désactiver
+            </button>
+          
+            <!-- Afficher le bouton "Activer" si le compte est inactif -->
+            <button 
+              *ngIf="!user.isActive" 
+              class="btn btn-success btn-sm" 
+              (click)="activerUser(user)">
+              Activer
+            </button>
+          
         </td>
       </tr>
     </tbody>
@@ -81,11 +99,11 @@
         <label for="numTel">Numéro de Téléphone</label>
         <input type="text" id="numTel" [(ngModel)]="selectedUser.numTel" name="numTel" class="form-control">
       </div>
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="disponibilite">Disponible</label>
         <input type="text" id="disponibilite" [(ngModel)]="selectedUser.disponibilite" name="disponibilite"
           class="form-control">
-      </div>
+      </div> -->
       <div class="form-group">
         <label for="specialite">Specialite</label>
         <input type="text" id="specialite" [(ngModel)]="selectedUser.specialite" name="specialite" class="form-control">

@@ -30,8 +30,8 @@ export class ListeCompteComponent implements OnInit {
     prenom: '',
     email: '',
     numTel: '',
-    user_type: '',
-    disponibilite: '',
+    //user_type: '',
+    //disponibilite: '',
     specialite: '',
     date_creation: ''
   };
@@ -42,15 +42,14 @@ export class ListeCompteComponent implements OnInit {
 
   loadUser() {
     this.authService.getTechnicien().subscribe({
-      next: (data) => {
-        this.users = data;
-        this.filteredUser = data;
-        console.log('User data:', data);
+      next: (data: any[]) => {
+        this.users = data.map((user: any) => ({
+          ...user,
+          isActive: user.isActive !== false
+        }));
+        this.filteredUser = this.users;
       },
-      error: (error) => {
-        this.errorMessage = 'Erreur lors de la récupération des utilisateurs';
-        console.error('There was an error!', error);
-      }
+      // ... reste du code
     });
   }
 
@@ -61,8 +60,8 @@ export class ListeCompteComponent implements OnInit {
       (this.filters.prenom ? user.prenom.toLowerCase().includes(this.filters.prenom.toLowerCase()) : true) &&
       (this.filters.email ? user.email.toLowerCase().includes(this.filters.email.toLowerCase()) : true) &&
       (this.filters.numTel ? user.numTel.toString().includes(this.filters.numTel) : true) &&
-      (this.filters.user_type ? user.user_type.toLowerCase().includes(this.filters.user_type.toLowerCase()) : true) &&
-      (this.filters.disponibilite ? user.disponibilite.toString().toLowerCase().includes(this.filters.disponibilite.toLowerCase()) : true) &&
+     // (this.filters.user_type ? user.user_type.toLowerCase().includes(this.filters.user_type.toLowerCase()) : true) &&
+      //(this.filters.disponibilite ? user.disponibilite.toString().toLowerCase().includes(this.filters.disponibilite.toLowerCase()) : true) &&
       (this.filters.specialite ? user.specialite.toLowerCase().includes(this.filters.specialite.toLowerCase()) : true) &&
       (this.filters.date_creation ? user.date_creation.toLowerCase().includes(this.filters.date_creation.toLowerCase()) : true)
     );
@@ -126,32 +125,83 @@ export class ListeCompteComponent implements OnInit {
     }
   }
   
-
-  deleteTechnician(userId: number) {
+  activerUser(user: any) {
     Swal.fire({
       title: 'Êtes-vous sûr ?',
-      text: 'Vous ne pourrez pas revenir en arrière !',
+      text: 'Cette action activera le compte.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Oui, supprimer !',
+      confirmButtonText: 'Oui, activer',
       cancelButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.authService.deleteTechnicien(userId).subscribe({
-          next: (response) => {
-            Swal.fire('Supprimé !', 'L\'technicien a été supprimé.', 'success');
-            this.loadUser(); // Recharger la liste des utilisateurs
+        this.authService.activeUser(user.id).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Activé !',
+              text: 'Le compte a été activé avec succès.',
+              timer: 3000, // Timer de 3 secondes
+              timerProgressBar: true
+            });
+            // Mettre à jour l'état localement
+            user.isActive = true;
           },
           error: (error) => {
-            Swal.fire('Erreur', 'Une erreur s\'est produite lors de la suppression de l\'technicien.', 'error');
-            console.error('Erreur lors de la suppression du technicien', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur s\'est produite lors de l\'activation.',
+              confirmButtonColor: '#d33'
+            });
+            console.error('Erreur lors de l\'activation :', error);
           }
         });
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire('Annulé', 'L\'technicien est en sécurité :)', 'error');
       }
     });
   }
+  // Désactiver un technicien
+  desactiverUser(user: any) {
+    Swal.fire({
+      title: 'Êtes-vous sûr ?',
+      text: 'Cette action désactivera le compte.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Oui, désactiver',
+      cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.authService.desactiverUser(user.id).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Désactivé !',
+              text: 'Le compte a été désactivé avec succès.',
+              timer: 3000, // Timer de 3 secondes
+              timerProgressBar: true
+            });
+            // Mettre à jour l'état localement
+            user.isActive = false;
+          },
+          error: (error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur s\'est produite lors de la désactivation.',
+              confirmButtonColor: '#d33'
+            });
+            console.error('Erreur lors de la désactivation :', error);
+          }
+        });
+      }
+    });
+  }
+
+
+
+
 }

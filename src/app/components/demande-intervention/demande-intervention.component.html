@@ -6,7 +6,12 @@
       <!-- Description -->
       <div class="mb-2">
         <label class="form-label" for="description">Description:</label>
-        <input class="form-control py-2" id="description" formControlName="description" />
+        <textarea 
+          class="form-control py-2" 
+          id="description" 
+          formControlName="description" 
+          rows="4"
+          placeholder="Décrivez votre demande ici..."></textarea>
         <div class="text-danger" *ngIf="demandeForm.get('description')?.invalid && demandeForm.get('description')?.touched">
           <small class="error">Description est requise et doit contenir au moins 10 caractères.</small>
         </div>

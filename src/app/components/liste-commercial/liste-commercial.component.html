@@ -9,7 +9,7 @@
         <th style="font-size: 12px;">Prénom</th>
         <th style="font-size: 12px;">Email</th>
         <th style="font-size: 12px;">Numéro de Téléphone</th>
-        <th style="font-size: 12px;">Type d'utilisateur</th>
+        <!-- <th style="font-size: 12px;">Type d'utilisateur</th> -->
         <th style="font-size: 12px;">Region</th>       
         <th style="font-size: 12px;">Date de Création</th>
         <th style="font-size: 12px;">Photo</th>
@@ -21,7 +21,7 @@
           <th><input type="text" [(ngModel)]="filters.prenom" (input)="applyFilters()" placeholder="Filtrer par Prénom"></th>
           <th><input type="text" [(ngModel)]="filters.email" (input)="applyFilters()" placeholder="Filtrer par Email"></th>
           <th><input type="text" [(ngModel)]="filters.numTel" (input)="applyFilters()" placeholder="Filtrer par Téléphone"></th>
-          <th><input type="text" [(ngModel)]="filters.user_type" (input)="applyFilters()" placeholder="Filtrer par Type"></th>
+          <!-- <th><input type="text" [(ngModel)]="filters.user_type" (input)="applyFilters()" placeholder="Filtrer par Type"></th> -->
           <th><input type="text" [(ngModel)]="filters.region" (input)="applyFilters()" placeholder="Filtrer par Region"></th>
           <th><input type="text" [(ngModel)]="filters.date_creation" (input)="applyFilters()" placeholder="Filtrer par Date"></th>
         </tr>
@@ -33,7 +33,7 @@
           <td>{{ user.prenom }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.numTel }}</td>
-          <td>{{ user.user_type }}</td>
+          <!-- <td>{{ user.user_type }}</td> -->
           <td>{{ user.region }}</td>
           <td>{{ user.date_creation }}</td>
           <td>
@@ -45,9 +45,26 @@
           </td>
                     
           <td>
-            <button class="btn btn-primary btn-sm" (click)="editCommercial(user)">Edit</button>
-            <button class="btn btn-danger btn-sm" (click)="deleteCommercial(user.id)">Delete</button>
-          </td>
+            <button class="btn btn-primary btn-sm" (click)="editCommercial(user)">Modifier</button>
+            
+              <!-- Afficher le bouton "Désactiver" si le compte est actif -->
+              <button 
+                *ngIf="user.isActive" 
+                class="btn btn-danger btn-sm" 
+                (click)="desactiverUser(user)">
+                Désactiver
+              </button>
+            
+              <!-- Afficher le bouton "Activer" si le compte est inactif -->
+              <button 
+                *ngIf="!user.isActive" 
+                class="btn btn-success btn-sm" 
+                (click)="activerUser(user)">
+                Activer
+              </button>
+            </td>
+            
+            
         </tr>
       </tbody>
     </table>

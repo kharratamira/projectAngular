@@ -162,9 +162,13 @@ updateTechnicien(id: number, user: any): Observable<any> {
   const url = `${this.apiUrl}updateTechnicien/${id}`;
   return this.http.put(url, user);
 }
-deleteTechnicien(id: number): Observable<any> {
-  const url = `${this.apiUrl}deleteTechnicien/${id}`;
-  return this.http.delete(url);
+// Dans votre AuthService
+desactiverUser(id: number): Observable<any> {
+  return this.http.delete(`${this.apiUrl}desactiveTechnicien/${id}`);
+}
+
+activeUser(id: number): Observable<any> {
+  return this.http.put(`${this.apiUrl}activateTechnicien/${id}`, {});
 }
 
 getCommercial(): Observable<any> {

@@ -38,7 +38,22 @@
         
         <td>
           <button class="btn btn-primary" (click)="editClient(client)">Modifier</button>
-          <!-- <button class="btn btn-danger" (click)="deleteClient(client.id)">Supprimer</button> -->
+          
+          <!-- Afficher le bouton "Désactiver" si le compte est actif -->
+          <button 
+            *ngIf="client.isActive" 
+            class="btn btn-danger btn-sm" 
+            (click)="desactiverClient(client)">
+            Désactiver
+          </button>
+          
+          <!-- Afficher le bouton "Activer" si le compte est inactif -->
+          <button 
+            *ngIf="!client.isActive" 
+            class="btn btn-success btn-sm" 
+            (click)="activerClient(client)">
+            Activer
+          </button>
         </td>
       </tr>
     </tbody>

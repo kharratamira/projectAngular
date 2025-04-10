@@ -41,13 +41,14 @@ export class ListeCommercialComponent implements OnInit {
   loadUser() {
     this.authService.getCommercial().subscribe({
       next: (data) => {
-        this.users = data;
-        this.filteredUser = [...this.users];
-        console.log('User data:', data);
+        this.users = data.map((user: any) => ({
+          ...user,
+          isActive: user.isActive !== false // true par défaut si undefined
+        }));
+        this.filteredUser = [...this.users]; // Crée une nouvelle référence
       },
       error: (error) => {
-        this.errorMessage = 'Erreur lors de la récupération des utilisateurs';
-        console.error('There was an error!', error);
+        console.error('Erreur lors de la récupération des données', error);
       }
     });
   }
@@ -125,29 +126,80 @@ export class ListeCommercialComponent implements OnInit {
     }
   }
 
-  deleteCommercial(userId: number) {
+  activerUser(user: any) {
     Swal.fire({
       title: 'Êtes-vous sûr ?',
-      text: 'Vous ne pourrez pas revenir en arrière !',
+      text: 'Cette action activera le compte.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Oui, supprimer !',
+      confirmButtonText: 'Oui, activer',
       cancelButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.authService.deleteCommercial(userId).subscribe({
-          next: (response) => {
-            Swal.fire('Supprimé !', 'Le commercial a été supprimé.', 'success');
-            this.loadUser();
+        this.authService.activeUser(user.id).subscribe({
+          next: () => {
+            user.isActive = true; // Mise à jour immédiate
+            Swal.fire({
+              icon: 'success',
+              title: 'Activé !',
+              text: 'Le compte a été activé avec succès.',
+              timer: 3000,
+              timerProgressBar: true
+            });
+            this.loadUser(); // Rechargement des données
           },
           error: (error) => {
-            Swal.fire('Erreur', 'Une erreur s\'est produite lors de la suppression du commercial.', 'error');
-            console.error('Erreur lors de la suppression du commercial', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur s\'est produite lors de l\'activation.',
+              confirmButtonColor: '#d33'
+            });
+            console.error('Erreur lors de l\'activation :', error);
           }
         });
       }
     });
   }
+  
+  desactiverUser(user: any) {
+    Swal.fire({
+      title: 'Êtes-vous sûr ?',
+      text: 'Cette action désactivera le compte.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Oui, désactiver',
+      cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.authService.desactiverUser(user.id).subscribe({
+          next: () => {
+            user.isActive = false; // Mise à jour immédiate
+            Swal.fire({
+              icon: 'success',
+              title: 'Désactivé !',
+              text: 'Le compte a été désactivé avec succès.',
+              timer: 3000,
+              timerProgressBar: true
+            });
+            this.loadUser(); // Rechargement des données
+          },
+          error: (error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur s\'est produite lors de la désactivation.',
+              confirmButtonColor: '#d33'
+            });
+            console.error('Erreur lors de la désactivation :', error);
+          }
+        });
+      }
+    });
+  }
+ 
 }
