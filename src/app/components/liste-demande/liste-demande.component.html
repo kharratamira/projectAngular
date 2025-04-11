@@ -1,106 +1,112 @@
 <div class="container mt-4">
-    <h2>Liste des Demandes Intervention</h2>
-  
-    <!-- Table with Filter Inputs in Header -->
-    <table class="table table-striped">
-      <thead>
-        
-        <tr>
-          <th>ID</th>
-          <th>ID Client</th>
-          <th>Entreprise</th>
-          <th>Adresse</th>
-          <th>Description</th>
-          <th>Statut</th>
-          <th>Date Demande</th>
-          <th>Actions</th>
-        </tr>
-        <tr>
-            <th><input class="form-control" type="text" [(ngModel)]="filters.id" placeholder="Rechercher par ID" (ngModelChange)="filterDemandes()" /></th>
-            <th><input class="form-control" type="text" [(ngModel)]="filters.idClient" placeholder="Rechercher par ID Client" (ngModelChange)="filterDemandes()" /></th>
-            <th><input class="form-control" type="text" [(ngModel)]="filters.adresse" placeholder="Rechercher par Adresse" (ngModelChange)="filterDemandes()" /></th>
-            <th><input class="form-control" type="text" [(ngModel)]="filters.entreprise" placeholder="Rechercher par Entreprise" (ngModelChange)="filterDemandes()" /></th>
-            <th><input class="form-control" type="text" [(ngModel)]="filters.description" placeholder="Rechercher par Description" (ngModelChange)="filterDemandes()" /></th>
-            <th><input class="form-control" type="text" [(ngModel)]="filters.statut" placeholder="Rechercher par Statut" (ngModelChange)="filterDemandes()" /></th>
-            <th><input class="form-control" type="text" [(ngModel)]="filters.dateDemande" placeholder="Rechercher par Date Demande" (ngModelChange)="filterDemandes()" /></th>
-            <th></th>
-          </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let demande of filteredDemandes">
-          <td>{{ demande.id }}</td>
-          <td>{{ demande.client.id }}</td>
-          <td>{{ demande.client.entreprise }}</td>
-          <td>{{ demande.client.adresse }}</td>
-          
-          <td>{{ demande.description }}</td>
-          <td>{{ demande.statut }}</td>
-          <td>{{ demande.dateDemande }}</td>
-          <td>
-            <button class="btn btn-primary" (click)="editDemande(demande)">Modifier</button>
-            <button class="btn btn-danger" (click)="deleteDemande(demande.id)">Supprimer</button>
-            <button class="btn btn-success" (click)="acceptDemande(demande.id)">Accepter</button>
-            <button class="btn btn-warning" (click)="cancelDemande(demande.id)">Annuler</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-  
-  
-  
-    <div *ngIf="selectedDemande" class="container my-4 p-4 border rounded shadow-sm bg-light">
-        <h3 class="mb-4 text-primary">Modifier la Demande</h3>
-        <form (ngSubmit)="updateDemande(selectedDemande)" #demandeForm="ngForm">
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="entreprise" class="form-label">Entreprise</label>
-              <input type="text" class="form-control" [(ngModel)]="selectedDemande.client.entreprise" name="entreprise" required #entreprise="ngModel" />
-              <div *ngIf="entreprise.invalid && entreprise.touched" class="text-danger">
-                Le nom de la société est obligatoire.
-              </div>
-            </div>
+  <h2>Rechercher par client</h2>
+  <th><input class="form-control" type="text" [(ngModel)]="filters.entreprise" placeholder="Rechercher par Entreprise" (ngModelChange)="filterDemandes()" /></th>
+  <button class="btn btn-success mb-3" (click)="exportToExcel()">Exporter en Excel</button>
+  <button class="btn btn-primary mb-3" (click)="printResults()">Imprimer</button>
+
+  <h2>Liste des Demandes Intervention</h2>
+  <div id="print-section">
+  <!-- Table with Filter Inputs in Header -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Entreprise</th>
+        <th>Adresse</th>
+        <th>Description</th>
+        <th>Statut</th>
+        <th>Date Demande</th>
+        <th class="no-print">Actions</th>
+      </tr>
+      <tr>
+        <tr class="no-print">
+
+        <th><input class="form-control" type="text" [(ngModel)]="filters.id" placeholder="Rechercher par ID" (ngModelChange)="filterDemandes()" /></th>
+        <th><input class="form-control" type="text" [(ngModel)]="filters.entreprise" placeholder="Rechercher par Entreprise" (ngModelChange)="filterDemandes()" /></th>
+        <th><input class="form-control" type="text" [(ngModel)]="filters.adresse" placeholder="Rechercher par Adresse" (ngModelChange)="filterDemandes()" /></th>
+        <th><input class="form-control" type="text" [(ngModel)]="filters.description" placeholder="Rechercher par Description" (ngModelChange)="filterDemandes()" /></th>
+        <th><input class="form-control" type="text" [(ngModel)]="filters.statut" placeholder="Rechercher par Statut" (ngModelChange)="filterDemandes()" /></th>
+        <th><input class="form-control" type="text" [(ngModel)]="filters.dateDemande" placeholder="Rechercher par Date Demande" (ngModelChange)="filterDemandes()" /></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr 
+        *ngFor="let demande of filteredDemandes" 
+        [ngClass]="{
+          'table-success': demande.statut === 'accepter', 
+          'table-danger': demande.statut === 'annulee'
+        }"
+      >
+        <td>{{ demande.id }}</td>
+        <td>{{ demande.client.entreprise }}</td>
+        <td>{{ demande.client.adresse }}</td>
+        <td>{{ demande.description }}</td>
+        <td>
+          {{ demande.statut }}
+          <div *ngIf="demande.actionDate" class="text-muted small">
+            {{ demande.actionDate | date:'dd/MM/yyyy HH:mm' }}
           </div>
-          <!-- Adresse -->
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="adresse" class="form-label">Adresse</label>
-              <input  type="text"  class="form-control"  [(ngModel)]="selectedDemande.client.adresse"  name="adresse"  required  #adresse="ngModel"  />
-             <div *ngIf="adresse.invalid && adresse.touched" class="text-danger">
-                L'adresse est obligatoire.
-              </div>
-            </div>
-          </div>
-          
-          <!-- Nom Société -->
-          
-      
-          <!-- Description -->
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="description" class="form-label">Description</label>
-              <input type="text" class="form-control" [(ngModel)]="selectedDemande.description" name="description" required #description="ngModel" />
-              <div *ngIf="description.invalid && description.touched" class="text-danger">
-                La description est obligatoire.
-              </div>
-            </div>
-          </div>
-      
-          <!-- Statut -->
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="statut" class="form-label">Statut</label>
-              <input type="text" class="form-control" [(ngModel)]="selectedDemande.statut" name="statut" required #statut="ngModel" />
-              <div *ngIf="statut.invalid && statut.touched" class="text-danger">
-                Le statut est obligatoire.
-              </div>
-            </div>
-          </div>
-      
-          <!-- Submit Button -->
-          <button type="submit" class="btn btn-primary w-100" [disabled]="demandeForm.invalid">Mettre à jour</button>
-        </form>
+        </td>
+        <td>{{ demande.dateDemande }}</td>
+        <td>
+          <!-- Bouton "Modifier" -->
+          <button 
+            *ngIf="demande.statut === 'en_attente'" 
+            class="btn btn-primary btn-sm w-50" 
+            (click)="editDemande(demande)">
+            Modifier
+          </button>
+
+          <!-- Bouton "Supprimer" -->
+          <button 
+            *ngIf="demande.statut === 'en_attente'" 
+            class="btn btn-danger btn-sm w-50 mt-1" 
+            (click)="deleteDemande(demande.id)">
+            Supprimer
+          </button>
+
+          <!-- Bouton "Accepter" -->
+          <button 
+            *ngIf="demande.statut === 'en_attente'" 
+            class="btn btn-success btn-sm w-50 mt-1" 
+            (click)="acceptDemande(demande.id)">
+            Accepter
+          </button>
+
+          <!-- Bouton "Annuler" -->
+          <button 
+            *ngIf="demande.statut === 'en_attente'" 
+            class="btn btn-warning btn-sm w-50 mt-1" 
+            (click)="cancelDemande(demande.id)">
+            Annuler
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  
+  
+  
+  
+  <div *ngIf="isUpdateMode" class="container my-4 p-4 border rounded shadow-sm bg-light">
+    <h3 class="mb-4 text-primary">Modifier la Demande</h3>
+    <form (ngSubmit)="updateDemande(selectedDemande)" #demandeForm="ngForm">
+      <div class="mb-3">
+        <label for="entreprise" class="form-label">Entreprise</label>
+        <input type="text" id="entreprise" class="form-control" [(ngModel)]="selectedDemande.client.entreprise" name="entreprise" required />
       </div>
-      
-    </div>
-     
+      <div class="mb-3">
+        <label for="adresse" class="form-label">Adresse</label>
+        <input type="text" id="adresse" class="form-control" [(ngModel)]="selectedDemande.client.adresse" name="adresse" required />
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <input type="text" id="description" class="form-control" [(ngModel)]="selectedDemande.description" name="description" required />
+      </div>
+      <button type="submit" class="btn btn-primary">Mettre à jour</button>
+      <button type="button" class="btn btn-secondary ms-2" (click)="cancelEdit()">Annuler</button>
+    </form>
+  </div>
+</div>

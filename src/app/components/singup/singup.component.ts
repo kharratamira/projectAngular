@@ -83,7 +83,7 @@ export class SingupComponent {
       next: (response) => {
         this.successMessage = 'Inscription réussie !';
         this.signupForm.reset();
-        this.router.navigate(['/login']);
+        this.router.navigate(['/dashboard']);
       },
       error: (error) => {
         console.error('Erreur lors de l\'inscription:', error);

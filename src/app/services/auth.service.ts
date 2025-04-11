@@ -164,11 +164,11 @@ updateTechnicien(id: number, user: any): Observable<any> {
 }
 // Dans votre AuthService
 desactiverUser(id: number): Observable<any> {
-  return this.http.delete(`${this.apiUrl}desactiveTechnicien/${id}`);
+  return this.http.delete(`${this.apiUrl}desactiveUser/${id}`);
 }
 
 activeUser(id: number): Observable<any> {
-  return this.http.put(`${this.apiUrl}activateTechnicien/${id}`, {});
+  return this.http.put(`${this.apiUrl}activateUser/${id}`, {});
 }
 
 getCommercial(): Observable<any> {

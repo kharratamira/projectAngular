@@ -3,6 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-liste-demande',
@@ -71,8 +73,12 @@ export class ListeDemandeComponent implements OnInit {
     console.log("Demande sélectionnée pour modification :", this.selectedDemande);
     this.isUpdateMode = true;
   }
-  
+  cancelEdit(): void {
+    this.selectedDemande = null;
+    this.isUpdateMode = false;
+  }
   updateDemande(demande: any): void {
+    if (this.selectedDemande) {
     if (!demande || !demande.id) {
       Swal.fire({
         icon: 'error',
@@ -135,6 +141,7 @@ export class ListeDemandeComponent implements OnInit {
       }
     });
   }
+}
   deleteDemande(demandeId: number): void {
     Swal.fire({
       title: 'Êtes-vous sûr ?',
@@ -172,29 +179,163 @@ export class ListeDemandeComponent implements OnInit {
     });
   }
   acceptDemande(demandeId: number): void {
-    this.authService.acceptDemande(demandeId).subscribe({
-      next: (response) => {
-        Swal.fire('Accepter!', 'la demande a été accepter.', 'success');
-        this.loadDemandes(); // Reload the demandes
-      },
-      error: (error) => {
-        Swal.fire('Error', 'erreur d"accepter la demande.', 'error');
-        console.error(error);
+    Swal.fire({
+      title: 'Êtes-vous sûr ?',
+      text: 'Cette action acceptera la demande.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Oui, accepter',
+      cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.authService.acceptDemande(demandeId).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Acceptée !',
+              text: 'La demande a été acceptée avec succès.',
+              timer: 3000,
+              timerProgressBar: true
+            });
+            // Mettre à jour le statut localement
+            const demande = this.demandes.find(d => d.id === demandeId);
+            if (demande) {
+              demande.statut = 'acceptée';
+              demande.actionDateTime = new Date().toLocaleString(); // Ajouter la date et l'heure
+
+            }
+            this.loadDemandes(); 
+          },
+          error: (error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur s\'est produite lors de l\'acceptation de la demande.',
+              confirmButtonColor: '#d33'
+            });
+            console.error('Erreur lors de l\'acceptation de la demande :', error);
+          }
+        });
       }
     });
   }
   
   cancelDemande(demandeId: number): void {
-    this.authService.cancelDemande(demandeId).subscribe({
-      next: (response) => {
-        Swal.fire('Annuler!', 'la demande a été annuler.', 'success');
-        this.loadDemandes(); // Reload the demandes
-      },
-      error: (error) => {
-        Swal.fire('Error', 'erreur d"annuler la demande.', 'error');
-        console.error(error);
+    Swal.fire({
+      title: 'Êtes-vous sûr ?',
+      text: 'Cette action annulera la demande.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Oui, annuler',
+      cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.authService.cancelDemande(demandeId).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Annulée !',
+              text: 'La demande a été annulée avec succès.',
+              timer: 3000,
+              timerProgressBar: true
+            });
+            // Mettre à jour le statut localement
+            const demande = this.demandes.find(d => d.id === demandeId);
+            if (demande) {
+              demande.statut = 'annulée';
+              demande.actionDateTime = new Date().toLocaleString(); // Ajouter la date et l'heure
+
+            }
+            this.loadDemandes(); 
+          },
+          error: (error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur s\'est produite lors de l\'annulation de la demande.',
+              confirmButtonColor: '#d33'
+            });
+            console.error('Erreur lors de l\'annulation de la demande :', error);
+          }
+        });
       }
     });
   }
+  exportToExcel(): void {
+    // Préparer les données à exporter
+    const dataToExport = this.filteredDemandes.map(demande => ({
+      ID: demande.id,
+      Entreprise: demande.client.entreprise,
+      Adresse: demande.client.adresse,
+      Description: demande.description,
+      Statut: demande.statut,
+      DateDemande: demande.dateDemande
+    }));
+
+    // Créer une feuille Excel
+    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Demandes');
+
+    // Générer le fichier Excel
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+    // Sauvegarder le fichier
+    const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    saveAs(blob, 'Demandes.xlsx');
+  }
+  printResults(): void {
+    const printContent = `
+      <h2 class="text-center mb-4">Liste des Demandes d'Intervention</h2>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Entreprise</th>
+            <th>Adresse</th>
+            <th>Description</th>
+            <th>Statut</th>
+            <th>Date Demande</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${this.filteredDemandes.map(demande => `
+            <tr>
+              <td>${demande.id}</td>
+              <td>${demande.client.entreprise}</td>
+              <td>${demande.client.adresse}</td>
+              <td>${demande.description}</td>
+              <td>${demande.statut}</td>
+              <td>${demande.dateDemande}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
   
+    const WindowPrt = window.open('', '', 'width=900,height=650');
+    if (WindowPrt) {
+      WindowPrt.document.write(`
+        <html>
+          <head>
+            <title>Liste des Demandes</title>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+            <style>
+              @page { size: auto; margin: 5mm; }
+              body { padding: 20px; }
+              table { width: 100%; }
+            </style>
+          </head>
+          <body onload="window.print(); window.close()">
+            ${printContent}
+          </body>
+        </html>
+      `);
+      WindowPrt.document.close();
+    }
+  }
  }
