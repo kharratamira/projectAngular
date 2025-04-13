@@ -5,10 +5,11 @@ import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-liste-demande',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgxPaginationModule],
   templateUrl: './liste-demande.component.html',
   styleUrl: './liste-demande.component.css'
 })
@@ -18,7 +19,8 @@ export class ListeDemandeComponent implements OnInit {
   filteredDemandes: any[] = [];//Un tableau qui contient les demandes après filtrage (affichées dans la vue)
   selectedDemande: any = { client: {} };// L'objet actuellement sélectionné pour modification.
   isUpdateMode: boolean = false;// Un booléen qui indique si l'utilisateur est en mode édition.
-
+  currentPage: number = 1; // Page actuelle
+  itemsPerPage: number = 10; 
   filters = {
     id: '',
     idClient: '',

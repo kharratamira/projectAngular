@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';import { AuthService } from '../.
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms'; 
 import Swal from 'sweetalert2';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 @Component({
   selector: 'app-liste-clients',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule,NgxPaginationModule],
   templateUrl: './liste-clients.component.html',
   styleUrl: './liste-clients.component.css'
 })
@@ -14,6 +16,8 @@ export class ListeClientsComponent implements OnInit {
   clients: any[] = [];
   selectedClient: any = null;
   isUpdateMode: boolean = false;
+  currentPage: number = 1; // Page actuelle
+  itemsPerPage: number = 10; 
   filters = {
     id:'',
     nom: '',

@@ -32,7 +32,7 @@
     </thead>
     <tbody>
       <tr 
-        *ngFor="let demande of filteredDemandes" 
+        *ngFor="let demande of filteredDemandes | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }" 
         [ngClass]="{
           'table-success': demande.statut === 'accepter', 
           'table-danger': demande.statut === 'annulee'
@@ -85,10 +85,12 @@
       </tr>
     </tbody>
   </table>
+
+  
+  <div class="pagination-container">
+    <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
   </div>
-  
-  
-  
+</div>
   
   <div *ngIf="isUpdateMode" class="container my-4 p-4 border rounded shadow-sm bg-light">
     <h3 class="mb-4 text-primary">Modifier la Demande</h3>
