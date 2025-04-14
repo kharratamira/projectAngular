@@ -7,6 +7,8 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { NgxPaginationModule } from 'ngx-pagination';
 
+declare var bootstrap: any;
+
 @Component({
   selector: 'app-liste-demande',
   imports: [CommonModule, FormsModule, NgxPaginationModule],
@@ -21,6 +23,7 @@ export class ListeDemandeComponent implements OnInit {
   isUpdateMode: boolean = false;// Un booléen qui indique si l'utilisateur est en mode édition.
   currentPage: number = 1; // Page actuelle
   itemsPerPage: number = 10; 
+  baseUrl: string = 'http://localhost:8000/uploads/demandes/';
   filters = {
     id: '',
     idClient: '',
@@ -39,9 +42,12 @@ export class ListeDemandeComponent implements OnInit {
 
   loadDemandes() {
     this.authService.getDemande().subscribe({
-      next: (data) => {
-        this.demandes = data;
-        this.filteredDemandes = data;
+      next: (data: any[]) => {
+        this.demandes = data.map((demande: any) => ({
+          ...demande,
+          
+        }));
+        this.filteredDemandes = this.demandes; // Correction ici
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des demandes', error);
@@ -340,4 +346,15 @@ export class ListeDemandeComponent implements OnInit {
       WindowPrt.document.close();
     }
   }
- }
+  showDetails(demande: any): void {
+    console.log('Données envoyées au modal:', demande);
+    // Copie directe de l'objet demande (qui contient déjà les photos)
+    this.selectedDemande = demande;
+  
+    // Ouvre le modal
+    const modalElement = document.getElementById('detailsModal');
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }}

@@ -16,6 +16,15 @@
           <small class="error">Description est requise et doit contenir au moins 10 caractères.</small>
         </div>
       </div>
+      <!-- Photos -->
+      <div class="mb-3">
+        <label class="form-label">Photos (3 max):</label>
+      
+        <input type="file" accept="image/*" (change)="onFileChange($event, 'photo1')" class="form-control mb-2">
+        <input type="file" accept="image/*" (change)="onFileChange($event, 'photo2')" class="form-control mb-2">
+        <input type="file" accept="image/*" (change)="onFileChange($event, 'photo3')" class="form-control">
+      </div>
+
       <!-- Submit -->
       <div class="text-center">
         <button type="submit" class="btn btn-primary mt-2">

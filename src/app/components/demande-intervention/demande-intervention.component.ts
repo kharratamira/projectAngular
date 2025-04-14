@@ -40,10 +40,50 @@ export class DemandeInterventionComponent implements OnInit {
   initForm() {
     this.demandeForm = this.fb.group({
       description: ['', [Validators.required, Validators.minLength(10)]],
-      statut: ['en_attente', Validators.required]
+      statut: ['en_attente', Validators.required],
+      photo1: [''],
+      photo2: [''],
+      photo3: ['']
+
     });
   }
-
+  onFileChange(event: Event, controlName: string): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+  
+    if (!file) return;
+  
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    const maxSizeMB = 3;
+  
+    if (!allowedTypes.includes(file.type)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Type de fichier non supporté',
+        text: 'Seules les images PNG, JPG et JPEG sont autorisées.'
+      });
+      return;
+    }
+  
+    if (file.size > maxSizeMB * 1024 * 1024) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Fichier trop volumineux',
+        text: `La taille maximale autorisée est de ${maxSizeMB} Mo.`
+      });
+      return;
+    }
+  
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.demandeForm.patchValue({
+        [controlName]: reader.result as string
+      });
+    };
+    reader.readAsDataURL(file);
+  }
+  
+  
   onSubmit() {
     if (this.demandeForm.invalid) {
       this.demandeForm.markAllAsTouched();
@@ -53,7 +93,7 @@ export class DemandeInterventionComponent implements OnInit {
         text: 'Merci de remplir correctement tous les champs !'
       });
       return;
-    }
+    }  
 
     // Vérifier si l'utilisateur est connecté avant de soumettre la demande
     if (!this.emailUtilisateur) {
@@ -66,15 +106,20 @@ export class DemandeInterventionComponent implements OnInit {
     }
 
     // Formulaire valide et utilisateur connecté, soumettre la demande
-    const formData = {
+    const demandeData = {
       description: this.demandeForm.value.description,
       statut: this.demandeForm.value.statut,
-      email: this.emailUtilisateur // Si l'API attend également l'email
+      email: this.emailUtilisateur,
+      photo1: this.demandeForm.value.photo1 ,
+      photo2: this.demandeForm.value.photo2 ,
+      photo3: this.demandeForm.value.photo3 
     };
-    console.log("Form Data:", formData);
+  
+
+    console.log("Form Data:", demandeData);
 
     // Logique pour soumettre la demande
-    this.authService.saveDemandeAvecClient(formData).subscribe({
+    this.authService.saveDemandeAvecClient(demandeData).subscribe({
       next: (response: any) => {
         console.log("Succès :", response);
         Swal.fire({
