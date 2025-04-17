@@ -23,6 +23,7 @@ export class ListeDemandeComponent implements OnInit {
   isUpdateMode: boolean = false;// Un booléen qui indique si l'utilisateur est en mode édition.
   currentPage: number = 1; // Page actuelle
   itemsPerPage: number = 10; 
+  isClient = false;
   baseUrl: string = 'http://localhost:8000/uploads/demandes/';
   filters = {
     id: '',
@@ -38,22 +39,45 @@ export class ListeDemandeComponent implements OnInit {
 
   ngOnInit() {
     this.loadDemandes();
+    this.checkUserRole();
   }
+  
 
+  private checkUserRole(): void {
+    const roles = JSON.parse(sessionStorage.getItem('roles') || '[]');
+    this.isClient = roles.includes('ROLE_CLIENT');
+  }
   loadDemandes() {
-    this.authService.getDemande().subscribe({
+    const email = sessionStorage.getItem('userEmail');
+    const roles = JSON.parse(sessionStorage.getItem('roles') || '[]');
+    const isClient = roles.includes('ROLE_CLIENT');
+  
+    this.authService.getDemandes().subscribe({
       next: (data: any[]) => {
-        this.demandes = data.map((demande: any) => ({
-          ...demande,
-          
-        }));
-        this.filteredDemandes = this.demandes; // Correction ici
+        if (isClient && email) {
+          this.demandes = data.filter(demande =>
+            demande.client &&
+            demande.client.email === email
+          );
+        } else {
+          this.demandes = data;
+        }
+  
+        this.filteredDemandes = this.demandes;
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des demandes', error);
       }
     });
   }
+  
+
+  
+  getCurrentUser(): any {
+    const userData = localStorage.getItem('user'); // ou sessionStorage
+    return userData ? JSON.parse(userData) : null;
+  }
+  
   filterDemandes() {
     this.filteredDemandes = this.demandes.filter(demande =>
       (this.filters.id ? demande.id.toString().includes(this.filters.id) : true) &&

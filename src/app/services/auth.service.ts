@@ -129,9 +129,46 @@ logout(): void {
       }
     });
   }
-  getDemande(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}getDemandes`);
+  getDemandes(): Observable<any> {
+    return this.http.get(`${this.apiUrl}getDemandes`, {
+      headers: this.getAuthHeaders()
+    }).pipe(
+      catchError(this.handleError)
+    );
   }
+
+  // Pour les clients - Récupère leurs demandes
+  getClientDemandes(): Observable<any> {
+    const userEmail = sessionStorage.getItem('usermail');
+    if (!userEmail) {
+      return throwError(() => new Error('Aucun email trouvé en session'));
+    }
+
+    return this.http.get(`${this.apiUrl}demandesclient/${encodeURIComponent(userEmail)}`, {
+      headers: this.getAuthHeaders()
+    }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = sessionStorage.getItem('auth_token'); // À adapter selon votre système
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
+  private handleError(error: any): Observable<never> {
+    let errorMessage = 'Erreur inconnue';
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Erreur client: ${error.error.message}`;
+    } else {
+      errorMessage = `Erreur serveur: ${error.status} - ${error.error?.message || error.message}`;
+    }
+    console.error(errorMessage);
+    return throwError(() => new Error(errorMessage));
+  }
+
   updateDemande(updatedDemande: any): Observable<any> {
     const url = `${this.apiUrl}updateDemande/${updatedDemande.id}`;
     console.log("Données envoyées au backend :", updatedDemande); // Ajoutez ce log

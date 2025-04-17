@@ -84,7 +84,7 @@
 
           <!-- Bouton "Accepter" -->
           <button 
-            *ngIf="demande.statut === 'en_attente'" 
+            *ngIf="demande.statut === 'en_attente'  && !isClient" 
             class="btn btn-success btn-sm w-50 mt-1" 
             (click)="acceptDemande(demande.id)">
             Accepter
@@ -92,12 +92,15 @@
 
           <!-- Bouton "Annuler" -->
           <button 
-            *ngIf="demande.statut === 'en_attente'" 
+            *ngIf="demande.statut === 'en_attente'  && !isClient" 
             class="btn btn-warning btn-sm w-50 mt-1" 
             (click)="cancelDemande(demande.id)">
             Annuler
           </button>
           <button class="btn btn-info btn-sm" (click)="showDetails(demande)">Détails</button>
+          <!-- <button class="btn btn-primary btn-sm  w-50 mt-1" (click)="affecterDemande"> -->
+            <!-- Affecter
+          </button> -->
         </td>
       </tr>
     </tbody>
