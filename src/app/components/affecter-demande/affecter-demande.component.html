@@ -1,1 +1,44 @@
-<p>affecter-demande works!</p>
+<form (ngSubmit)="submitAffectation()" #affectationForm="ngForm" class="p-4 border rounded bg-light">
+    <div class="mb-3">
+      <label class="form-label">Demande ID:</label>
+      <span class="form-control bg-white">{{ demandeId }}</span>
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label">Technicien:</label>
+      <select
+        name="technicien_id"
+        [(ngModel)]="affectation.technicien_id"
+        class="form-select"
+        required
+        [disabled]="isLoading"
+      >
+        <option value="" disabled>Sélectionner un technicien</option>
+        <ng-container *ngIf="!isLoading; else loading">
+          <option *ngFor="let tech of techniciens" [value]="tech.id">
+            {{ tech.nom }} {{ tech.prenom }} 
+            <span *ngIf="tech.specialite">- {{ tech.specialite }}</span>
+            <span *ngIf="!tech.disponibilite" class="text-danger"> (Non disponible)</span>
+          </option>
+        </ng-container>
+        <ng-template #loading>
+          <option value="" disabled>Chargement des techniciens...</option>
+        </ng-template>
+      </select>
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label">Date prévue:</label>
+      <input
+        type="datetime-local"
+        name="date_prevu"
+        [(ngModel)]="affectation.date_prevu"
+        class="form-control"
+        required
+      />
+    </div>
+  
+    <button type="submit" class="btn btn-primary" [disabled]="isLoading || !affectationForm.form.valid">
+      {{ isLoading ? 'Chargement...' : 'Affecter' }}
+    </button>
+  </form>

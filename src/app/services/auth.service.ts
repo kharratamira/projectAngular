@@ -215,8 +215,18 @@ updateCommercial(id: number, user: any): Observable<any> {
   const url = `${this.apiUrl}updateCommercial/${id}`;
   return this.http.put(url, user);
 }
-deleteCommercial(id: number): Observable<any> {
-  const url = `${this.apiUrl}deleteCommercial/${id}`;
-  return this.http.delete(url);
+// deleteCommercial(id: number): Observable<any> {
+//   const url = `${this.apiUrl}deleteCommercial/${id}`;
+//   return this.http.delete(url);
+// }
+// createAffectation(data: {
+//   demande_id: number;
+//   technicien_id: number;
+//   date_prevu: string;
+// }): Observable<any> {
+//   return this.http.post(`${this.apiUrl}createAffectation`, data);
+// }
+createAffectation(data: any) {
+  return this.http.post(`${this.apiUrl}createAffectation`, data);
 }
 }

@@ -111,7 +111,7 @@ export const routes: Routes = [
         data: { roles: ['ROLE_ADMIN'] }
       },
       {
-        path: 'affecterDemande',
+        path: 'affecterDemande/:id',
         component: AffecterDemandeComponent,
         canActivate: [RoleGuard],
         data: { roles: ['ROLE_ADMIN'] }
