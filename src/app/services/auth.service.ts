@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { catchError, map, tap } from 'rxjs/operators';
 import { throwError, of } from 'rxjs';
+import { HttpParams } from '@angular/common/http';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable({
@@ -229,4 +230,23 @@ updateCommercial(id: number, user: any): Observable<any> {
 createAffectation(data: any) {
   return this.http.post(`${this.apiUrl}createAffectation`, data);
 }
+// getAffectationByEmail(email: string): Observable<any> {
+//   return this.http.get<any>(`${this.apiUrl}getAffectation?email=${email}`);
+// }
+// getTechnicienByEmail(email: string): Observable<any> {
+//   return this.http.get(`${this.apiUrl}/getTechnicien`, {
+//     params: { email }
+//   });
+// }
+getAffectationsForTechnicien(email: string): Observable<any[]> {
+  const params = new HttpParams().set('email', email);
+  
+  return this.http.get<any[]>(`${this.apiUrl}getAffectationss`, {
+    params,
+    headers: this.getAuthHeaders()
+  }).pipe(
+    catchError(this.handleError)
+  );
+}
+
 }

@@ -1,0 +1,49 @@
+.fc-event {
+    border: none;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin: 2px 0;
+    padding: 6px;
+  }
+  
+  .fc-event-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .event-time {
+    font-size: 0.8em;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .event-title {
+    font-size: 0.9em;
+  }
+  
+  .event-status {
+    font-size: 0.8em;
+    font-style: italic;
+  }
+  
+  /* Vue mois */
+  .fc-dayGridMonth-view .fc-event {
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Dans planning.component.css */
+.swal2-popup {
+    font-family: 'Arial', sans-serif;
+}
+
+.swal2-title {
+    color: #2c3e50;
+    font-size: 1.5em !important;
+}
+
+.swal2-html-container {
+    font-size: 1.1em;
+}

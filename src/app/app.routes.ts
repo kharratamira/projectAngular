@@ -57,6 +57,7 @@ import { RoleGuard } from './services/core/guards/RoleGuard ';
 import { ListeCompteComponent } from './components/liste-compte/liste-compte.component';
 import { ListeCommercialComponent } from './components/liste-commercial/liste-commercial.component';
 import { AffecterDemandeComponent } from './components/affecter-demande/affecter-demande.component';
+import { PlanningComponent } from './components/planning/planning.component';
 
 export const routes: Routes = [
   { path: 'acceuil', component: AccueillComponent },
@@ -115,7 +116,11 @@ export const routes: Routes = [
         component: AffecterDemandeComponent,
         canActivate: [RoleGuard],
         data: { roles: ['ROLE_ADMIN'] }
-      }
+      },
+      {path: 'planing',
+        component: PlanningComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['ROLE_TECHNICIEN'] }}
     ]
   }
 ];

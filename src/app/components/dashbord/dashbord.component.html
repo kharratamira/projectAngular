@@ -85,6 +85,20 @@
             </div>
           </li>
         </ng-container>
+        <ng-container *ngIf="hasRole('ROLE_TECHNICIEN')">
+          <!-- Menu "Demande Intervention" pour CLIENT -->
+        
+              <ul class="nav flex-column ms-3">
+                <li class="nav-item">
+                  <a class="nav-link" routerLink="planing">calendrier </a>
+                </li>
+                <!-- <li class="nav-item">
+                  <a class="nav-link" routerLink="demande-intervention">Ajouter Demande</a>
+                </li> -->
+              </ul>
+            
+          
+        </ng-container>
       </ul>
     </aside>
 
