@@ -15,6 +15,7 @@
             <option value="">Sélectionnez un rôle</option>
             <option value="technicien">Technicien</option>
             <option value="commercial">Commercial</option>
+            <option value="client">Client</option>
             <option value="admin">Admin</option>
           </select>
         </div>
@@ -62,6 +63,18 @@
           <div class="mb-3">
             <label for="region" class="form-label">Région</label>
             <input type="text" id="region" class="form-control" formControlName="region" />
+          </div>
+        </div>
+        <div *ngIf="addUserForm.get('user_type')?.value === 'client'">
+          <div class="mb-3">
+            <label for="adresse" class="form-label">adresse</label>
+            <input type="text" id="adresse" class="form-control" formControlName="adresse" />
+          </div>
+        
+       
+          <div class="mb-3">
+            <label for="entreprise" class="form-label">Entreprise</label>
+            <input type="text" id="entreprise" class="form-control" formControlName="entreprise" />
           </div>
         </div>
         <div class="mb-3">

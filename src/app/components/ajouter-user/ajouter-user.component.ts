@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-ajouter-user',
@@ -30,6 +31,8 @@ export class AjouterUserComponent {
       numTel: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       // Champs spécifiques selon le type de user
+      adresse:[''],
+      entreprise:[''],
       specialite: [''],
       disponibilite: [true],
       region: [''],
@@ -49,11 +52,13 @@ export class AjouterUserComponent {
     }
   }
   onSubmit(): void {
-    this.successMessage = '';
-    this.errorMessage = '';
-
     if (this.addUserForm.invalid) {
-      this.errorMessage = 'Merci de remplir correctement tous les champs.';
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Merci de remplir correctement tous les champs.',
+        confirmButtonColor: '#3085d6'
+      });
       return;
     }
     const userData = this.addUserForm.value;
@@ -61,24 +66,48 @@ export class AjouterUserComponent {
     // Nettoyage des champs inutiles selon le type d'utilisateur
     if (userData.user_type === 'technicien') {
       delete userData.region;
+      delete userData.adresse;
+      delete userData.entreprise;
     } else if (userData.user_type === 'commercial') {
       delete userData.specialite;
       delete userData.disponibilite;
+      delete userData.adresse;
+      delete userData.entreprise;
+    } else if (userData.user_type === 'client') {
+      delete userData.specialite;
+      delete userData.disponibilite;
+      delete userData.region;
     } else {
+      // pour 'admin' ou autres types
       delete userData.region;
       delete userData.specialite;
       delete userData.disponibilite;
+      delete userData.adresse;
+      delete userData.entreprise;
     }
+    
     console.log('Sending user data:', userData); // Log the user data being sent
 
     this.authService.signupUser(userData).subscribe({
       next: () => {
-        this.successMessage = 'Utilisateur créé avec succès !';
-        this.addUserForm.reset({ disponibilite: true }); // On garde la dispo à true pour technicien
+        Swal.fire({
+          icon: 'success',
+          title: 'Succès',
+          text: 'Utilisateur créé avec succès !',
+          confirmButtonColor: '#3085d6',
+          timer: 3000
+        }).then(() => {
+          this.addUserForm.reset({ disponibilite: true });
+        });
       },
       error: (error) => {
-        console.error('Signup error:', error); // Log the error response
-        this.errorMessage = error.error?.message || 'Erreur lors de la création';
+        console.error('Signup error:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: error.error?.message || 'Erreur lors de la création',
+          confirmButtonColor: '#3085d6'
+        });
       }
     });
   }

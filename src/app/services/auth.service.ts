@@ -68,46 +68,19 @@ logout(): void {
     //window.location.reload();
   });
 }
-
-  // isLoggedIn(): boolean {
-  //   const token = localStorage.getItem('access_token');
-    
-  //   // Optionnel : tu peux aussi vérifier si le token est expiré
-  //   return !!token; // true si token existe, false sinon
-  // }
-  signupClient(formData: FormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}signup_client`, formData).pipe(
-      catchError(error => {
-        // Gestion des erreurs spécifiques
-        if (error.error?.error) {
-          throw error.error.error;
-        }
-        throw 'Une erreur inconnue est survenue';
-      })
-    );
-  }
-
-  // auth.service.ts
+signupUser(userData: any) {
+  return this.http.post(`${this.apiUrl}signup`, userData, {
+    headers: {
+    //  Authorization: `Bearer ${this.getToken()}` // Ton token JWT si besoin
+    }
+  });
+}
 
   saveDemandeAvecClient(formData: any): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post(`${this.apiUrl}saveDemande`, formData, { headers });
   }
   
-  
-   
-  
-  
-  // isAuthenticated(): boolean {
-  //   // Check if there is an authentication token or session
-  //   return !!localStorage.getItem('auth_token');
-  // }
-
-  // // Get the logged-in user's data
-  // getClientData(): any {
-  //   // Get client data from local storage, session, or via an API call
-  //   return JSON.parse(localStorage.getItem('client_data') || '{}');
-  // }
   getClientsWithDemande(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}listeClient`);
   }
@@ -123,13 +96,7 @@ logout(): void {
 
 
   }
-  signupUser(userData: any) {
-    return this.http.post(`${this.apiUrl}signup`, userData, {
-      headers: {
-      //  Authorization: `Bearer ${this.getToken()}` // Ton token JWT si besoin
-      }
-    });
-  }
+ 
   getDemandes(): Observable<any> {
     return this.http.get(`${this.apiUrl}getDemandes`, {
       headers: this.getAuthHeaders()
@@ -190,9 +157,6 @@ cancelDemande(demandeId: number): Observable<any> {
   return this.http.put<any>(`${this.apiUrl}cancelDemande/${demandeId}`, {});
 }
 
-
- 
-
 getTechnicien(): Observable<any> {
   return this.http.get<any>(`${this.apiUrl}getTechnicien`);
 }
@@ -216,28 +180,10 @@ updateCommercial(id: number, user: any): Observable<any> {
   const url = `${this.apiUrl}updateCommercial/${id}`;
   return this.http.put(url, user);
 }
-// deleteCommercial(id: number): Observable<any> {
-//   const url = `${this.apiUrl}deleteCommercial/${id}`;
-//   return this.http.delete(url);
-// }
-// createAffectation(data: {
-//   demande_id: number;
-//   technicien_id: number;
-//   date_prevu: string;
-// }): Observable<any> {
-//   return this.http.post(`${this.apiUrl}createAffectation`, data);
-// }
+
 createAffectation(data: any) {
   return this.http.post(`${this.apiUrl}createAffectation`, data);
 }
-// getAffectationByEmail(email: string): Observable<any> {
-//   return this.http.get<any>(`${this.apiUrl}getAffectation?email=${email}`);
-// }
-// getTechnicienByEmail(email: string): Observable<any> {
-//   return this.http.get(`${this.apiUrl}/getTechnicien`, {
-//     params: { email }
-//   });
-// }
 getAffectationsForTechnicien(email: string): Observable<any[]> {
   const params = new HttpParams().set('email', email);
   
