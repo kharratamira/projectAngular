@@ -25,6 +25,7 @@ export class ListeDemandeComponent implements OnInit {
   currentPage: number = 1; // Page actuelle
   itemsPerPage: number = 10; 
   isClient = false;
+  isAdmin = false;
   baseUrl: string = 'http://localhost:8000/uploads/demandes/';
   filters = {
     id: '',
@@ -41,12 +42,18 @@ export class ListeDemandeComponent implements OnInit {
   ngOnInit() {
     this.loadDemandes();
     this.checkUserRole();
+    this.checkUserRoleAdmin();
   }
   
 
   private checkUserRole(): void {
     const roles = JSON.parse(sessionStorage.getItem('roles') || '[]');
     this.isClient = roles.includes('ROLE_CLIENT');
+  }
+
+  private checkUserRoleAdmin(): void {
+    const roles = JSON.parse(sessionStorage.getItem('roles') || '[]');
+    this.isAdmin = roles.includes('ROLE_ADMIN');
   }
   loadDemandes() {
     const email = sessionStorage.getItem('userEmail');

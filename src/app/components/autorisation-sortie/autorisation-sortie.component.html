@@ -1,0 +1,44 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Demande d'Autorisation de Sortie</h2>
+  <form (ngSubmit)="onSubmit()" class="p-4 border rounded bg-light">
+    <div class="mb-3">
+      <label for="dateDebut" class="form-label">Date de début :</label>
+      <input
+        type="datetime-local"
+        id="dateDebut"
+        [(ngModel)]="dateDebut"
+        name="dateDebut"
+        class="form-control"
+        required
+      />
+    </div>
+    
+    <div class="mb-3">
+      <label for="dateFin" class="form-label">Date de fin :</label>
+      <input
+        type="datetime-local"
+        id="dateFin"
+        [(ngModel)]="dateFin"
+        name="dateFin"
+        class="form-control"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="raison" class="form-label">Raison :</label>
+      <textarea
+        id="raison"
+        [(ngModel)]="raison"
+        name="raison"
+        class="form-control"
+        rows="3"
+        required
+        minlength="10"
+        placeholder="Expliquez la raison de votre demande (au moins 10 caractères)"
+      ></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Envoyer la demande</button>
+  </form>
+</div>

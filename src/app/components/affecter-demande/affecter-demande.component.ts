@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
   styleUrl: './affecter-demande.component.css'
 })
 export class AffecterDemandeComponent implements OnInit {
+  datesPrevues: any[] = [];
 
   techniciens: any[] = [];
   demandeId!: number;
@@ -60,7 +61,48 @@ export class AffecterDemandeComponent implements OnInit {
       }
     });
   }
+loadAffectationsTechnicien(technicienId: number): void {
+  if (!technicienId) {
+    this.datesPrevues = [];
+    return;
+  }
 
+  this.authService.getAffectations({ technicien_id: technicienId }).subscribe({
+    next: (res) => {
+      console.log('Toutes affectations reçues:', res);
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // 🔥 On ignore l'heure : aujourd'hui à minuit
+
+      this.datesPrevues = res
+        .filter((affectation: any) => {
+          const datePrevu = new Date(affectation.datePrevu);
+          datePrevu.setHours(0, 0, 0, 0); // 🔥 aussi on ignore l'heure de datePrevu
+          return datePrevu >= today; // 🔥 On garde si c'est aujourd'hui ou après
+        })
+        .map((affectation: any) => ({
+          datePrevu: affectation.datePrevu
+        }));
+
+      console.log('Dates prévues futures:', this.datesPrevues);
+    },
+    error: (err) => {
+      console.error('Erreur chargement affectations:', err);
+      this.datesPrevues = [];
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Erreur lors du chargement des affectations du technicien',
+        confirmButtonText: 'OK',
+        timer: 3000,
+        timerProgressBar: true
+      });
+    }
+  });
+}
+
+  
+  
   submitAffectation(): void {
     this.affectation.date_affectation = new Date().toISOString();
     this.authService.createAffectation(this.affectation).subscribe({

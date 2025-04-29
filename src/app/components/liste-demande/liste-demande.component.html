@@ -78,7 +78,7 @@
         <td>
           <!-- Bouton "Modifier" -->
           <button 
-            *ngIf="demande.statut === 'en_attente'" 
+            *ngIf="demande.statut === 'en_attente' && !isAdmin" 
             class="btn btn-primary btn-sm w-50" 
             (click)="editDemande(demande)">
             Modifier
@@ -86,7 +86,7 @@
 
           <!-- Bouton "Supprimer" -->
           <button 
-            *ngIf="demande.statut === 'en_attente'" 
+            *ngIf="demande.statut === 'en_attente' && !isAdmin" 
             class="btn btn-danger btn-sm w-50 mt-1" 
             (click)="deleteDemande(demande.id)">
             Supprimer
@@ -110,8 +110,9 @@
           <button class="btn btn-info btn-sm" (click)="showDetails(demande)">Détails</button>
           <button 
           *ngIf="!isClient" 
-  class="btn btn-primary btn-sm " 
-  [routerLink]="['/dashboard/affecterDemande', demande.id]">
+  class="btn btn-primary btn-sm w-50 mt-1" 
+  [routerLink]="['/dashboard/affecterDemande', demande.id]"  [disabled]="demande.isAffecter">
+  
   Affecter
 </button>
 

@@ -14,6 +14,7 @@ import { ListeCompteComponent } from './components/liste-compte/liste-compte.com
 import { ListeCommercialComponent } from './components/liste-commercial/liste-commercial.component';
 import { AffecterDemandeComponent } from './components/affecter-demande/affecter-demande.component';
 import { PlanningComponent } from './components/planning/planning.component';
+import { AutorisationSortieComponent } from './components/autorisation-sortie/autorisation-sortie.component';
 
 export const routes: Routes = [
   { path: 'acceuil', component: AccueillComponent },
@@ -76,7 +77,11 @@ export const routes: Routes = [
       {path: 'planing',
         component: PlanningComponent,
         canActivate: [RoleGuard],
-        data: { roles: ['ROLE_TECHNICIEN'] }}
+        data: { roles: ['ROLE_TECHNICIEN'] }},
+        {path: 'autorisationSortie',
+          component: AutorisationSortieComponent,
+          canActivate: [RoleGuard],
+          data: { roles: ['ROLE_TECHNICIEN'] }},
     ]
   }
 ];

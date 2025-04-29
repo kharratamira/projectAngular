@@ -20,45 +20,6 @@ export class LoginComponent {
       password: ['', Validators.required]
     });
   }
-  
-  // onSubmit(): void {
-  //   if (this.loginForm.valid) {
-  //     const { email, password } = this.loginForm.value;
-  //     console.log('Form Data:', { email, password }); 
-  //     this.authService.login(email, password).subscribe({
-  //       next: (response) => {
-  //         console.log('Login réussi:', response);
-  //         console.log('User data:', response.user);
-  //         // Stocker l'email de l'utilisateur dans localStorage
-  //         sessionStorage.setItem('userId', response.user.id);
-  //        sessionStorage.setItem('userEmail', response.user.email);
-  //       sessionStorage.setItem('userNom', response.user.nom);
-  //       sessionStorage.setItem('userPrenom', response.user.prenom);
-  //       sessionStorage.setItem('userPhoto', response.user.photo); 
-  //       sessionStorage.setItem('roles', JSON.stringify(response.roles)); 
-
-  //       console.log('Email stocké dans sessionStorage :', sessionStorage.getItem('userEmail'));
-  //       console.log('Nom stocké dans sessionStorage :', sessionStorage.getItem('userNom'));
-  //       console.log('Prénom stocké dans sessionStorage :', sessionStorage.getItem('userPrenom'));
-  //       console.log('Photo stockée dans sessionStorage :', sessionStorage.getItem('userPhoto'));
-  //       console.log('Roles stockés dans sessionStorage :', sessionStorage.getItem('roles'));
-  //         // Rediriger vers la page de demande d'intervention après la connexion réussie
-  //         this.router.navigate(['/dashboard']);
-  //       },
-  //       error: (error) => {
-  //         this.errorMessage = 'Email ou mot de passe incorrect';
-  //         Swal.fire({
-  //           icon: 'error',
-  //           title: 'Oops...',
-  //           text: 'Email ou mot de passe incorrect!',
-  //         });
-  //         console.error(error);
-          
-  //       }
-        
-  //     });
-  //   }
-  // }
   onSubmit(): void {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
@@ -76,14 +37,16 @@ export class LoginComponent {
           sessionStorage.setItem('userPrenom', response.user.prenom);
           sessionStorage.setItem('userPhoto', response.user.photo);
           sessionStorage.setItem('roles', JSON.stringify(response.roles));
+          sessionStorage.setItem('auth_token', response.token); // Stocker le token d'autorisation
 
           // Debug logs
+          console.log('ID stocké dans sessionStorage :', sessionStorage.getItem('userId'));
           console.log('Email stocké dans sessionStorage :', sessionStorage.getItem('userEmail'));
           console.log('Nom stocké dans sessionStorage :', sessionStorage.getItem('userNom'));
           console.log('Prénom stocké dans sessionStorage :', sessionStorage.getItem('userPrenom'));
           console.log('Photo stockée dans sessionStorage :', sessionStorage.getItem('userPhoto'));
           console.log('Roles stockés dans sessionStorage :', sessionStorage.getItem('roles'));
-
+           console.log('', sessionStorage.getItem('auth_token'));
           // Redirection vers dashboard
           this.router.navigate(['/dashboard']);
         },
