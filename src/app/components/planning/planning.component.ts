@@ -78,6 +78,8 @@ export class PlanningComponent implements OnInit {
       case 'en_attente': return 'En attente';
       case 'en_cours': return 'En cours';
       case 'termine': return 'Terminé';
+      case 'autorisation': return 'Autorisation';
+
       default: return status;
     }
   }
@@ -116,32 +118,50 @@ export class PlanningComponent implements OnInit {
     }
 
     this.authService.getAffectationsForTechnicien(email).subscribe({
-      next: (data: any[]) => {
-        this.affectations = data;
-        this.updateCalendarEvents();
+      next: (data: any) => {
+        const events: any[] = [];
+  
+        // 🔵 Affectations
+        for (const aff of data.affectations) {
+          events.push({
+            id: aff.id,
+            title: `#${aff.demande_id} - ${aff.technicien_nom} ${aff.technicien_prenom}`,
+            start: aff.datePrevu,
+            extendedProps: {
+              demandeId: aff.demande_id,
+              technicien: `${aff.technicien_nom} ${aff.technicien_prenom}`,
+              status: aff.statutAffectation
+            },
+            color: this.getStatusColor(aff.statutAffectation),
+            allDay: false
+          });
+        }
+  
+        // 🔴 Autorisations de sortie
+        for (const auth of data.autorisations) {
+          console.log("Autorisation", auth.dateDebut, auth.dateFin);
+
+          events.push({
+            title: `Autorisation: ${auth.raison}`,
+            start: new Date(auth.dateDebut),
+            end: new Date(auth.dateFin),
+            color: '#dc3545', // rouge
+            allDay: false,
+            extendedProps: {
+              status: 'autorisation',
+              description: auth.raison
+            }
+          });
+        }
+  
+        this.calendarOptions.events = events;
+        this.calendarOptions = { ...this.calendarOptions };
       },
       error: (error) => {
         console.error("Erreur:", error);
       }
-    });}
-  
-    updateCalendarEvents(): void {
-      this.calendarOptions.events = this.affectations.map(aff => ({
-        id: aff.id,
-        title: `#${aff.demande?.id} - ${aff.technicien?.nom} ${aff.technicien?.prenom}`,
-        start: aff.datePrevu,
-        extendedProps: {
-          demandeId: aff.demande?.id,
-          description: aff.demande?.description,
-          technicien: `${aff.technicien?.nom} ${aff.technicien?.prenom}`,
-          status: aff.statutAffectation
-        },
-        color: this.getStatusColor(aff.statutAffectation),
-        allDay: false
-      }));
-  
-      this.calendarOptions = {...this.calendarOptions};
-    }
+    });
+  }
   // ... (keep existing getStatusColor, getCurrentUserEmail, getCurrentUserRoles, isTechnicien methods)
 
 

@@ -15,7 +15,7 @@ import { ListeCommercialComponent } from './components/liste-commercial/liste-co
 import { AffecterDemandeComponent } from './components/affecter-demande/affecter-demande.component';
 import { PlanningComponent } from './components/planning/planning.component';
 import { AutorisationSortieComponent } from './components/autorisation-sortie/autorisation-sortie.component';
-
+import { DemandeAutorisationSortieComponent } from './components/demande-autorisation-sortie/demande-autorisation-sortie.component';
 export const routes: Routes = [
   { path: 'acceuil', component: AccueillComponent },
   { path: '', redirectTo: '/acceuil', pathMatch: 'full' },
@@ -82,6 +82,11 @@ export const routes: Routes = [
           component: AutorisationSortieComponent,
           canActivate: [RoleGuard],
           data: { roles: ['ROLE_TECHNICIEN'] }},
+
+          {path: 'listeautorisationSortie',
+            component: DemandeAutorisationSortieComponent,
+            canActivate: [RoleGuard],
+            data: { roles: ['ROLE_TECHNICIEN','ROLE_ADMIN'] }},
     ]
   }
 ];

@@ -304,16 +304,23 @@ createAffectation(data: any): Observable<any> {
     headers: this.getAuthHeaders()
   });
 }
-getAffectationsForTechnicien(email: string): Observable<any[]> {
-  const params = new HttpParams().set('email', email);
+// getAffectationsForTechnicien(email: string): Observable<any[]> {
+//   const params = new HttpParams().set('email', email);
   
-  return this.http.get<any[]>(`${this.apiUrl}getAffectationss`, {
-    params,
+//   return this.http.get<any[]>(`${this.apiUrl}getAffectationss`, {
+//     params,
+//     headers: this.getAuthHeaders()
+//   }).pipe(
+//     catchError(this.handleError)
+//   );
+// }
+getAffectationsForTechnicien(email: string): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}getAffectationss`, {
+    params: { email },
     headers: this.getAuthHeaders()
-  }).pipe(
-    catchError(this.handleError)
-  );
+  });
 }
+
 // getAffectations(filters: any): Observable<any> {
 //   const params = new HttpParams({ fromObject: filters });
 //   return this.http.get<any>(`${this.apiUrl}getAffectation`, { params });
@@ -334,9 +341,7 @@ createAutorisation(data: { id_technicien: string; dateDebut: string; dateFin: st
     }
   });
 }
-getAutorisations(): Observable<any> {
-  return this.http.get(`${this.apiUrl}getAutorisation`);
-}
+
 
 private getToken(): string | null {
   return sessionStorage.getItem('auth_token');
@@ -345,5 +350,31 @@ isTechnician(): boolean {
   const roles = sessionStorage.getItem('roles');
   return roles ? JSON.parse(roles).includes('ROLE_TECHNICIEN') : false;
 }
- 
+getAutorisationsByEmail(email: string): Observable<any> {
+  return this.http.get(`${this.apiUrl}getAutorisationByEmail?email=${email}`);
+}
+
+getAllAutorisations(): Observable<any> {
+  return this.http.get(`${this.apiUrl}getAllAutorisations`);
+}
+updateAutorisation(id: number, data: any): Observable<any> {
+  return this.http.put(`${this.apiUrl}updateAutorisation/${id}`, data, {
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
+deleteAutorisation(id: number): Observable<any> {
+  return this.http.delete(`${this.apiUrl}deleteAutorisation/${id}`);
+}
+accepterAutorisation(id: number): Observable<any> {
+  return this.http.put(`${this.apiUrl}accepterAutorisation/${id}`, {}, {
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
+annulerAutorisation(id: number): Observable<any> {
+  return this.http.put(`${this.apiUrl}annulerAutorisation/${id}`, {}, {
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
 }

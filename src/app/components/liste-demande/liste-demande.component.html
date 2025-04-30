@@ -79,41 +79,54 @@
           <!-- Bouton "Modifier" -->
           <button 
             *ngIf="demande.statut === 'en_attente' && !isAdmin" 
-            class="btn btn-primary btn-sm w-50" 
+            class="btn btn-light btn-sm w-50 mt-1" 
             (click)="editDemande(demande)">
-            Modifier
+            <i class="fas fa-edit text-primary"></i> 
+
+            <!-- Modifier -->
           </button>
 
           <!-- Bouton "Supprimer" -->
           <button 
             *ngIf="demande.statut === 'en_attente' && !isAdmin" 
-            class="btn btn-danger btn-sm w-50 mt-1" 
+            class="btn btn-light btn-sm w-50 mt-1" 
             (click)="deleteDemande(demande.id)">
-            Supprimer
+            <i class="fas fa-trash text-danger"></i>
+
+            <!-- Supprimer -->
           </button>
 
           <!-- Bouton "Accepter" -->
           <button 
             *ngIf="demande.statut === 'en_attente'  && !isClient" 
-            class="btn btn-success btn-sm w-50 mt-1" 
+            class="btn btn-light btn-sm w-50 mt-1" 
             (click)="acceptDemande(demande.id)">
-            Accepter
+            <i class="fas fa-check text-success"></i>
+            <!-- Accepter -->
           </button>
 
           <!-- Bouton "Annuler" -->
           <button 
             *ngIf="demande.statut === 'en_attente'  && !isClient" 
-            class="btn btn-warning btn-sm w-50 mt-1" 
+            class="btn btn-light btn-sm w-50 mt-1" 
             (click)="cancelDemande(demande.id)">
-            Annuler
+            <i class="fas fa-times text-danger"></i>
+            <!-- Annuler -->
           </button>
-          <button class="btn btn-info btn-sm" (click)="showDetails(demande)">Détails</button>
+          <button        
+             class="btn btn-light btn-sm w-50 mt-1" 
+          (click)="showDetails(demande)">
+            <i class="fas fa-file-alt text-muted"></i> <!-- Icône de script -->
+            
+            <!-- Détails -->
+          </button>
           <button 
           *ngIf="!isClient" 
-  class="btn btn-primary btn-sm w-50 mt-1" 
+          class="btn btn-light btn-sm w-50 mt-1" 
   [routerLink]="['/dashboard/affecterDemande', demande.id]"  [disabled]="demande.isAffecter">
-  
-  Affecter
+  <i class="fas fa-user-plus text-primary "></i> <!-- Icône pour Affecter -->
+
+  <!-- Affecter -->
 </button>
 
         </td>

@@ -81,10 +81,10 @@ export class ListeDemandeComponent implements OnInit {
   
 
   
-  getCurrentUser(): any {
-    const userData = localStorage.getItem('user'); // ou sessionStorage
-    return userData ? JSON.parse(userData) : null;
-  }
+  // getCurrentUser(): any {
+  //   const userData = localStorage.getItem('user'); // ou sessionStorage
+  //   return userData ? JSON.parse(userData) : null;
+  // }
   
   filterDemandes() {
     this.filteredDemandes = this.demandes.filter(demande =>

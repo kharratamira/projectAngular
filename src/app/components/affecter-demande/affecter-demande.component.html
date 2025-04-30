@@ -53,3 +53,14 @@
     </ul>
   </div>
   
+  <div *ngIf="autorisations.length > 0" class="mt-4">
+    <h5>Autorisations de sortie de cette technicien :</h5>
+    <ul class="list-group">
+      <li *ngFor="let auto of autorisations" class="list-group-item">
+        Du {{ auto.dateDebut | date: 'medium' }}
+        au {{ auto.dateFin | date: 'medium' }}
+      </li>
+    </ul>
+  </div>
+  
+  

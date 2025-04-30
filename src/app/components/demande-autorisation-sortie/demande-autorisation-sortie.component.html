@@ -1,0 +1,131 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Liste des Autorisations</h2>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th *ngIf="isAdmin">Technicien</th>
+        <th>Date de début</th>
+        <th>Date de fin</th>
+        <th>Raison</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr 
+      
+      *ngFor="let autorisation of autorisations" 
+      [ngClass]="{
+        'table-success': autorisation.statut?.toUpperCase() === 'ACCEPTER',
+        'table-danger': autorisation.statut?.toUpperCase() === 'ANNULEE'
+      }"
+    >
+    
+    
+        <td>{{ autorisation.id }}</td>
+        <td *ngIf="isAdmin">
+          {{ autorisation.technicien.nom }} {{ autorisation.technicien.prenom }}
+        </td>
+        <td>{{ autorisation.dateDebut }}</td>
+        <td>{{ autorisation.dateFin }}</td>
+        <td>{{ autorisation.raison }}</td>
+        <td>
+          {{ autorisation.statut }}
+        </td>
+        <td>
+          <button 
+          *ngIf="!isAdmin"
+          (click)="editAutorisation(autorisation)" 
+          class="btn btn-light btn-sm w-50 mt-1" 
+         
+        >
+        <i class="fas fa-edit text-primary"></i> 
+       <!-- modifier -->
+        </button>
+        <button 
+        *ngIf="!isAdmin"
+          (click)="deleteAutorisation(autorisation.id)" 
+          class="btn btn-light btn-sm w-50 mt-1" 
+          
+        >
+        
+        <i class="fas fa-trash text-danger"></i>
+         <!-- supprimer -->
+        </button>
+        <button 
+        *ngIf="isAdmin"
+        (click)="accepterAutorisation(autorisation.id)" 
+        class="btn btn-outline-success btn-sm w-50 mt-1"
+        
+      >
+      <i class="fas fa-check text-success"></i>
+       <!-- accepter -->
+      </button>
+      <button 
+      *ngIf="isAdmin"
+        (click)="annulerAutorisation(autorisation.id)" 
+        class="btn btn-outline-danger btn-sm w-50 mt-1"
+        
+      >
+      <!-- annulee -->
+      <i class="fas fa-times text-danger"></i>
+        
+      </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="selectedAutorisation" class="card mt-4">
+    <div class="card-header">
+      <h3 class="card-title">Modifier l'autorisation</h3>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="updateAutorisation()">
+        <div class="mb-3">
+          <label for="dateDebut" class="form-label">Date de début :</label>
+          <input
+            type="date"
+            id="dateDebut"
+            class="form-control"
+            [(ngModel)]="selectedAutorisation.dateDebut"
+            name="dateDebut"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="dateFin" class="form-label">Date de fin :</label>
+          <input
+            type="date"
+            id="dateFin"
+            class="form-control"
+            [(ngModel)]="selectedAutorisation.dateFin"
+            name="dateFin"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="raison" class="form-label">Raison :</label>
+          <textarea
+            id="raison"
+            class="form-control"
+            [(ngModel)]="selectedAutorisation.raison"
+            name="raison"
+            rows="3"
+            required
+          ></textarea>
+        </div>
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="btn btn-success me-2">Enregistrer</button>
+          <button type="button" (click)="cancelEdit()" class="btn btn-secondary">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div *ngIf="autorisations.length === 0" class="text-center mt-4">
+    <p>Aucune autorisation trouvée.</p>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+.table-success {
+    background-color: #d4edda !important; /* Vert clair */
+    color: #155724; /* Texte vert foncé */
+  }
+  
+  .table-danger {
+    background-color: #f8d7da !important; /* Rouge clair */
+    color: #721c24; /* Texte rouge foncé */
+  }

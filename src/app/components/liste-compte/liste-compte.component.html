@@ -54,23 +54,33 @@
           </div>
         </td>  
         <td>
-          <button class="btn btn-primary btn-sm" (click)="editUser(user)">Modifier</button>
+          <button         
+           class="btn btn-light btn-sm me-2" 
+          (click)="editUser(user)">
+          <i class="fas fa-edit text-primary"></i> 
+
+          <!-- Modifier -->
+        </button>
           <!-- Afficher Désactiver si isActive est true ou undefined (comportement par défaut) -->
           <td>
             <!-- Afficher le bouton "Désactiver" si le compte est actif -->
             <button 
               *ngIf="user.isActive" 
-              class="btn btn-danger btn-sm" 
+              class="btn btn-light btn-sm me-2" 
               (click)="desactiverUser(user)">
-              Désactiver
+              <i class="fas fa-check-circle text-success"></i> <!-- Icône de validation -->
+
+              <!-- Désactiver -->
             </button>
           
             <!-- Afficher le bouton "Activer" si le compte est inactif -->
             <button 
               *ngIf="!user.isActive" 
-              class="btn btn-success btn-sm" 
+              class="btn btn-light btn-sm me-2" 
               (click)="activerUser(user)">
-              Activer
+              <i class="fas fa-lock text-danger"></i> <!-- Icône de cadenas -->
+
+              <!-- Activer -->
             </button>
           
         </td>
