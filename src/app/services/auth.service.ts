@@ -377,4 +377,23 @@ annulerAutorisation(id: number): Observable<any> {
     headers: { 'Content-Type': 'application/json' }
   });
 }
+
+updateStatutEnCours(id: number): Observable<any> {
+  return this.http.put(`${this.apiUrl}enCour/${id}`, {}, {
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+// Ajuste l’URL si besoin
+
+getTaches(): Observable<any> {
+  return this.http.get(`${this.apiUrl}taches`);
+}
+// createIntervention(data: any): Observable<any> {
+//   return this.http.post(`${this.apiUrl}intervention`, data);
+// }
+createIntervention(data: { affectation_id: number; observation: string; taches: number[] }): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}intervention`, data, {
+    headers: this.getAuthHeaders()
+  });
+}
 }

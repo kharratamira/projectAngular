@@ -36,23 +36,33 @@
         <td>{{ client.adresse }}</td>
         
         
-        <td>
-          <button class="btn btn-primary" (click)="editClient(client)">Modifier</button>
+        <td class="d-flex gap-2">
+          <button
+          class="btn btn-light btn-sm " 
+          (click)="editClient(client)">
+          <i class="fas fa-edit text-primary"></i> 
+
+           <!-- Modifier -->
+          </button>
           
           <!-- Afficher le bouton "Désactiver" si le compte est actif -->
           <button 
             *ngIf="client.isActive" 
-            class="btn btn-danger btn-sm" 
+            class="btn btn-light btn-sm " 
             (click)="desactiverClient(client)">
-            Désactiver
+            <i class="fas fa-check-circle text-success"></i> <!-- Icône de validation -->
+
+            <!-- Désactiver -->
           </button>
           
           <!-- Afficher le bouton "Activer" si le compte est inactif -->
           <button 
             *ngIf="!client.isActive" 
-            class="btn btn-success btn-sm" 
+            class="btn btn-light btn-sm " 
             (click)="activerClient(client)">
-            Activer
+            <i class="fas fa-lock text-danger"></i> <!-- Icône de cadenas -->
+
+            <!-- Activer -->
           </button>
         </td>
       </tr>
