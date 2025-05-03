@@ -20,7 +20,8 @@ import { ViewEncapsulation } from '@angular/core';
 export class DemandeAutorisationSortieComponent {
   autorisations: any[] = [];
   selectedAutorisation: any = null; // Autorisation sélectionnée pour modification
-
+  currentPage: number = 1; // Page actuelle
+  itemsPerPage: number = 10; // Nombre d'éléments par page
   email: string = ''; // Email du technicien pour la recherche
   isAdmin: boolean = false; // Déclarez la variable isAdmin
 

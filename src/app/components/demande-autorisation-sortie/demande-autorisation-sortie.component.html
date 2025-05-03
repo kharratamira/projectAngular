@@ -16,7 +16,7 @@
     <tbody>
       <tr 
       
-      *ngFor="let autorisation of autorisations" 
+      *ngFor="let autorisation of autorisations | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }" 
       [ngClass]="{
         'table-success': autorisation.statut?.toUpperCase() === 'ACCEPTER',
         'table-danger': autorisation.statut?.toUpperCase() === 'ANNULEE'
@@ -128,4 +128,10 @@
   <div *ngIf="autorisations.length === 0" class="text-center mt-4">
     <p>Aucune autorisation trouvée.</p>
   </div>
+  <pagination-controls
+  (pageChange)="currentPage = $event"
+  class="mt-3"
+  previousLabel="Précédent"
+  nextLabel="Suivant"
+></pagination-controls>
 </div>

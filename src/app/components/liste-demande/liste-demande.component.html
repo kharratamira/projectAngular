@@ -11,7 +11,7 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>Entreprise</th>
+        <th>Client</th>
         <th>Adresse</th>
         <th>Description</th>
         <th>Statut</th>
@@ -160,43 +160,4 @@
     </form>
   </div>
 
-</div>
-<!-- Modal Détails (décommentez et corrigez la structure) -->
-<div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Détails de la demande #{{selectedDemande?.id}}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
-      </div>
-      <div class="modal-body">
-        <!-- Affichez les mêmes données que dans la liste -->
-        <div class="row">
-          <div class="col-md-6">
-            <p><strong>Entreprise :</strong> {{selectedDemande?.client?.entreprise}}</p>
-            <p><strong>Adresse :</strong> {{selectedDemande?.client?.adresse}}</p>
-            <p><strong>Description :</strong> {{selectedDemande?.description}}</p>
-          </div>
-          <div class="col-md-6">
-            <p><strong>Statut :</strong> {{selectedDemande?.statut}}</p>
-            <p><strong>Date :</strong> {{selectedDemande?.dateDemande | date:'dd/MM/yyyy HH:mm'}}</p>
-          </div>
-        </div>
-
-        <!-- Affichez les mêmes photos que dans la liste -->
-        <div class="mt-3" *ngIf="selectedDemande?.photos?.length > 0">
-          <h6>Photos :</h6>
-          <div class="d-flex flex-wrap gap-2">
-            <img *ngFor="let photo of selectedDemande.photos" 
-                 [src]="photo" 
-                 class="img-thumbnail" 
-                 style="max-height: 150px;">
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-      </div>
-    </div>
-  </div>
 </div>

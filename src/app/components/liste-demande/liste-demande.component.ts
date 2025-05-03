@@ -377,16 +377,65 @@ export class ListeDemandeComponent implements OnInit {
       `);
       WindowPrt.document.close();
     }
-  }
+   }
+ 
   showDetails(demande: any): void {
-    console.log('Données envoyées au modal:', demande);
-    // Copie directe de l'objet demande (qui contient déjà les photos)
-    this.selectedDemande = demande;
+    console.log('Photos:', demande.photos);
+
+    const photosHtml = demande.photos && demande.photos.length > 0
+    ? demande.photos.map((photo: string) => {
+        // Vérifiez si l'URL est déjà complète
+        const photoUrl = photo.startsWith('http') ? photo : `${this.baseUrl}${photo}`;
+        console.log('Photo URL:', photoUrl); // Log pour vérifier les URLs corrigées
+        return `<img src="${photoUrl}" alt="Photo" class="img-thumbnail m-2" style="max-width: 150px; border: 1px solid #ddd; border-radius: 5px;">`;
+      }).join('')
+    : '<p class="text-muted">Aucune photo disponible</p>';
+    const detailsHtml = `
+      <div class="text-start">
+        <h5 class="mb-3"><strong>Détails de la Demande</strong></h5>
+        <p><strong>ID:</strong> ${demande.id}</p>
+        <p><strong>Entreprise:</strong> ${demande.client?.entreprise || '-'}</p>
+        <p><strong>Adresse:</strong> ${demande.client?.adresse || '-'}</p>
+        <p><strong>Description:</strong> ${demande.description || '-'}</p>
+        <p><strong>Statut:</strong> <span class="badge bg-${this.getStatusColor(demande.statut)}">${demande.statut || '-'}</span></p>
+        <p><strong>Date Demande:</strong> ${this.formatDate(demande.dateDemande)}</p>
+        <hr>
+        <h5 class="mb-3"><strong>Photos</strong></h5>
+        <div class="d-flex flex-wrap">${photosHtml}</div>
+      </div>
+    `;
   
-    // Ouvre le modal
-    const modalElement = document.getElementById('detailsModal');
-    if (modalElement) {
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show();
+    // Afficher la popup SweetAlert2
+    Swal.fire({
+      title: `Demande #${demande.id}`,
+      html: detailsHtml,
+      width: '800px',
+      showConfirmButton: true,
+      confirmButtonText: 'Fermer',
+      confirmButtonColor: '#3085d6',
+      focusConfirm: false
+    });
+  }
+  getStatusColor(statut: string): string {
+    switch (statut.toLowerCase()) {
+      case 'accepter':
+        return 'success'; // Vert
+      case 'annulee':
+        return 'danger'; // Rouge
+        default:case 'en_attente':
+        return 'warning'; // Jaune
+      
+       
     }
-  }}
+  }
+  formatDate(dateString: string): string {
+    if (!dateString) return '-';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('fr-FR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+}
+  

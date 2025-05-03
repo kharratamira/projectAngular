@@ -21,13 +21,7 @@ export class AuthService {
 
   return this.http.post(`${this.apiUrl}login_client`, { email, password }).pipe(
     tap((response: any) => {
-      // Stocker les informations de l'utilisateur dans sessionStorage
-      // sessionStorage.setItem('userId', response.user.id);
-      // sessionStorage.setItem('userNom', response.user.name);
-      // sessionStorage.setItem('userPrenom', response.user.surname);
-      // sessionStorage.setItem('userEmail', response.user.email);
-      // sessionStorage.setItem('auth_token', response.token); // <<-- Important
-      // sessionStorage.setItem('userRole', response.user.role);
+      
     }),
     catchError((error) => {
       console.error('Login failed:', error);
@@ -35,22 +29,14 @@ export class AuthService {
     })
   );
 }
-// isLoggedIn(): Observable<boolean> {
-//   const userId = sessionStorage.getItem('userId');
-//   if (!userId) {
-//     return of(false); // Pas d'utilisateur connecté
-//   }
+
 isLoggedIn(): Observable<boolean> {
   const token = this.getToken();
   if (!token) {
     return of(false);
   }
 
-  // Vérifier l'authentification côté serveur
-  // return this.http.get<{ authenticated: boolean }>(`${this.apiUrl}sessionUser`).pipe(
-  //   map((response) => response.authenticated),
-  //   catchError(() => of(false)) // En cas d'erreur, considérer que l'utilisateur n'est pas connecté
-  // );
+  
   return this.http.get<{ authenticated: boolean }>(`${this.apiUrl}sessionUser`, {
     headers: this.getAuthHeaders()
   }).pipe(
@@ -58,18 +44,7 @@ isLoggedIn(): Observable<boolean> {
     catchError(() => of(false))
   );
 }
-// getUserInfo(): Observable<any> {
-//   return this.http.get(`${this.apiUrl}sessionUser`).pipe(
-//     catchError((error) => {
-//       console.error('Failed to fetch user info:', error);
-//       if (error.status === 401) {
-//         return throwError(() => new Error('Unauthorized. Please log in again.'));
-//       } else {
-//         return throwError(() => new Error('Failed to fetch user information.'));
-//       }
-//     })
-//   );
-// }
+
 getUserInfo(): Observable<any> {
   return this.http.get(`${this.apiUrl}sessionUser`, {
     headers: this.getAuthHeaders()
@@ -103,39 +78,26 @@ signupUser(userData: any) {
   });
 }
 
-  // saveDemandeAvecClient(formData: any): Observable<any> {
-  //   const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  //   return this.http.post(`${this.apiUrl}saveDemande`, formData, { headers });
-  // }
+  
   saveDemandeAvecClient(formData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}saveDemande`, formData, {
       headers: this.getAuthHeaders()
     });
   }
-  // getClientsWithDemande(): Observable<any> {
-  //   return this.http.get<any>(`${this.apiUrl}listeClient`);
-  // }
+  
   getClientsWithDemande(): Observable<any> {
     return this.http.get(`${this.apiUrl}listeClient`, {
       headers: this.getAuthHeaders()
     });
   }
-  // updateClient(client: any): Observable<any> {
-  //   const url = `${this.apiUrl}updateClient/${client.id}`;
-  //   return this.http.put<any>(url, client);
-  // }
+  
   updateClient(client: any): Observable<any> {
     return this.http.put(`${this.apiUrl}updateClient/${client.id}`, client, {
       headers: this.getAuthHeaders()
     });
   }
 
-  // Delete client
-  // deleteClient(clientId: number): Observable<any> {
-  //   return this.http.delete<any>(`${this.apiUrl.replace(/\/$/, '')}/deleteClient/${clientId}`);
-
-
-  // }
+ 
   deleteClient(clientId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}deleteClient/${clientId}`, {
       headers: this.getAuthHeaders()
@@ -163,22 +125,7 @@ signupUser(userData: any) {
     );
   }
 
-  // private getAuthHeaders(): HttpHeaders {
-  //   const token = sessionStorage.getItem('auth_token'); // À adapter selon votre système
-  //   return new HttpHeaders({
-  //     'Authorization': `Bearer ${token}`
-  //   });
-  // }
-  // private getAuthHeaders(): HttpHeaders {
-  //   const token = this.getToken();
-  //   let headers = new HttpHeaders().set('Content-Type', 'application/json');
-
-  //   if (token) {
-  //     headers = headers.set('Authorization', `Bearer ${token}`);
-  //   }
-
-  //   return headers;
-  // }
+  
 
   private getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
@@ -204,50 +151,32 @@ signupUser(userData: any) {
     return throwError(() => new Error(errorMessage));
   }
 
-  // updateDemande(updatedDemande: any): Observable<any> {
-  //   const url = `${this.apiUrl}updateDemande/${updatedDemande.id}`;
-  //   console.log("Données envoyées au backend :", updatedDemande); // Ajoutez ce log
-  //   return this.http.put<any>(url, updatedDemande);
-  // }
+ 
   
   updateDemande(updatedDemande: any): Observable<any> {
     return this.http.put(`${this.apiUrl}updateDemande/${updatedDemande.id}`, updatedDemande, {
       headers: this.getAuthHeaders()
     });
   }
-//   deleteDemande(demandeId: number): Observable<any> {
-//     return this.http.delete<any>(`${this.apiUrl.replace(/\/$/, '')}/deleteDemande/${demandeId}`);
 
-
-// }
 deleteDemande(demandeId: number): Observable<any> {
   return this.http.delete(`${this.apiUrl}deleteDemande/${demandeId}`, {
     headers: this.getAuthHeaders()
   });
 }
-// acceptDemande(demandeId: number): Observable<any> {
-//   return this.http.put<any>(`${this.apiUrl}acceptDemande/${demandeId}`, {});
-// }
+
 acceptDemande(demandeId: number): Observable<any> {
   return this.http.put(`${this.apiUrl}acceptDemande/${demandeId}`, {}, {
     headers: this.getAuthHeaders()
   });
 }
-// cancelDemande(demandeId: number): Observable<any> {
-//   return this.http.put<any>(`${this.apiUrl}cancelDemande/${demandeId}`, {});
-// }
+
 cancelDemande(demandeId: number): Observable<any> {
   return this.http.put(`${this.apiUrl}cancelDemande/${demandeId}`, {}, {
     headers: this.getAuthHeaders()
   });
 }
-// getTechnicien(): Observable<any> {
-//   return this.http.get<any>(`${this.apiUrl}getTechnicien`);
-// }
-// updateTechnicien(id: number, user: any): Observable<any> {
-//   const url = `${this.apiUrl}updateTechnicien/${id}`;
-//   return this.http.put(url, user);
-// }
+
 getTechnicien(): Observable<any> {
   return this.http.get(`${this.apiUrl}getTechnicien`, {
     headers: this.getAuthHeaders()
@@ -259,14 +188,7 @@ updateTechnicien(id: number, user: any): Observable<any> {
     headers: this.getAuthHeaders()
   });
 }
-// Dans votre AuthService
-// desactiverUser(id: number): Observable<any> {
-//   return this.http.delete(`${this.apiUrl}desactiveUser/${id}`);
-// }
 
-// activeUser(id: number): Observable<any> {
-//   return this.http.put(`${this.apiUrl}activateUser/${id}`, {});
-// }
 desactiverUser(id: number): Observable<any> {
   return this.http.delete(`${this.apiUrl}desactiveUser/${id}`, {
     headers: this.getAuthHeaders()
@@ -278,13 +200,7 @@ activeUser(id: number): Observable<any> {
     headers: this.getAuthHeaders()
   });
 }
-// getCommercial(): Observable<any> {
-//   return this.http.get<any>(`${this.apiUrl}getCommercial`);
-// }
-// updateCommercial(id: number, user: any): Observable<any> {
-//   const url = `${this.apiUrl}updateCommercial/${id}`;
-//   return this.http.put(url, user);
-// }
+
 getCommercial(): Observable<any> {
   return this.http.get(`${this.apiUrl}getCommercial`, {
     headers: this.getAuthHeaders()
@@ -296,24 +212,13 @@ updateCommercial(id: number, user: any): Observable<any> {
     headers: this.getAuthHeaders()
   });
 }
-// createAffectation(data: any) {
-//   return this.http.post(`${this.apiUrl}createAffectation`, data);
-// }
+
 createAffectation(data: any): Observable<any> {
   return this.http.post(`${this.apiUrl}createAffectation`, data, {
     headers: this.getAuthHeaders()
   });
 }
-// getAffectationsForTechnicien(email: string): Observable<any[]> {
-//   const params = new HttpParams().set('email', email);
-  
-//   return this.http.get<any[]>(`${this.apiUrl}getAffectationss`, {
-//     params,
-//     headers: this.getAuthHeaders()
-//   }).pipe(
-//     catchError(this.handleError)
-//   );
-// }
+
 getAffectationsForTechnicien(email: string): Observable<any> {
   return this.http.get<any>(`${this.apiUrl}getAffectationss`, {
     params: { email },
@@ -321,10 +226,7 @@ getAffectationsForTechnicien(email: string): Observable<any> {
   });
 }
 
-// getAffectations(filters: any): Observable<any> {
-//   const params = new HttpParams({ fromObject: filters });
-//   return this.http.get<any>(`${this.apiUrl}getAffectation`, { params });
-// }
+
 getAffectations(filters: any): Observable<any> {
   const params = new HttpParams({ fromObject: filters });
   return this.http.get<any>(`${this.apiUrl}getAffectation`, {
@@ -388,12 +290,19 @@ updateStatutEnCours(id: number): Observable<any> {
 getTaches(): Observable<any> {
   return this.http.get(`${this.apiUrl}taches`);
 }
-// createIntervention(data: any): Observable<any> {
-//   return this.http.post(`${this.apiUrl}intervention`, data);
-// }
+
 createIntervention(data: { affectation_id: number; observation: string; taches: number[] }): Observable<any> {
   return this.http.post<any>(`${this.apiUrl}intervention`, data, {
     headers: this.getAuthHeaders()
   });
+}
+
+getAllInterventions(): Observable<any> {
+  return this.http.get(`${this.apiUrl}getAllInterventions`);
+}
+
+// Récupérer les interventions d'un client
+getClientInterventions(email: string): Observable<any> {
+  return this.http.get(`${this.apiUrl}getClientInterventions?email=${encodeURIComponent(email)}`);
 }
 }

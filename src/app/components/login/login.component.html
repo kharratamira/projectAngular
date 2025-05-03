@@ -1,13 +1,13 @@
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
+<!-- <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="card shadow-lg p-4 rounded" style="width: 100%; max-width: 400px;">
       
       <h2 class="text-center mb-4">Connexion</h2>
   
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
   
-        <!-- Email -->
+         Email 
         <div class="mb-3">
-          <label for="email" class="form-label">Adresse email</label>
+          <label for="email" class="form-label">Email</label>
           <input
             type="email"
             id="email"
@@ -20,7 +20,7 @@
           </div>
         </div>
   
-        <!-- Mot de passe -->
+        <!-- Mot de passe 
         <div class="mb-3">
           <label for="password" class="form-label">Mot de passe</label>
           <input
@@ -35,7 +35,7 @@
           </div>
         </div>
   
-        <!-- Bouton -->
+        <!-- Bouton 
         <button
             type="submit"
             class="btn btn-primary w-100"
@@ -45,12 +45,38 @@
             Se connecter
           </button>
         
-        <!-- Message d'erreur -->
+        <!-- Message d'erreur 
         <div *ngIf="errorMessage" class="alert alert-danger mt-3 text-center">
           {{ errorMessage }}
         </div>
   
       </form>
     </div>
+  </div>
+   -->
+   <div class="login-container">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <h2>Connexion</h2>
+  
+      <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" formControlName="email" placeholder="Votre email">
+        <small *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          Email invalide
+        </small>
+      </div>
+  
+      <div>
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" formControlName="password" placeholder="Mot de passe">
+        <small *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          Mot de passe requis
+        </small>
+      </div>
+  
+      <button type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Connexion en cours...' : 'Se connecter' }}
+      </button>
+    </form>
   </div>
   
