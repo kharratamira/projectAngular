@@ -17,6 +17,7 @@ import { PlanningComponent } from './components/planning/planning.component';
 import { AutorisationSortieComponent } from './components/autorisation-sortie/autorisation-sortie.component';
 import { DemandeAutorisationSortieComponent } from './components/demande-autorisation-sortie/demande-autorisation-sortie.component';
 import { ListeInterventionComponent } from './components/liste-intervention/liste-intervention.component';
+import { DemandeContratComponent } from './components/demande-contrat/demande-contrat.component';
 
 export const routes: Routes = [
   { path: 'acceuil', component: AccueillComponent },
@@ -80,19 +81,23 @@ export const routes: Routes = [
         component: PlanningComponent,
         canActivate: [RoleGuard],
         data: { roles: ['ROLE_TECHNICIEN'] }},
-        {path: 'autorisationSortie',
+      {path: 'autorisationSortie',
           component: AutorisationSortieComponent,
           canActivate: [RoleGuard],
           data: { roles: ['ROLE_TECHNICIEN'] }},
 
-          {path: 'listeautorisationSortie',
+        {path: 'listeautorisationSortie',
             component: DemandeAutorisationSortieComponent,
             canActivate: [RoleGuard],
             data: { roles: ['ROLE_TECHNICIEN','ROLE_ADMIN'] }},
-            {path: 'listeIntervention',
+        {path: 'listeIntervention',
               component: ListeInterventionComponent,
               canActivate: [RoleGuard],
-              data: { roles: ['ROLE_CLIENT','ROLE_ADMIN'] }},
+              data: { roles: ['ROLE_CLIENT','ROLE_ADMIN','ROLE_TECHNICIEN'] }},
+        {path: 'demandeContrat',
+                component: DemandeContratComponent,
+                canActivate: [RoleGuard],
+                data: { roles: ['ROLE_CLIENT'] }},
     ]
   }
 ];

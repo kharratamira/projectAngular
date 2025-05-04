@@ -1,0 +1,16 @@
+<div class="container mt-4">
+  <h2>Créer une Demande de Contrat</h2>
+  <form (ngSubmit)="onSubmit()" #demandeForm="ngForm">
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea
+        id="description"
+        class="form-control"
+        [(ngModel)]="description"
+        name="description"
+        required
+      ></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="demandeForm.invalid">Créer</button>
+  </form>
+</div>

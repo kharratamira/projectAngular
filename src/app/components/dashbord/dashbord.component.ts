@@ -22,16 +22,7 @@ export class DashbordComponent {
   constructor(private router: Router) {}
  
 
-//   ngOnInit(): void {
-//     this.userNom = sessionStorage.getItem('userNom');
-//     this.userPrenom = sessionStorage.getItem('userPrenom');
-  
-//     if (!this.userNom || !this.userPrenom) {
-//       // Handle the case when user data is not found, perhaps redirect to login
-//       console.warn('User not found in sessionStorage. Redirecting to login...');
-//       this.router.navigate(['/login']);
-//     }
-// }
+
 ngOnInit(): void {
   this.loadUserData();
   

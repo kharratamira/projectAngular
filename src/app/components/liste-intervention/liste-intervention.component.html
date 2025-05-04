@@ -26,6 +26,8 @@
             <th>Dates</th>
             <th>Observation</th>
             <th>Tâches</th>
+            <th *ngIf="isTechnicien">Actions</th>
+
           </tr>
           <!-- Ligne des champs de filtre -->
           <tr class="bg-light">
@@ -133,6 +135,9 @@
               <button class="btn btn-sm btn-primary" (click)="showTachesPopup(interv)">
                 Voir tâches ({{ interv.taches?.length || 0 }})
               </button>
+            </td>
+            <td *ngIf="isTechnicien">
+              <button class="btn btn-sm btn-primary" (click)="editIntervention(interv)">Modifier</button>
             </td>
           </tr>
         </tbody>

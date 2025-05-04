@@ -302,7 +302,23 @@ getAllInterventions(): Observable<any> {
 }
 
 // Récupérer les interventions d'un client
-getClientInterventions(email: string): Observable<any> {
-  return this.http.get(`${this.apiUrl}getClientInterventions?email=${encodeURIComponent(email)}`);
+// getClientInterventions(email: string): Observable<any> {
+//   return this.http.get(`${this.apiUrl}getClientInterventions?email=${encodeURIComponent(email)}`);
+// }
+getInterventionsByEmail(email: string, role: string): Observable<any> {
+  return this.http.get(`${this.apiUrl}getInterventionsByEmail`, {
+    params: { email, role },
+    headers: this.getAuthHeaders()
+  });
 }
+updateIntervention(id: number, data: { observation: string; taches: number[] }): Observable<any> {
+  return this.http.put(`${this.apiUrl}updateIntervention/${id}`, data, {
+    headers: this.getAuthHeaders()
+  });
+}
+
+createDemandeContrat(data: any): Observable<any> {
+  return this.http.post(`${this.apiUrl}createDemandeContrat`, data);
+}
+
 }
