@@ -1,16 +1,18 @@
 <div class="container mt-4">
-  <h2>Créer une Demande de Contrat</h2>
-  <form (ngSubmit)="onSubmit()" #demandeForm="ngForm">
-    <div class="mb-3">
-      <label for="description" class="form-label">Description</label>
-      <textarea
-        id="description"
-        class="form-control"
-        [(ngModel)]="description"
-        name="description"
-        required
-      ></textarea>
+  <h2>Créer une demande de contrat</h2>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="NgxEditor__Wrapper">
+      <ngx-editor-menu [editor]="editor"></ngx-editor-menu> <!-- Le menu de l'éditeur -->
+      <ngx-editor
+        [editor]="editor"
+        [(ngModel)]="description" 
+        name="description"  
+        [disabled]="false"
+        [placeholder]="'Type here...'">
+      </ngx-editor>
     </div>
-    <button type="submit" class="btn btn-primary" [disabled]="demandeForm.invalid">Créer</button>
+
+    <button class="btn btn-primary mt-3" type="submit">Envoyer</button>
   </form>
 </div>

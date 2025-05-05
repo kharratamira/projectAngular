@@ -1,25 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
-//import {NgxEditorModule, Toolbar,Editor } from 'ngx-editor';
-
+import { NgxEditorModule } from 'ngx-editor';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Editor } from 'ngx-editor';
+
 @Component({
   selector: 'app-demande-contrat',
-  imports: [ReactiveFormsModule, CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgxEditorModule],
   standalone: true,
   templateUrl: './demande-contrat.component.html',
-  styleUrl: './demande-contrat.component.css'
+  styleUrls: ['./demande-contrat.component.css']
 })
-export class DemandeContratComponent {
+export class DemandeContratComponent implements OnInit, OnDestroy {
   description: string = ''; // Description de la demande
- 
-  constructor(private authService: AuthService) {}
+  editor!: Editor;  // L'éditeur ngx-editor
+
   ngOnInit(): void {
-    // Initialiser l'éditeur
+    this.editor = new Editor();  // Initialisation de l'éditeur
   }
- 
+
+  ngOnDestroy(): void {
+    this.editor.destroy();  // Nettoyage de l'éditeur lors de la destruction du composant
+  }
+
+  constructor(private authService: AuthService) {}
+
   onSubmit(): void {
     const id_client = sessionStorage.getItem('userId');
     
@@ -35,18 +42,23 @@ export class DemandeContratComponent {
 
     const formData = {
       client_id: id_client,
-     description: this.description,
-            };
-          
-            this.authService.createDemandeContrat(formData).subscribe({
-              next: () => {
-                Swal.fire('Succès', 'Demande de contrat créée avec succès.', 'success');
-                this.description = ''; // Reset form
-              },
-              error: (err) => {
-                const errorMessage = err.error?.error || 'Une erreur est survenue';
-                Swal.fire('Erreur', errorMessage, 'error');
-              }
-            });
-          }
-        }   
+      description: this.description, // Envoi de la description récupérée
+    };
+    
+    this.authService.createDemandeContrat(formData).subscribe({
+      next: () => {
+        Swal.fire('Succès', 'Demande de contrat créée avec succès.', 'success');
+        this.description = ''; // Réinitialisation de la description
+      },
+      error: (err) => {
+        const errorMessage = err.error?.error || 'Une erreur est survenue';
+        Swal.fire('Erreur', errorMessage, 'error');
+      }
+    });
+  }
+
+  // Cette méthode permet de capturer la modification du contenu de l'éditeur
+  onEditorChange(value: string): void {
+    this.description = value;
+  }
+}
