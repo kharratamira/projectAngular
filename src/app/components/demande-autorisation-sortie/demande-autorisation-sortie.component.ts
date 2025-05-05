@@ -88,55 +88,91 @@ export class DemandeAutorisationSortieComponent {
   }
 
   editAutorisation(autorisation: any): void {
-    this.selectedAutorisation = { ...autorisation }; // Cloner l'objet pour éviter les modifications directes
-  }
-
-  // Annuler la modification
-  cancelEdit(): void {
-    this.selectedAutorisation = null;
-  }
-
-  // Mettre à jour une autorisation
-  updateAutorisation(): void {
-    if (!this.selectedAutorisation) return;
-  
     Swal.fire({
       title: 'Êtes-vous sûr ?',
-      text: 'Cette action mettra à jour l\'autorisation.',
+      text: 'Voulez-vous modifier cette autorisation ?',
       icon: 'question',
       showCancelButton: true,
-      confirmButtonColor: '#28a745',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Oui, mettre à jour',
-      cancelButtonText: 'Annuler'
+      confirmButtonText: 'Oui, modifier',
+      cancelButtonText: 'Annuler',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.authservice.updateAutorisation(this.selectedAutorisation.id, this.selectedAutorisation).subscribe({
-          next: (response) => {
-            Swal.fire({
-              title: 'Succès',
-              text: 'Autorisation mise à jour avec succès.',
-              icon: 'success',
-              timer: 2000, // Ferme automatiquement après 2 secondes
-              showConfirmButton: false
-            });
-            this.reloadAutorisations();
-            this.selectedAutorisation = null; // Réinitialiser le formulaire
-          },
-          error: (err) => {
-            console.error('Erreur lors de la mise à jour de l\'autorisation :', err);
-            Swal.fire({
-              title: 'Erreur',
-              text: 'Impossible de mettre à jour l\'autorisation.',
-              icon: 'error',
-              timer: 2000, // Ferme automatiquement après 2 secondes
-              showConfirmButton: false
+        // Si l'utilisateur confirme, afficher le formulaire de modification
+        this.selectedAutorisation = { ...autorisation }; // Cloner l'objet pour éviter les modifications directes
+  
+        Swal.fire({
+          title: 'Modifier l\'autorisation',
+          html: `
+              <form id="edit-form">
+                <div class="form-group d-flex flex-column align-items-start mb-3">
+                  <label for="edit-dateDebut" class="form-label fw-semibold" style="color: #22325d;">Date de début :</label>
+                  <input type="datetime-local" id="edit-dateDebut" class="form-control shadow-sm border-primary" value="${this.selectedAutorisation.dateDebut || ''}">
+                </div>
+                <div class="form-group d-flex flex-column align-items-start mb-3">
+                  <label for="edit-dateFin" class="form-label fw-semibold" style="color: #22325d;">Date de fin :</label>
+                  <input type="datetime-local" id="edit-dateFin" class="form-control shadow-sm border-primary" value="${this.selectedAutorisation.dateFin || ''}">
+                </div>
+                <div class="form-group d-flex flex-column align-items-start mb-3">
+                  <label for="edit-raison" class="form-label fw-semibold" style="color: #22325d;">Raison :</label>
+                  <textarea id="edit-raison" class="form-control shadow-sm border-primary" rows="3">${this.selectedAutorisation.raison || ''}</textarea>
+                </div>
+              </form>
+            `
+
+          ,
+          showCancelButton: true,
+          confirmButtonText: 'Mettre à jour',
+          cancelButtonText: 'Annuler',
+          preConfirm: () => {
+            const dateDebut = (document.getElementById('edit-dateDebut') as HTMLInputElement).value;
+            const dateFin = (document.getElementById('edit-dateFin') as HTMLInputElement).value;
+            const raison = (document.getElementById('edit-raison') as HTMLTextAreaElement).value;
+  
+            if (!dateDebut || !dateFin || !raison) {
+              Swal.showValidationMessage('Tous les champs sont obligatoires');
+              return null;
+            }
+  
+            return { dateDebut, dateFin, raison };
+          }
+        }).then((formResult) => {
+          if (formResult.isConfirmed && formResult.value) {
+            // Mettre à jour les valeurs dans l'objet sélectionné
+            this.selectedAutorisation.dateDebut = formResult.value.dateDebut;
+            this.selectedAutorisation.dateFin = formResult.value.dateFin;
+            this.selectedAutorisation.raison = formResult.value.raison;
+  
+            // Appeler le service pour mettre à jour l'autorisation
+            this.authservice.updateAutorisation(this.selectedAutorisation.id, this.selectedAutorisation).subscribe({
+              next: () => {
+                Swal.fire({
+                  title: 'Succès',
+                  text: 'Autorisation mise à jour avec succès.',
+                  icon: 'success',
+                  timer: 2000,
+                  showConfirmButton: false
+                });
+                this.reloadAutorisations();
+                this.selectedAutorisation = null; // Réinitialiser le formulaire
+              },
+              error: (err) => {
+                console.error('Erreur lors de la mise à jour de l\'autorisation :', err);
+                Swal.fire({
+                  title: 'Erreur',
+                  text: 'Impossible de mettre à jour l\'autorisation.',
+                  icon: 'error',
+                  timer: 2000,
+                  showConfirmButton: false
+                });
+              }
             });
           }
         });
       }
     });
-  }
+  } 
 
   // Supprimer une autorisation
   deleteAutorisation(id: number): void {
