@@ -1,0 +1,19 @@
+.badge {
+    padding: 0.5em 0.75em;
+    border-radius: 50px;
+    font-weight: 500;
+  }
+  
+  .table-responsive {
+    margin-bottom: 2rem;
+  }
+  
+  /* Style pour la pagination */
+  .ngx-pagination {
+    padding-left: 0;
+  }
+  
+  .ngx-pagination li {
+    display: inline-block;
+    margin: 0 5px;
+  }

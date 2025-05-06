@@ -55,7 +55,7 @@
          <!-- supprimer -->
         </button>
         <button 
-        *ngIf="isAdmin"
+        *ngIf="isAdmin && autorisation.statut?.toUpperCase() !== 'ACCEPTER'"
         (click)="accepterAutorisation(autorisation.id)" 
         class="btn btn-outline-success btn-sm w-50 mt-1"
         
@@ -64,7 +64,7 @@
        <!-- accepter -->
       </button>
       <button 
-      *ngIf="isAdmin"
+      *ngIf="isAdmin && autorisation.statut?.toUpperCase() !== 'ACCEPTER'"
         (click)="annulerAutorisation(autorisation.id)" 
         class="btn btn-outline-danger btn-sm w-50 mt-1"
         

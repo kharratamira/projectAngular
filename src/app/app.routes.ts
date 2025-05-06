@@ -18,6 +18,7 @@ import { AutorisationSortieComponent } from './components/autorisation-sortie/au
 import { DemandeAutorisationSortieComponent } from './components/demande-autorisation-sortie/demande-autorisation-sortie.component';
 import { ListeInterventionComponent } from './components/liste-intervention/liste-intervention.component';
 import { DemandeContratComponent } from './components/demande-contrat/demande-contrat.component';
+import { ListedemandeContratComponent } from './components/listedemande-contrat/listedemande-contrat.component';
 
 export const routes: Routes = [
   { path: 'acceuil', component: AccueillComponent },
@@ -98,6 +99,10 @@ export const routes: Routes = [
                 component: DemandeContratComponent,
                 canActivate: [RoleGuard],
                 data: { roles: ['ROLE_CLIENT'] }},
+        {path: 'ListedemandeContrat',
+         component: ListedemandeContratComponent,
+          canActivate: [RoleGuard],
+          data: { roles: ['ROLE_CLIENT','ROLE_ADMIN'] }},
     ]
   }
 ];

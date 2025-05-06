@@ -4,17 +4,13 @@
       <ul class="navbar-nav">
         <h1 class="dark-title mt-3">Table de bord</h1>
         
-        <!-- Menu ADMIN - Visible seulement pour ROLE_ADMIN -->
+        <!-- Menu ADMIN -->
         <ng-container *ngIf="hasRole('ROLE_ADMIN')">
-          <!-- Menu "Gérer compte" -->
+          <!-- Gérer compte -->
           <li class="nav-item">
             <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseAccount" style="cursor: pointer;">
               Gérer compte
-              <div class="sidenav-collapse-arrow">
-                <svg class="sidenav-collapse-arrow" width="16" height="16" viewBox="0 0 384 512" fill="currentColor">
-                  <path d="M169.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 274.7 54.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
-                </svg>
-              </div>
+              <i class="fas fa-chevron-down float-end"></i>
             </span>
             <div class="collapse" id="collapseAccount">
               <ul class="nav flex-column ms-3">
@@ -34,15 +30,11 @@
             </div>
           </li>
         
-          <!-- Menu "Demande Intervention" -->
+          <!-- Demande Intervention -->
           <li class="nav-item">
             <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseDemande" style="cursor: pointer;">
               Demande Intervention
-              <div class="sidenav-collapse-arrow">
-                <svg class="sidenav-collapse-arrow" width="16" height="16" viewBox="0 0 384 512" fill="currentColor">
-                  <path d="M169.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 274.7 54.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
-                </svg>
-              </div>
+              <i class="fas fa-chevron-down float-end"></i>
             </span>
             <div class="collapse" id="collapseDemande">
               <ul class="nav flex-column ms-3">
@@ -53,15 +45,11 @@
             </div>
           </li>
         
-          <!-- Menu "Demande autorisation de sortie" -->
+          <!-- Autorisation de sortie -->
           <li class="nav-item">
             <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseAutorisation" style="cursor: pointer;">
               Demande autorisation de sortie
-              <div class="sidenav-collapse-arrow">
-                <svg class="sidenav-collapse-arrow" width="16" height="16" viewBox="0 0 384 512" fill="currentColor">
-                  <path d="M169.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 274.7 54.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
-                </svg>
-              </div>
+              <i class="fas fa-chevron-down float-end"></i>
             </span>
             <div class="collapse" id="collapseAutorisation">
               <ul class="nav flex-column ms-3">
@@ -71,16 +59,14 @@
               </ul>
             </div>
           </li>
+          
+          <!-- Intervention -->
           <li class="nav-item">
-            <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseIntervention" style="cursor: pointer;">
+            <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseInterventionAdmin" style="cursor: pointer;">
               Intervention
-              <div class="sidenav-collapse-arrow">
-                <svg class="sidenav-collapse-arrow" width="16" height="16" viewBox="0 0 384 512" fill="currentColor">
-                  <path d="M169.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 274.7 54.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
-                </svg>
-              </div>
+              <i class="fas fa-chevron-down float-end"></i>
             </span>
-            <div class="collapse" id="collapseIntervention">
+            <div class="collapse" id="collapseInterventionAdmin">
               <ul class="nav flex-column ms-3">
                 <li class="nav-item">
                   <a class="nav-link" routerLink="listeIntervention">Liste Intervention</a>
@@ -88,20 +74,18 @@
               </ul>
             </div>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="ListedemandeContrat">ListedemandeContrat</a>
+          </li>
         </ng-container>
 
-        <!-- Menu CLIENT - Visible seulement pour ROLE_CLIENT -->
+        <!-- Menu CLIENT -->
         <ng-container *ngIf="hasRole('ROLE_CLIENT')">
-          <!-- Menu "Demande Intervention" pour CLIENT -->
-         
+          <!-- Demande Intervention -->
           <li class="nav-item">
             <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseDemandeClient" style="cursor: pointer;">
               Demande Intervention
-              <div class="sidenav-collapse-arrow">
-                <svg class="sidenav-collapse-arrow" width="16" height="16" viewBox="0 0 384 512" fill="currentColor">
-                  <path d="M169.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 274.7 54.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
-                </svg>
-              </div>
+              <i class="fas fa-chevron-down float-end"></i>
             </span>
             <div class="collapse" id="collapseDemandeClient">
               <ul class="nav flex-column ms-3">
@@ -114,16 +98,14 @@
               </ul>
             </div>
           </li>
+          
+          <!-- Intervention -->
           <li class="nav-item">
-            <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseIntervention" style="cursor: pointer;">
+            <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseInterventionClient" style="cursor: pointer;">
               Intervention
-              <div class="sidenav-collapse-arrow">
-                <svg class="sidenav-collapse-arrow" width="16" height="16" viewBox="0 0 384 512" fill="currentColor">
-                  <path d="M169.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 274.7 54.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
-                </svg>
-              </div>
+              <i class="fas fa-chevron-down float-end"></i>
             </span>
-            <div class="collapse" id="collapseIntervention">
+            <div class="collapse" id="collapseInterventionClient">
               <ul class="nav flex-column ms-3">
                 <li class="nav-item">
                   <a class="nav-link" routerLink="listeIntervention">Liste Intervention</a>
@@ -131,32 +113,40 @@
               </ul>
             </div>
           </li>
-          <div class="collapse" id="collapseIntervention">
-            <ul class="nav flex-column ms-3">
-              <li class="nav-item">
-                <a class="nav-link" routerLink="demandeContrat">demandeContrat</a>
-              </li>
-            </ul>
-          </div>
+          
+          <!-- Contrat -->
+          <li class="nav-item">
+            <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseContrat" style="cursor: pointer;">
+              Contrat
+              <i class="fas fa-chevron-down float-end"></i>
+            </span>
+            <div class="collapse" id="collapseContrat">
+              <ul class="nav flex-column ms-3">
+                <li class="nav-item">
+                  <a class="nav-link" routerLink="demandeContrat">Demande Contrat</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="ListedemandeContrat">ListedemandeContrat</a>
+          </li>
         </ng-container>
+
+        <!-- Menu TECHNICIEN -->
         <ng-container *ngIf="hasRole('ROLE_TECHNICIEN')">
           <li class="nav-item">
             <a class="nav-link" routerLink="planing">Calendrier</a>
           </li>
-          <li class="nav-item">
-           
           
-            <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseDemandeClient" style="cursor: pointer;">
-              DemandeAutorisationSortie
-              <div class="sidenav-collapse-arrow">
-                <svg class="sidenav-collapse-arrow" width="16" height="16" viewBox="0 0 384 512" fill="currentColor">
-                  <path d="M169.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 274.7 54.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
-                </svg>
-              </div>
+          <!-- Autorisation de sortie -->
+          <li class="nav-item">
+            <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseAutorisationTech" style="cursor: pointer;">
+              Demande Autorisation Sortie
+              <i class="fas fa-chevron-down float-end"></i>
             </span>
-            <div class="collapse" id="collapseDemandeClient">
+            <div class="collapse" id="collapseAutorisationTech">
               <ul class="nav flex-column ms-3">
-                
                 <li class="nav-item">
                   <a class="nav-link" routerLink="autorisationSortie">Autorisation de sortie</a>
                 </li>
@@ -166,16 +156,14 @@
               </ul>
             </div>
           </li>
+          
+          <!-- Intervention -->
           <li class="nav-item">
-            <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseIntervention" style="cursor: pointer;">
+            <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseInterventionTech" style="cursor: pointer;">
               Intervention
-              <div class="sidenav-collapse-arrow">
-                <svg class="sidenav-collapse-arrow" width="16" height="16" viewBox="0 0 384 512" fill="currentColor">
-                  <path d="M169.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 274.7 54.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
-                </svg>
-              </div>
+              <i class="fas fa-chevron-down float-end"></i>
             </span>
-            <div class="collapse" id="collapseIntervention">
+            <div class="collapse" id="collapseInterventionTech">
               <ul class="nav flex-column ms-3">
                 <li class="nav-item">
                   <a class="nav-link" routerLink="listeIntervention">Liste Intervention</a>

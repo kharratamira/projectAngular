@@ -321,4 +321,27 @@ createDemandeContrat(data: any): Observable<any> {
   return this.http.post(`${this.apiUrl}createDemandeContrat`, data);
 }
 
+getDemandesContrat(): Observable<any> {
+  return this.http.get(`${this.apiUrl}getAllDemandesContrat`).pipe(
+    map(response => {
+      // Gestion de la compatibilité avec les anciennes versions
+      return response.hasOwnProperty('data') ? response : { data: response };
+    }),
+    catchError(error => {
+      console.error('Error loading demandes', error);
+      return throwError(() => new Error('Erreur de chargement'));
+    })
+  );
+}
+
+getDemandeContratByEmail(email: string, role: string): Observable<any> {
+  return this.http.get(`${this.apiUrl}getDemandeContratByEmail`, {
+    params: { email, role }
+  }).pipe(
+    catchError(error => {
+      console.error('Error loading client demandes', error);
+      return throwError(() => new Error('Erreur de chargement'));
+    })
+  );
+}
 }
