@@ -75,8 +75,22 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="ListedemandeContrat">ListedemandeContrat</a>
+            <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseContrat" style="cursor: pointer;">
+              Contrat
+              <i class="fas fa-chevron-down float-end"></i>
+            </span>
+            
+            <div class="collapse" id="collapseContrat">
+              <ul class="nav flex-column ms-3">
+                <li class="nav-item">
+                  <a class="nav-link" routerLink="ListedemandeContrat">ListedemandeContrat</a>
+                </li>
+              </ul>
+            </div>
           </li>
+         
+         
+
         </ng-container>
 
         <!-- Menu CLIENT -->
@@ -127,10 +141,15 @@
                 </li>
               </ul>
             </div>
+            <div class="collapse" id="collapseContrat">
+              <ul class="nav flex-column ms-3">
+                <li class="nav-item">
+                  <a class="nav-link" routerLink="ListedemandeContrat">ListedemandeContrat</a>
+                </li>
+              </ul>
+            </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="ListedemandeContrat">ListedemandeContrat</a>
-          </li>
+         
         </ng-container>
 
         <!-- Menu TECHNICIEN -->

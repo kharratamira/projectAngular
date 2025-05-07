@@ -101,87 +101,166 @@ export class ListeDemandeComponent implements OnInit {
 
   
 
-  editDemande(demande: any): void {
-    // Cloner l'objet pour éviter des mutations inattendues
-    this.selectedDemande = { ...demande };
+//   editDemande(demande: any): void {
+//     // Cloner l'objet pour éviter des mutations inattendues
+//     this.selectedDemande = { ...demande };
   
-    // Initialiser le client si non défini
-    if (!this.selectedDemande.client) {
-      this.selectedDemande.client = {};
-    }
+//     // Initialiser le client si non défini
+//     if (!this.selectedDemande.client) {
+//       this.selectedDemande.client = {};
+//     }
   
-    console.log("Demande sélectionnée pour modification :", this.selectedDemande);
-    this.isUpdateMode = true;
-  }
-  cancelEdit(): void {
-    this.selectedDemande = null;
-    this.isUpdateMode = false;
-  }
-  updateDemande(demande: any): void {
-    if (this.selectedDemande) {
-    if (!demande || !demande.id) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'ID de la demande introuvable. Impossible de procéder à la mise à jour.',
-      });
-      return;
-    }
+//     console.log("Demande sélectionnée pour modification :", this.selectedDemande);
+//     this.isUpdateMode = true;
+//   }
+//   cancelEdit(): void {
+//     this.selectedDemande = null;
+//     this.isUpdateMode = false;
+//   }
+//   updateDemande(demande: any): void {
+//     if (this.selectedDemande) {
+//     if (!demande || !demande.id) {
+//       Swal.fire({
+//         icon: 'error',
+//         title: 'Erreur',
+//         text: 'ID de la demande introuvable. Impossible de procéder à la mise à jour.',
+//       });
+//       return;
+//     }
   
-    console.log("Données envoyées au backend :", this.selectedDemande); // Ajoutez ce log
+//     console.log("Données envoyées au backend :", this.selectedDemande); // Ajoutez ce log
   
-    Swal.fire({
-      title: 'Confirmer la mise à jour',
-      text: 'Êtes-vous sûr de vouloir mettre à jour cette demande ?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Oui, mettre à jour',
-      cancelButtonText: 'Annuler'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.authService.updateDemande(this.selectedDemande).subscribe({
-          next: (updatedDemande) => {
-            const index = this.demandes.findIndex(c => c.id === updatedDemande.id);
-            if (index !== -1) {
-              this.demandes[index] = updatedDemande;
-            }
+//     Swal.fire({
+//       title: 'Confirmer la mise à jour',
+//       text: 'Êtes-vous sûr de vouloir mettre à jour cette demande ?',
+//       icon: 'warning',
+//       showCancelButton: true,
+//       confirmButtonColor: '#3085d6',
+//       cancelButtonColor: '#d33',
+//       confirmButtonText: 'Oui, mettre à jour',
+//       cancelButtonText: 'Annuler'
+//     }).then((result) => {
+//       if (result.isConfirmed) {
+//         this.authService.updateDemande(this.selectedDemande).subscribe({
+//           next: (updatedDemande) => {
+//             const index = this.demandes.findIndex(c => c.id === updatedDemande.id);
+//             if (index !== -1) {
+//               this.demandes[index] = updatedDemande;
+//             }
   
-            this.isUpdateMode = false;
-            this.selectedDemande = null;
+//             this.isUpdateMode = false;
+//             this.selectedDemande = null;
   
-            Swal.fire({
-              icon: 'success',
-              title: 'Mise à jour réussie',
-              text: 'La demande a été mise à jour avec succès.',
-              timer: 3000,
-              timerProgressBar: true
-            });
-            this.loadDemandes();
-          },
-          error: (error) => {
-            console.error("Erreur lors de la mise à jour :", error); // Ajoutez ce log
-            let errorMessage = 'Erreur inconnue';
-            if (error.status === 404) {
-              errorMessage = 'La demande n\'a pas été trouvée.';
-            } else if (error.status === 400) {
-              errorMessage = 'Données incorrectes envoyées au serveur.';
-            } else if (error.status === 500) {
-              errorMessage = 'Erreur interne du serveur.';
-            }
+//             Swal.fire({
+//               icon: 'success',
+//               title: 'Mise à jour réussie',
+//               text: 'La demande a été mise à jour avec succès.',
+//               timer: 3000,
+//               timerProgressBar: true
+//             });
+//             this.loadDemandes();
+//           },
+//           error: (error) => {
+//             console.error("Erreur lors de la mise à jour :", error); // Ajoutez ce log
+//             let errorMessage = 'Erreur inconnue';
+//             if (error.status === 404) {
+//               errorMessage = 'La demande n\'a pas été trouvée.';
+//             } else if (error.status === 400) {
+//               errorMessage = 'Données incorrectes envoyées au serveur.';
+//             } else if (error.status === 500) {
+//               errorMessage = 'Erreur interne du serveur.';
+//             }
   
-            Swal.fire({
-              icon: 'error',
-              title: 'Erreur lors de la mise à jour',
-              text: errorMessage
-            });
-          }
-        });
+//             Swal.fire({
+//               icon: 'error',
+//               title: 'Erreur lors de la mise à jour',
+//               text: errorMessage
+//             });
+//           }
+//         });
+//       }
+//     });
+//   }
+// }
+editDemande(demande: any): void {
+  this.selectedDemande = { ...demande };
+
+  Swal.fire({
+    title: 'Modifier la Demande',
+    html: `
+      <div class="container my-4 p-4">
+        <form id="update-form">
+          <div class="form-group d-flex flex-column align-items-start mb-3">
+            <label for="swal-input-entreprise" class="form-label fw-semibold" style="color: #22325d;">Entreprise</label>
+            <input type="text" id="swal-input-entreprise" class="form-control shadow-sm border-primary" placeholder="Entreprise" value="${this.selectedDemande.client.entreprise || ''}" required>
+          </div>
+          <div class="form-group d-flex flex-column align-items-start mb-3">
+            <label for="swal-input-adresse" class="form-label fw-semibold" style="color: #22325d;">Adresse</label>
+            <input type="text" id="swal-input-adresse" class="form-control shadow-sm border-primary" placeholder="Adresse" value="${this.selectedDemande.client.adresse || ''}" required>
+          </div>
+          <div class="form-group d-flex flex-column align-items-start mb-3">
+            <label for="swal-input-description" class="form-label fw-semibold" style="color: #22325d;">Description</label>
+            <input type="text" id="swal-input-description" class="form-control shadow-sm border-primary" placeholder="Description" value="${this.selectedDemande.description || ''}" required>
+          </div>
+        </form>
+      </div>
+    `,
+    showCancelButton: true,
+    confirmButtonText: 'Mettre à jour',
+    cancelButtonText: 'Annuler',
+    preConfirm: () => {
+      const entreprise = (document.getElementById('swal-input-entreprise') as HTMLInputElement).value;
+      const adresse = (document.getElementById('swal-input-adresse') as HTMLInputElement).value;
+      const description = (document.getElementById('swal-input-description') as HTMLInputElement).value;
+
+      if (!entreprise || !adresse || !description) {
+        Swal.showValidationMessage('Tous les champs sont obligatoires');
+        return;
       }
-    });
-  }
+
+      return { entreprise, adresse, description };
+    },
+    customClass: {
+      popup: 'custom-swal-popup',
+      title: 'custom-swal-title',
+      input: 'custom-swal-input',
+    }
+  }).then((result) => {
+    if (result.isConfirmed && result.value) {
+      Swal.fire({
+        title: 'Confirmer la modification',
+        text: 'Voulez-vous vraiment enregistrer cette modification ?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Oui, modifier',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Annuler'
+      }).then((confirmResult) => {
+        if (confirmResult.isConfirmed) {
+          this.selectedDemande.client.entreprise = result.value.entreprise;
+          this.selectedDemande.client.adresse = result.value.adresse;
+          this.selectedDemande.description = result.value.description;
+
+          this.authService.updateDemande(this.selectedDemande).subscribe({
+            next: (updatedDemande) => {
+              const index = this.demandes.findIndex(c => c.id === updatedDemande.id);
+              if (index !== -1) {
+                this.demandes[index] = updatedDemande;
+              }
+              Swal.fire('Succès', 'La demande a été mise à jour.', 'success');
+              this.loadDemandes();
+            },
+            error: (error) => {
+              console.error('Erreur de mise à jour:', error);
+              Swal.fire('Erreur', 'Échec de la mise à jour.', 'error');
+            }
+          });
+        }
+      });
+    }
+  });
 }
+
   deleteDemande(demandeId: number): void {
     Swal.fire({
       title: 'Êtes-vous sûr ?',

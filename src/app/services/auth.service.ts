@@ -344,4 +344,21 @@ getDemandeContratByEmail(email: string, role: string): Observable<any> {
     })
   );
 }
+acceptDemandeContrat(demandeId: number): Observable<any> {
+  return this.http.put(`${this.apiUrl}acceptDemandecontrat/${demandeId}`, {}, {
+    headers: this.getAuthHeaders()
+  });
+}
+
+cancelDemandeContrat(demandeId: number): Observable<any> {
+  return this.http.put(`${this.apiUrl}cancelDemandeContrat/${demandeId}`, {}, {
+    headers: this.getAuthHeaders()
+  });
+}
+updateDemandeContrat(id: number, data: { description: string }): Observable<any> {
+  return this.http.put(`${this.apiUrl}updateDemandeContrat/${id}`, data, {
+    headers: this.getAuthHeaders()
+  });
+}
+
 }

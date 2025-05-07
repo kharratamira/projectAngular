@@ -16,4 +16,8 @@
   .ngx-pagination li {
     display: inline-block;
     margin: 0 5px;
+  }.disabled-row {
+    opacity: 0.5;
+    pointer-events: none;
   }
+  

@@ -57,4 +57,39 @@
   max-width: 150px;
   max-height: 150px;
   object-fit: cover;
+}/* Personnaliser la popup */
+.custom-swal-popup {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f7f7f7;
+  font-family: 'Arial', sans-serif;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Personnaliser les labels des champs */
+.custom-swal-label {
+  color: #007bff; /* Couleur bleue */
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: block; /* Mettre les labels sur une nouvelle ligne */
+}
+
+/* Personnaliser les champs de formulaire */
+.custom-swal-input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.custom-swal-input:focus {
+  border-color: #007bff;
+  outline: none;
 }
