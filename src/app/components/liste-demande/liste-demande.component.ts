@@ -472,8 +472,8 @@ editDemande(demande: any): void {
     const detailsHtml = `
       <div class="text-start">
         <h5 class="mb-3"><strong>Détails de la Demande</strong></h5>
-        <p><strong>ID:</strong> ${demande.id}</p>
-        <p><strong>Entreprise:</strong> ${demande.client?.entreprise || '-'}</p>
+        
+        <p><strong>Client:</strong> ${demande.client?.entreprise || '-'}</p>
         <p><strong>Adresse:</strong> ${demande.client?.adresse || '-'}</p>
         <p><strong>Description:</strong> ${demande.description || '-'}</p>
         <p><strong>Statut:</strong> <span class="badge bg-${this.getStatusColor(demande.statut)}">${demande.statut || '-'}</span></p>

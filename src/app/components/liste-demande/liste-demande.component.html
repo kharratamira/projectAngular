@@ -51,8 +51,7 @@
           </div>
           <div *ngIf="demande.statut === 'accepter'">
             <div *ngIf="demande.isAffecter; else nonAffectee" class="text-success fw-bold">
-              Affectée
-            </div>
+              "Intervention affectée à un technicien"            </div>
             <ng-template #nonAffectee>
               <div class="text-danger fw-bold">
                 Non affectée

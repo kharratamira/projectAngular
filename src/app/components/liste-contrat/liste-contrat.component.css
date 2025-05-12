@@ -5,10 +5,9 @@
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-
 /* Style des en-têtes */
 .table-dark {
-  background-color: #000000;
+  background-color: #343a40;
 }
 
 /* Style des badges */
@@ -44,8 +43,4 @@
 .badge.bg-success, 
 .badge.bg-danger {
   color: #000 !important;
-}
-.disabled-row {
-  background-color: #f0f0f0 !important;
-  opacity: 0.6;
 }

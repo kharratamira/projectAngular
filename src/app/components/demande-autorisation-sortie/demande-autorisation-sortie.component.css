@@ -6,4 +6,8 @@
   .table-danger {
     background-color: #f8d7da !important; /* Rouge clair */
     color: #721c24; /* Texte rouge foncé */
-  }
+  }.table-responsive {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}

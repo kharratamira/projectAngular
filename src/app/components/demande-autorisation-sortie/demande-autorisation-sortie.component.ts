@@ -268,13 +268,13 @@ export class DemandeAutorisationSortieComponent {
             });
             this.reloadAutorisations();
           },
-          error: (err) => {
+            error: (err) => {
             console.error('Erreur lors de l\'annulation de l\'autorisation :', err);
             Swal.fire({
               title: 'Erreur',
               text: 'Impossible d\'annuler l\'autorisation.',
               icon: 'error',
-              timer: 2000, // Ferme automatiquement après 2 secondes
+              timer: 2000,
               showConfirmButton: false
             });
           }
@@ -282,5 +282,6 @@ export class DemandeAutorisationSortieComponent {
       }
     });
   }
+
 
 }
