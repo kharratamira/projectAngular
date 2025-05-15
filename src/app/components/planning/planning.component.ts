@@ -25,15 +25,7 @@ export class PlanningComponent implements OnInit {
       center: 'title',
       right: 'dayGridMonth'
     },
-    // nowIndicator: true,
-    // slotMinTime: '08:00:00',
-    // slotMaxTime: '20:00:00',
-    // slotDuration: '00:30:00',
-    // displayEventTime: true,
-    // eventTimeFormat: {
-    //   hour: '2-digit',
-    //   minute: '2-digit',
-    //   hour12: false
+   
     
     events: [],
     eventClick: this.handleEventClick.bind(this),
@@ -83,93 +75,13 @@ export class PlanningComponent implements OnInit {
       default: return status;
     }
   }
-  // handleEventClick(info: any): void {
-  //   const event = info.event;
-  //   const eventDate = new Date(event.start);
-  //   const statut = event.extendedProps.status;
-  
-  //   if (statut === 'en_cours') {
-      
-  //     this.authService.getTaches().subscribe({
-  //       next: (response) => {
-  //         const taches = response.data || [];
-  
-  //         const checkboxHtml = taches.map((t: any, index: number) =>
-  //           `<div style="margin-bottom: 5px;">
-  //              <input type="checkbox" id="tache-${index}" name="tache" value="${t.id}" />
-  //              <label for="tache-${index}">${t.tache} </label>
-  //            </div>`
-  //         ).join('');
-  
-  //         Swal.fire({
-  //           title: `Détails de l'affectation #${event.extendedProps.demandeId || 'N/A'}`,
-  //           html: `
-  //               <div style="text-align: left;">
-  //                   <p><b>Technicien:</b> ${event.extendedProps.technicien}</p>
-  //                   <p><b>Statut:</b> <span style="color: ${this.getStatusColor(statut)}">
-  //                       ${this.getStatusText(statut)}
-  //                   </span></p>
-  //                   <p><b>Date:</b> ${eventDate.toLocaleDateString('fr-FR')}</p>
-  //                   <p><b>Heure:</b> ${eventDate.toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})}</p>
-  //                   <p><b>Description:</b> ${event.extendedProps.description || 'Aucune description'}</p>
-  //                   <hr />
-  //                   <p><b>Tâches intervention :</b></p>
-  //                   ${checkboxHtml}
-  //               </div>
-  //           `,
-  //           confirmButtonText: 'Fermer',
-  //           confirmButtonColor: '#3085d6',
-  //           width: '600px'
-  //         });
-  //       },
-  //       error: (err) => {
-  //         console.error('Erreur lors de la récupération des tâches', err);
-  //         Swal.fire('Erreur', 'Impossible de récupérer les tâches.', 'error');
-  //       }
-  //     });
-  //   } else {
-  //     Swal.fire({
-  //       title: `Détails de l'affectation #${event.extendedProps.demandeId || 'N/A'}`,
-  //       html: `
-  //           <div style="text-align: left;">
-  //               <p><b>Technicien:</b> ${event.extendedProps.technicien}</p>
-  //               <p><b>Statut:</b> <span style="color: ${this.getStatusColor(statut)}">
-  //                   ${this.getStatusText(statut)}
-  //               </span></p>
-  //               <p><b>Date:</b> ${eventDate.toLocaleDateString('fr-FR')}</p>
-  //               <p><b>Heure:</b> ${eventDate.toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})}</p>
-  //               <p><b>Description:</b> ${event.extendedProps.description || 'Aucune description'}</p>
-  //           </div>
-  //       `,
-  //       showDenyButton: statut === 'en_attente',
-  //       denyButtonText: 'En cours',
-  //       confirmButtonText: 'Fermer',
-  //       confirmButtonColor: '#3085d6',
-  //       denyButtonColor: '#007bff',
-  //       width: '600px'
-  //     }).then((result) => {
-  //       if (result.isDenied) {
-  //         const affectationId = event.id;
-  
-  //         this.authService.updateStatutEnCours(affectationId).subscribe({
-  //           next: () => {
-  //             Swal.fire('Statut mis à jour en "en cours" !', '', 'success');
-  //             this.loadAffectations(); // Refresh the calendar
-  //           },
-  //           error: (err) => {
-  //             Swal.fire('Erreur', 'Impossible de mettre à jour le statut.', 'error');
-  //             console.error(err);
-  //           }
-  //         });
-  //       }
-  //     });
-  //   }
-  // }
-  
   handleEventClick(info: any): void {
+    const startDate = new Date(info.event.start);
+    const endDate = new Date(info.event.end);
     const event = info.event;
     const eventDate = new Date(event.start);
     const statut = event.extendedProps.status;
+  const description = event.extendedProps.description || 'Aucune description';
 
     if (statut === 'en_attente') {
       Swal.fire({
@@ -182,7 +94,7 @@ export class PlanningComponent implements OnInit {
             </span></p>
             <p><b>Date:</b> ${eventDate.toLocaleDateString('fr-FR')}</p>
             <p><b>Heure:</b> ${eventDate.toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})}</p>
-            <p><b>Description:</b> ${event.extendedProps.description || 'Aucune description'}</p>
+          <p><b>Description:</b> ${description}</p>
           </div>
         `,
         showDenyButton: true,
@@ -230,7 +142,7 @@ export class PlanningComponent implements OnInit {
                     </span></p>
                     <p><b>Date:</b> ${eventDate.toLocaleDateString('fr-FR')}</p>
                     <p><b>Heure:</b> ${eventDate.toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})}</p>
-                    <p><b>Description:</b> ${event.extendedProps.description || 'Aucune description'}</p>
+          <p><b>Description:</b> ${description}</p>
                     <hr />
                     <p><b>Tâches intervention :</b></p>
                     ${checkboxHtml}
@@ -262,7 +174,7 @@ export class PlanningComponent implements OnInit {
                 },
                 error: (err) => {
                   console.error('Erreur lors de la création de l’intervention', err);
-                  Swal.fire('Erreur', 'Impossible de créer l’intervention.', 'error');
+                  Swal.fire('Erreur', 'Veuillez remplir toutes les informations obligatoires avant de terminer l’intervention.', 'error');
                 }
               });
             }
@@ -273,25 +185,48 @@ export class PlanningComponent implements OnInit {
           Swal.fire('Erreur', 'Impossible de récupérer les tâches.', 'error');
         }
       });
-    } else {
+    }  else if(statut === 'terminee') {
       Swal.fire({
         title: `Détails de l'affectation #${event.extendedProps.demandeId || 'N/A'}`,
         html: `
             <div style="text-align: left;">
-                <p><b>Technicien:</b> ${event.extendedProps.technicien}</p>
+                
                 <p><b>Statut:</b> <span style="color: ${this.getStatusColor(statut)}">
                     ${this.getStatusText(statut)}
                 </span></p>
                 <p><b>Date:</b> ${eventDate.toLocaleDateString('fr-FR')}</p>
                 <p><b>Heure:</b> ${eventDate.toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})}</p>
-                <p><b>Description:</b> ${event.extendedProps.description || 'Aucune description'}</p>
+          <p><b>Description:</b> ${description}</p>
             </div>
         `,
         confirmButtonText: 'Fermer',
         confirmButtonColor: '#3085d6',
         width: '600px'
       });
-    }
+    }else if (statut === 'autorisation') {
+  const dateDebut = event.extendedProps.dateDebut
+    ? new Date(event.extendedProps.dateDebut)
+    : new Date(event.start);
+
+  const dateFin = event.extendedProps.dateFin
+    ? new Date(event.extendedProps.dateFin)
+    : new Date(event.end);
+
+  Swal.fire({
+    title: `Détails de l'autorisation`,
+    html: `
+        <div style="text-align: left;">
+          <p><b>Type:</b> Autorisation de sortie</p>
+          <p><b>Description:</b> ${event.extendedProps.description || 'Aucune'}</p>
+          <p><b>Début:</b> ${dateDebut.toLocaleDateString('fr-FR')} à ${dateDebut.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</p>
+          <p><b>Fin:</b> ${dateFin.toLocaleDateString('fr-FR')} à ${dateFin.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</p>
+        </div>
+    `,
+    confirmButtonText: 'Fermer',
+    confirmButtonColor: '#dc3545',
+    width: '600px'
+  });
+}
   }
  
   
@@ -317,7 +252,9 @@ export class PlanningComponent implements OnInit {
             extendedProps: {
               demandeId: aff.demande_id,
               technicien: `${aff.technicien_nom} ${aff.technicien_prenom}`,
-              status: aff.statutAffectation
+              status: aff.statutAffectation,
+              description: aff.demande_description // ✅ Ajout ici
+
             },
             color: this.getStatusColor(aff.statutAffectation),
             allDay: false
@@ -326,20 +263,24 @@ export class PlanningComponent implements OnInit {
   
         // 🔴 Autorisations de sortie
         for (const auth of data.autorisations) {
-          console.log("Autorisation", auth.dateDebut, auth.dateFin);
+  const dateDebut = new Date(auth.dateDebut);
+  const dateFin = new Date(auth.dateFin);
 
-          events.push({
-            title: `Autorisation: ${auth.raison}`,
-            start: new Date(auth.dateDebut),
-            end: new Date(auth.dateFin),
-            color: '#dc3545', // rouge
-            allDay: false,
-            extendedProps: {
-              status: 'autorisation',
-              description: auth.raison
-            }
-          });
-        }
+  events.push({
+    title: `Autorisation: ${auth.raison}`,
+    start: dateDebut,
+    end: dateFin,
+    color: '#dc3545', // rouge pour autorisation
+    allDay: false,
+    extendedProps: {
+      status: 'autorisation',
+      description: auth.raison,
+      dateDebut: dateDebut,
+      dateFin: dateFin
+    }
+  });
+}
+
   
         this.calendarOptions.events = events;
         this.calendarOptions = { ...this.calendarOptions };
@@ -349,8 +290,7 @@ export class PlanningComponent implements OnInit {
       }
     });
   }
-  // ... (keep existing getStatusColor, getCurrentUserEmail, getCurrentUserRoles, isTechnicien methods)
-
+ 
 
   getStatusColor(status: string): string {
     if (status === 'en_attente') {

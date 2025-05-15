@@ -1,14 +1,32 @@
 <div class="container mt-4">
-  <h2>Rechercher par client</h2>
-  <th><input class="form-control" type="text" [(ngModel)]="filters.entreprise" placeholder="Rechercher par Entreprise" (ngModelChange)="filterDemandes()" /></th>
+  <h2 class="titre-tech">Rechercher par client</h2>
+
+  <th>
+    <input
+      class="form-control"
+      type="text"
+      [(ngModel)]="filters.entreprise"
+      placeholder="Rechercher par Entreprise"
+      (ngModelChange)="applyFilters()"
+    />
+  </th>
+
   <button class="btn btn-success mb-3" (click)="exportToExcel()">Exporter en Excel</button>
   <button class="btn btn-primary mb-3" (click)="printResults()">Imprimer</button>
 
-  <h2>Liste des Demandes Intervention</h2>
+  <h2 class="titre-tech">Liste des Demandes Intervention</h2>
+
+  <input class="form-control mb-3"
+       type="text"
+       [(ngModel)]="searchText"
+       placeholder="Rechercher par Entreprise, Description, etc."
+       (ngModelChange)="applyFilters()" />
   <div id="print-section">
   <!-- Table with Filter Inputs in Header -->
-  <table class="table table-striped">
-    <thead>
+ <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+    
       <tr>
         <th>ID</th>
         <th>Client</th>
@@ -20,7 +38,7 @@
         
         <th class="no-print">Actions</th>
       </tr>
-      <tr>
+      <!-- <tr>
         <tr class="no-print">
 
         <th><input class="form-control" type="text" [(ngModel)]="filters.id" placeholder="Rechercher par ID" (ngModelChange)="filterDemandes()" /></th>
@@ -30,11 +48,11 @@
         <th><input class="form-control" type="text" [(ngModel)]="filters.statut" placeholder="Rechercher par Statut" (ngModelChange)="filterDemandes()" /></th>
         <th><input class="form-control" type="text" [(ngModel)]="filters.dateDemande" placeholder="Rechercher par Date Demande" (ngModelChange)="filterDemandes()" /></th>
         <th></th>
-      </tr>
+      </tr> -->
     </thead>
     <tbody>
       <tr 
-        *ngFor="let demande of filteredDemandes | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }" 
+        *ngFor="let demande of filteredDemandes  | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }" 
         [ngClass]="{
           'table-success': demande.statut === 'accepter', 
           'table-danger': demande.statut === 'annulee'
@@ -67,8 +85,7 @@
               [src]="photo" 
               class="img-thumbnail" 
               alt="Photo" 
-              style="max-width: 100px; max-height: 100px;"
-            />
+             style="max-width: 50px; max-height: 50px;"             />
           </div>
           <ng-template #noPhotos>
             <p class="text-muted">Aucune photo disponible</p>

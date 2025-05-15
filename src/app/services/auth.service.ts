@@ -409,4 +409,10 @@ cancelContrat(contratId: number): Observable<any> {
       })
     );
   }
+ 
+ getAllAffectations(): Observable<any> {
+    return this.http.get(`${this.apiUrl}getAffectation`, {
+      headers: this.getAuthHeaders()
+    });
+  }
 }

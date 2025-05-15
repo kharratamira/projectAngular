@@ -27,15 +27,15 @@ export class ListeDemandeComponent implements OnInit {
   isClient = false;
   isAdmin = false;
   baseUrl: string = 'http://localhost:8000/uploads/demandes/';
-  filters = {
-    id: '',
-    idClient: '',
-    entreprise:'',
-    adresse: '',
-    description: '',
-    statut: '',
-    dateDemande: ''
-  };
+    searchText: string = '';
+filters = {
+  entreprise: '',
+  adresse: '',
+  description: '',
+  statut: '',
+  dateDemande: ''
+};
+
 
   constructor(private authService: AuthService) {}
 
@@ -81,107 +81,34 @@ export class ListeDemandeComponent implements OnInit {
   
 
   
-  // getCurrentUser(): any {
-  //   const userData = localStorage.getItem('user'); // ou sessionStorage
-  //   return userData ? JSON.parse(userData) : null;
-  // }
   
-  filterDemandes() {
-    this.filteredDemandes = this.demandes.filter(demande =>
-      (this.filters.id ? demande.id.toString().includes(this.filters.id) : true) &&
-      (this.filters.idClient ? demande.client.id.toString().includes(this.filters.idClient) : true) &&
-      (this.filters.entreprise ? demande.client.entreprise.toLowerCase().includes(this.filters.entreprise.toLowerCase()) : true) &&
-      (this.filters.adresse ? demande.client.adresse.toLowerCase().includes(this.filters.adresse.toLowerCase()) : true) &&
+  
+  // filterDemandes() {
+  //   this.filteredDemandes = this.demandes.filter(demande =>
+  //     (this.filters.id ? demande.id.toString().includes(this.filters.id) : true) &&
+  //     (this.filters.idClient ? demande.client.id.toString().includes(this.filters.idClient) : true) &&
+  //     (this.filters.entreprise ? demande.client.entreprise.toLowerCase().includes(this.filters.entreprise.toLowerCase()) : true) &&
+  //     (this.filters.adresse ? demande.client.adresse.toLowerCase().includes(this.filters.adresse.toLowerCase()) : true) &&
       
-      (this.filters.description ? demande.description.toLowerCase().includes(this.filters.description.toLowerCase()) : true) &&
-      (this.filters.statut ? demande.statut.toLowerCase().includes(this.filters.statut.toLowerCase()) : true) &&
-      (this.filters.dateDemande ? demande.dateDemande.toLowerCase().includes(this.filters.dateDemande.toLowerCase()) : true)
-    );
-  }
+  //     (this.filters.description ? demande.description.toLowerCase().includes(this.filters.description.toLowerCase()) : true) &&
+  //     (this.filters.statut ? demande.statut.toLowerCase().includes(this.filters.statut.toLowerCase()) : true) &&
+  //     (this.filters.dateDemande ? demande.dateDemande.toLowerCase().includes(this.filters.dateDemande.toLowerCase()) : true)
+  //   );
+  // }
+applyFilters(): void {
+  const { entreprise, adresse, description, statut, dateDemande } = this.filters;
+
+  this.filteredDemandes = this.demandes.filter((demande) =>
+    (!entreprise || demande.client?.entreprise?.toLowerCase().includes(entreprise.toLowerCase())) &&
+    (!adresse || demande.client?.adresse?.toLowerCase().includes(adresse.toLowerCase())) &&
+    (!description || demande.description?.toLowerCase().includes(description.toLowerCase())) &&
+    (!statut || demande.statut?.toLowerCase().includes(statut.toLowerCase())) &&
+    (!dateDemande || demande.dateDemande?.toLowerCase().includes(dateDemande.toLowerCase()))
+  );
+}
 
   
 
-//   editDemande(demande: any): void {
-//     // Cloner l'objet pour éviter des mutations inattendues
-//     this.selectedDemande = { ...demande };
-  
-//     // Initialiser le client si non défini
-//     if (!this.selectedDemande.client) {
-//       this.selectedDemande.client = {};
-//     }
-  
-//     console.log("Demande sélectionnée pour modification :", this.selectedDemande);
-//     this.isUpdateMode = true;
-//   }
-//   cancelEdit(): void {
-//     this.selectedDemande = null;
-//     this.isUpdateMode = false;
-//   }
-//   updateDemande(demande: any): void {
-//     if (this.selectedDemande) {
-//     if (!demande || !demande.id) {
-//       Swal.fire({
-//         icon: 'error',
-//         title: 'Erreur',
-//         text: 'ID de la demande introuvable. Impossible de procéder à la mise à jour.',
-//       });
-//       return;
-//     }
-  
-//     console.log("Données envoyées au backend :", this.selectedDemande); // Ajoutez ce log
-  
-//     Swal.fire({
-//       title: 'Confirmer la mise à jour',
-//       text: 'Êtes-vous sûr de vouloir mettre à jour cette demande ?',
-//       icon: 'warning',
-//       showCancelButton: true,
-//       confirmButtonColor: '#3085d6',
-//       cancelButtonColor: '#d33',
-//       confirmButtonText: 'Oui, mettre à jour',
-//       cancelButtonText: 'Annuler'
-//     }).then((result) => {
-//       if (result.isConfirmed) {
-//         this.authService.updateDemande(this.selectedDemande).subscribe({
-//           next: (updatedDemande) => {
-//             const index = this.demandes.findIndex(c => c.id === updatedDemande.id);
-//             if (index !== -1) {
-//               this.demandes[index] = updatedDemande;
-//             }
-  
-//             this.isUpdateMode = false;
-//             this.selectedDemande = null;
-  
-//             Swal.fire({
-//               icon: 'success',
-//               title: 'Mise à jour réussie',
-//               text: 'La demande a été mise à jour avec succès.',
-//               timer: 3000,
-//               timerProgressBar: true
-//             });
-//             this.loadDemandes();
-//           },
-//           error: (error) => {
-//             console.error("Erreur lors de la mise à jour :", error); // Ajoutez ce log
-//             let errorMessage = 'Erreur inconnue';
-//             if (error.status === 404) {
-//               errorMessage = 'La demande n\'a pas été trouvée.';
-//             } else if (error.status === 400) {
-//               errorMessage = 'Données incorrectes envoyées au serveur.';
-//             } else if (error.status === 500) {
-//               errorMessage = 'Erreur interne du serveur.';
-//             }
-  
-//             Swal.fire({
-//               icon: 'error',
-//               title: 'Erreur lors de la mise à jour',
-//               text: errorMessage
-//             });
-//           }
-//         });
-//       }
-//     });
-//   }
-// }
 editDemande(demande: any): void {
   this.selectedDemande = { ...demande };
 

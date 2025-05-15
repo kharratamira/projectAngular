@@ -14,3 +14,7 @@
   .form-select, .form-control {
     min-height: 45px;
   }
+  .titre-centre {
+  text-align: center;
+  color: #35536d; /* Bleu Bootstrap */
+}

@@ -26,3 +26,7 @@
   .form-group {
     margin-bottom: 0.5rem; /* Ajustez l'espacement selon vos besoins */
   }
+  .titre-tech {
+  color: #35536d;
+  font-weight: bold;
+}

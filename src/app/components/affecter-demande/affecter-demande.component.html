@@ -1,50 +1,65 @@
-<form (ngSubmit)="submitAffectation()" #affectationForm="ngForm" class="p-4 border rounded bg-light">
-    <div class="mb-3">
-      <label class="form-label">Demande ID:</label>
-      <span class="form-control bg-white">{{ demandeId }}</span>
-    </div>
-  
-    <div class="mb-3">
-      <label class="form-label">Technicien:</label>
-      <select
-        name="technicien_id"
-        [(ngModel)]="affectation.technicien_id"
-          (change)="loadAffectationsTechnicien(affectation.technicien_id)"
+<h1 class="titre-centre">Affecter technicien</h1>
 
-        class="form-select"
-        required
-        [disabled]="isLoading"
-      >
-        <option value="" disabled>Sélectionner un technicien</option>
-        <ng-container *ngIf="!isLoading; else loading">
-          <option *ngFor="let tech of techniciens" [value]="tech.id">
-            {{ tech.nom }} {{ tech.prenom }} 
-            <span *ngIf="tech.specialite">- {{ tech.specialite }}</span>
-            <span *ngIf="!tech.disponibilite" class="text-danger"> (Non disponible)</span>
-          </option>
-        </ng-container>
-        <ng-template #loading>
-          <option value="" disabled>Chargement des techniciens...</option>
-        </ng-template>
-      </select>
-    </div>
-  
-    <div class="mb-3">
-      <label class="form-label">Date prévue:</label>
-      <input
-        type="datetime-local"
-        name="date_prevu"
-        [(ngModel)]="affectation.date_prevu"
-        class="form-control"
-        required
-      />
-    </div>
-  
-    <button type="submit" class="btn btn-primary" [disabled]="isLoading || !affectationForm.form.valid">
-      {{ isLoading ? 'Chargement...' : 'Affecter' }}
-    </button>
-  </form>
-  <div *ngIf="datesPrevues.length > 0" class="mt-4">
+<form (ngSubmit)="submitAffectation()" #affectationForm="ngForm" class="p-4 border rounded bg-light">
+
+  <!-- 🆔 Demande ID -->
+  <div class="mb-3">
+    <label class="form-label">Demande ID:</label>
+    <span class="form-control bg-white">{{ demandeId }}</span>
+  </div>
+
+  <!-- 🛠 Spécialité -->
+  <div class="mb-3">
+    <label class="form-label">Spécialité:</label>
+    <select [(ngModel)]="selectedSpecialite" name="specialite" class="form-select">
+      <option value="">Toutes les spécialités</option>
+      <option *ngFor="let sp of specialites" [value]="sp">{{ sp }}</option>
+    </select>
+  </div>
+
+  <!-- 👨‍🔧 Technicien (filtré selon la spécialité sélectionnée) -->
+  <div class="mb-3">
+    <label class="form-label">Technicien:</label>
+    <select
+      name="technicien_id"
+      [(ngModel)]="affectation.technicien_id"
+      (change)="onTechnicienSelected(affectation.technicien_id)"
+      class="form-select"
+      required
+      [disabled]="isLoading"
+    >
+      <option value="" disabled>Sélectionner un technicien</option>
+      <ng-container *ngIf="!isLoading; else loading">
+        <option *ngFor="let tech of techniciensFiltres" [value]="tech.id">
+          {{ tech.nom }} {{ tech.prenom }}
+          <span *ngIf="!tech.disponibilite" class="text-danger"> (Non disponible)</span>
+        </option>
+      </ng-container>
+      <ng-template #loading>
+        <option value="" disabled>Chargement des techniciens...</option>
+      </ng-template>
+    </select>
+  </div>
+
+  <!-- 📅 Date prévue -->
+  <div class="mb-3">
+    <label class="form-label">Date prévue:</label>
+    <input
+      type="datetime-local"
+      name="date_prevu"
+      [(ngModel)]="affectation.date_prevu"
+      class="form-control"
+      required
+    />
+  </div>
+
+  <!-- ✅ Bouton -->
+  <button type="submit" class="btn btn-primary" [disabled]="isLoading || !affectationForm.form.valid">
+    {{ isLoading ? 'Chargement...' : 'Affecter' }}
+  </button>
+</form>
+
+  <!-- <div *ngIf="datesPrevues.length > 0" class="mt-4">
     <h5>Dates prévues existantes pour ce technicien :</h5>
     <ul class="list-group">
       <li *ngFor="let item of datesPrevues" class="list-group-item">
@@ -61,6 +76,14 @@
         au {{ auto.dateFin | date: 'medium' }}
       </li>
     </ul>
+  </div> -->
+   
+    <div class="container mt-4">
+<h1 class="titre-centre">calendrier de Planning</h1>
+
+  <div class="card">
+    <div class="card-body">
+      <full-calendar [options]="calendarOptions"></full-calendar>
+    </div>
   </div>
-  
-  
+</div>

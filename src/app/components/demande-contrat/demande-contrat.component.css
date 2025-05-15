@@ -4,4 +4,7 @@ ngx-editor {
     border-radius: 4px;
     min-height: 200px;
   }
-  
+  .titre-tech {
+  color: #35536d;
+  font-weight: bold;
+}

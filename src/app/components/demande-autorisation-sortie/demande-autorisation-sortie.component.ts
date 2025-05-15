@@ -24,6 +24,7 @@ export class DemandeAutorisationSortieComponent {
   itemsPerPage: number = 10; // Nombre d'éléments par page
   email: string = ''; // Email du technicien pour la recherche
   isAdmin: boolean = false; // Déclarez la variable isAdmin
+  searchText: string = '';
 
   constructor(private authservice: AuthService) {}
   ngOnInit(): void {
@@ -86,7 +87,19 @@ export class DemandeAutorisationSortieComponent {
       this.loadAutorisationsForTechnician(); // Recharger les autorisations pour le technicien
     }
   }
+get filteredAutorisation() {
+  const search = this.searchText.toLowerCase();
 
+  return this.autorisations.filter(autorisations =>
+    autorisations.id?.toString().includes(search) || // ID de la demande
+    autorisations.technicien?.nom?.toString().includes(search) || // ID de la demande
+    autorisations.technicien?.prenom?.toString().includes(search) || // Nom du technicien
+    autorisations.dateDebut?.toString().includes(search) || // Date de début
+    autorisations.dateFin?.toString().includes(search) || // Date de fin
+    autorisations.raison?.toString().includes(search) || // Raison
+    autorisations.statut?.toString().includes(search) // Statut
+  );
+}
   editAutorisation(autorisation: any): void {
     Swal.fire({
       title: 'Êtes-vous sûr ?',

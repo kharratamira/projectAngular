@@ -14,9 +14,9 @@
           >
             <option value="">Sélectionnez un rôle</option>
             <option value="technicien">Technicien</option>
-            <option value="commercial">Commercial</option>
+            <!-- <option value="commercial">Commercial</option> -->
             <option value="client">Client</option>
-            <option value="admin">Admin</option>
+            <!-- <option value="admin">Admin</option> -->
           </select>
         </div>
   
@@ -52,11 +52,11 @@
             <input type="text" id="specialite" class="form-control" formControlName="specialite" />
           </div>
   
-          <div class="form-check mb-3">
+           <!-- <div class="form-check mb-3">
             <input type="checkbox" id="disponibilite" class="form-check-input" formControlName="disponibilite" />
             <label for="disponibilite" class="form-check-label">Disponible</label>
-          </div>
-        </div>
+          </div> -->
+        </div> 
   
         <!-- Champs spécifiques Commercial -->
         <div *ngIf="addUserForm.get('user_type')?.value === 'commercial'">

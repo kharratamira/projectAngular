@@ -18,18 +18,8 @@ export class ListeClientsComponent implements OnInit {
   isUpdateMode: boolean = false;
   currentPage: number = 1; // Page actuelle
   itemsPerPage: number = 10; 
-  filters = {
-    id:'',
-    nom: '',
-    prenom: '',
-    numTel: '',
-    email: '',
-    entreprise: '',
-    adresse: '',
-    
-    
-  };
-   constructor( private authService: AuthService){}
+    searchText: string = '';
+  constructor( private authService: AuthService){}
    ngOnInit() {
     this.authService.getClientsWithDemande().subscribe({
       next: (data) => {
@@ -43,92 +33,21 @@ export class ListeClientsComponent implements OnInit {
     
   }
   ///filtre
- getFilteredClients(): any[] {
-  return this.clients.filter(client =>
-    (client.id.toString().includes(this.filters.id.toLowerCase())) &&
-    (client.nom && client.nom.toLowerCase().includes(this.filters.nom.toLowerCase())) &&
-    (client.prenom && client.prenom.toLowerCase().includes(this.filters.prenom.toLowerCase())) &&
-    (client.numTel && client.numTel.toString().includes(this.filters.numTel)) &&
-    (client.email && client.email.toLowerCase().includes(this.filters.email.toLowerCase())) &&
-    (client.entreprise && client.entreprise.toLowerCase().includes(this.filters.entreprise.toLowerCase()))&&
-    (client.adresse && client.adresse.toLowerCase().includes(this.filters.adresse.toLowerCase())) 
-    
-  );
-}
+ filteredUsers() {
+    const search = this.searchText.toLowerCase();
+    return this.clients.filter(client =>
+      client.id?.toString().includes(search) ||
+      client.nom?.toLowerCase().includes(search) ||
+      client.prenom?.toLowerCase().includes(search) ||
+      client.numTel?.toString().includes(search) ||
+      client.email?.toLowerCase().includes(search) ||
+      client.entreprise?.toLowerCase().includes(search) ||
+      client.adresse?.toLowerCase().includes(search)
+    );
+  }
 
   
-//   editClient(client: any): void {
-//     this.selectedClient = { ...client }; // Copier les données du client dans selectedClient pour l'édition
-//     this.isUpdateMode = true; // Passer en mode édition
-//   }
 
- 
-
-// updateClient(client: any): void {
-//   if (!client || !client.id) {
-//     console.error('Client ou ID du client manquant');
-//     Swal.fire({
-//       icon: 'error',
-//       title: 'Erreur',
-//       text: 'ID du client introuvable. Impossible de procéder à la mise à jour.',
-//     });
-//     return;
-//   }
-
-//   Swal.fire({
-//     title: 'Confirmer la mise à jour',
-//     text: 'Êtes-vous sûr de vouloir mettre à jour ce client ?',
-//     icon: 'warning',
-//     showCancelButton: true,
-//     confirmButtonColor: '#3085d6',
-//     cancelButtonColor: '#d33',
-//     confirmButtonText: 'Oui, mettre à jour',
-//     cancelButtonText: 'Annuler'
-//   }).then((result) => {
-//     if (result.isConfirmed) {
-//       this.authService.updateClient(client).subscribe(
-//         (updatedClient) => {
-//           console.log('Client mis à jour:', updatedClient);
-
-//           // Mise à jour dans la liste locale
-//           const index = this.clients.findIndex(c => c.id === updatedClient.id);
-//           if (index !== -1) {
-//             this.clients[index] = updatedClient;
-//           }
-
-//           // Réinitialiser l'UI
-//           this.isUpdateMode = false;
-//           this.selectedClient = {};
-
-//           Swal.fire({
-//             icon: 'success',
-//             title: 'Mise à jour réussie',
-//             text: 'Le client a été mis à jour avec succès.',
-//             timer: 3000,
-//             timerProgressBar: true
-//           });
-//           this.ngOnInit();
-//         },
-//         (error) => {
-//           console.error('Erreur lors de la mise à jour du client:', error);
-
-//           let errorMessage = 'Erreur inconnue';
-//           if (error.status === 404) {
-//             errorMessage = 'Le client n\'a pas été trouvé.';
-//           } else if (error.status === 500) {
-//             errorMessage = 'Erreur interne du serveur.';
-//           }
-
-//           Swal.fire({
-//             icon: 'error',
-//             title: 'Erreur lors de la mise à jour',
-//             text: errorMessage
-//           });
-//         }
-//       );
-//     }
-//   });
-// }
 editClient(client: any): void {
   Swal.fire({
     title: 'Êtes-vous sûr ?',

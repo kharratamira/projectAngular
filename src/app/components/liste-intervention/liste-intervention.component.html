@@ -1,6 +1,12 @@
 <div class="container mt-4">
-    <h2 class="mb-4">Liste des Interventions</h2>
-  
+    <h2 class="titre-tech">Liste des Interventions</h2>
+  <input
+  class="form-control mb-3"
+  type="text"
+  [(ngModel)]="searchText"
+  placeholder="Rechercher par mot-clé..."
+/>
+
     <!-- Chargement -->
     <div *ngIf="isLoading" class="text-center my-5">
       <div class="spinner-border text-primary" role="status">
@@ -30,74 +36,10 @@
 
           </tr>
           <!-- Ligne des champs de filtre -->
-          <tr class="bg-light">
-            <th>
-              <input
-                type="text"
-                class="form-control form-control-sm"
-                placeholder="Filtrer ID Int."
-                [(ngModel)]="filterInterventionId"
-                (input)="applyFilters()"
-              />
-            </th>
-            <th>
-              <input
-                type="text"
-                class="form-control form-control-sm"
-                placeholder="Filtrer ID Dem."
-                [(ngModel)]="filterDemandeId"
-                (input)="applyFilters()"
-              />
-            </th>
-            <th>
-              <input
-                type="text"
-                class="form-control form-control-sm"
-                placeholder="Filtrer Client"
-                [(ngModel)]="filterClient"
-                (input)="applyFilters()"
-              />
-            </th>
-            <th>
-              <input
-                type="text"
-                class="form-control form-control-sm"
-                placeholder="Filtrer Technicien"
-                [(ngModel)]="filterTechnicien"
-                (input)="applyFilters()"
-              />
-            </th>
-            <th>
-              <input
-                type="text"
-                class="form-control form-control-sm"
-                placeholder="Filtrer Description"
-                [(ngModel)]="filterDescription"
-                (input)="applyFilters()"
-              />
-            </th>
-            <th>
-              <input
-                type="text"
-                class="form-control form-control-sm"
-                placeholder="Filtrer Date Début"
-                [(ngModel)]="filterDateDebut"
-                (input)="applyFilters()"
-              />
-              <input
-                type="text"
-                class="form-control form-control-sm mt-1"
-                placeholder="Filtrer Date Fin"
-                [(ngModel)]="filterDateFin"
-                (input)="applyFilters()"
-              />
-            </th>
-            <th></th>
-            <th></th>
-          </tr>
+          
         </thead>
         <tbody>
-          <tr *ngFor="let interv of filteredInterventions | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
+          <tr *ngFor="let interv of filteredIntervention | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
             <!-- ID Intervention -->
             <td>{{ interv.intervention_id }}</td>
   

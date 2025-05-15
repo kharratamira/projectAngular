@@ -47,3 +47,7 @@
   .swal2-popup .table-active {
     background-color: rgba(36, 36, 36, 0.05);
   }
+  .titre-tech {
+  color: #35536d;
+  font-weight: bold;
+}

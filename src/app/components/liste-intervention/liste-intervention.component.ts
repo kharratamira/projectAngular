@@ -18,6 +18,7 @@ export class ListeInterventionComponent implements OnInit {
   filteredInterventions: any[] = [];
   currentPage: number = 1; // Page actuelle
   itemsPerPage: number = 10; // Nombre d'éléments par page
+  searchText: string = '';
 
   isAdmin: boolean = false;
   isLoading: boolean = true;
@@ -74,42 +75,59 @@ export class ListeInterventionComponent implements OnInit {
     }
   }
 
-  applyFilters(): void {
-    this.filteredInterventions = this.interventions.filter((intervention) => {
-      const matchesInterventionId = intervention.intervention_id
-        ? intervention.intervention_id.toString().includes(this.filterInterventionId.toLowerCase())
-        : true;
+  // applyFilters(): void {
+  //   this.filteredInterventions = this.interventions.filter((intervention) => {
+  //     const matchesInterventionId = intervention.intervention_id
+  //       ? intervention.intervention_id.toString().includes(this.filterInterventionId.toLowerCase())
+  //       : true;
 
-      const matchesDemandeId = intervention.demande?.id
-        ? intervention.demande.id.toString().includes(this.filterDemandeId.toLowerCase())
-        : true;
+  //     const matchesDemandeId = intervention.demande?.id
+  //       ? intervention.demande.id.toString().includes(this.filterDemandeId.toLowerCase())
+  //       : true;
 
-      const matchesClient = intervention.client?.entreprise
-        ?.toLowerCase()
-        .includes(this.filterClient.toLowerCase());
+  //     const matchesClient = intervention.client?.entreprise
+  //       ?.toLowerCase()
+  //       .includes(this.filterClient.toLowerCase());
 
-      const matchesTechnicien = intervention.technicien?.prenom
-        ?.toLowerCase()
-        .includes(this.filterTechnicien.toLowerCase());
+  //     const matchesTechnicien = intervention.technicien?.prenom
+  //       ?.toLowerCase()
+  //       .includes(this.filterTechnicien.toLowerCase());
 
-      const matchesDateDebut = this.formatDate(intervention.affectation_date_prevu)
-        .toLowerCase()
-        .includes(this.filterDateDebut.toLowerCase());
+  //     const matchesDateDebut = this.formatDate(intervention.affectation_date_prevu)
+  //       .toLowerCase()
+  //       .includes(this.filterDateDebut.toLowerCase());
 
-      const matchesDateFin = this.formatDate(intervention.date_fin)
-        .toLowerCase()
-        .includes(this.filterDateFin.toLowerCase());
+  //     const matchesDateFin = this.formatDate(intervention.date_fin)
+  //       .toLowerCase()
+  //       .includes(this.filterDateFin.toLowerCase());
 
-      return (
-        matchesInterventionId &&
-        matchesDemandeId &&
-        matchesClient &&
-        matchesTechnicien &&
-        matchesDateDebut &&
-        matchesDateFin
-      );
-    });
-  }
+  //     return (
+  //       matchesInterventionId &&
+  //       matchesDemandeId &&
+  //       matchesClient &&
+  //       matchesTechnicien &&
+  //       matchesDateDebut &&
+  //       matchesDateFin
+  //     );
+  //   });
+  // }
+
+get filteredIntervention() {
+  const search = this.searchText.toLowerCase();
+
+  return this.interventions.filter(intervention =>
+    intervention.intervention_id?.toString().includes(search) ||
+    intervention.demande?.id?.toString().includes(search) ||
+    intervention.client?.entreprise?.toLowerCase().includes(search) ||
+    intervention.client?.prenom?.toLowerCase().includes(search) ||
+    intervention.client?.nom?.toLowerCase().includes(search) ||
+    intervention.technicien?.prenom?.toLowerCase().includes(search) ||
+    intervention.technicien?.nom?.toLowerCase().includes(search) ||
+    intervention.demande?.description?.toLowerCase().includes(search) ||
+    this.formatDate(intervention.affectation_date_prevu).toLowerCase().includes(search) ||
+    this.formatDate(intervention.date_fin).toLowerCase().includes(search)
+  );
+}
 
   showTachesPopup(intervention: any): void {
     let tasksHtml = '<div class="text-start">';
@@ -190,6 +208,23 @@ export class ListeInterventionComponent implements OnInit {
     });
   }
   editIntervention(intervention: any): void {
+    const today = new Date();
+  const dateFin = new Date(intervention.date_fin); // 👈 ceci fonctionne avec "2025-05-14 01:01:50"
+
+  // Comparaison de la date (sans tenir compte de l’heure)
+  const isSameDay =
+    today.getFullYear() === dateFin.getFullYear() &&
+    today.getMonth() === dateFin.getMonth() &&
+    today.getDate() === dateFin.getDate();
+
+  if (!isSameDay) {
+    Swal.fire(
+      'Modification non autorisée',
+      'Vous ne pouvez modifier cette intervention que le jour où elle a été terminée.',
+      'warning'
+    );
+    return;
+  }
     this.loadAllTaches().then((tachesDisponibles) => {
       // Générer les checkboxes pour toutes les tâches disponibles
       const tachesCheckboxes = tachesDisponibles.map((tache: any) => `

@@ -16,3 +16,27 @@
   justify-content: flex-end; /* Aligner à droite */
   margin-top: 10px; /* Espacement au-dessus */
 }
+.swal2-input {
+    margin: 10px 0;
+  }
+  .swal2-input,
+.form-control.shadow-sm.border-primary {
+  border: 1.5px solid #2563eb !important;
+  border-radius: 6px !important;
+  padding: 10px;
+  font-size: 15px;
+}
+.table-responsive {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}thead.table-dark th {
+  font-size: 16px;
+  font-weight: bold;
+  vertical-align: middle;
+}
+.titre-tech {
+  color: #35536d;
+  font-weight: bold;
+}
+

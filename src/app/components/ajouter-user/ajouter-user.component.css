@@ -4,4 +4,7 @@
   
   .swal2-confirm {
     background-color: #4e73df !important;
-  }
+  }.text-center {
+  text-align: center;
+  color: #35536d; /* Bleu Bootstrap */
+}

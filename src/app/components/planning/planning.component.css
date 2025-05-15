@@ -99,3 +99,11 @@
 .custom-checkbox label:hover .checkbox-icon {
   border-color: #1e7e34;
 }
+.titre-tech {
+  color: #35536d;
+  font-weight: bold;
+  
+}
+.center {
+  text-align: center;
+}

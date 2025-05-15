@@ -93,3 +93,13 @@
   border-color: #007bff;
   outline: none;
 }
+.table-responsive {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.titre-tech {
+  color: #35536d;
+  font-weight: bold;
+}
