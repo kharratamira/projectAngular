@@ -1,0 +1,62 @@
+<div class="container mt-4">
+  <h2 class="mb-3">Liste des Factures</h2>
+
+  <!-- Barre de recherche -->
+  <input type="text" [(ngModel)]="searchText" class="form-control mb-3" placeholder="Rechercher...">
+
+  <!-- Chargement -->
+  <div *ngIf="isLoading" class="text-center">
+    <div class="spinner-border" role="status"><span class="visually-hidden">Chargement...</span></div>
+  </div>
+
+  <!-- Table -->
+  <table *ngIf="!isLoading && filteredFacturesPaginated.length > 0" class="table table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>#Facture</th>
+        <th>Date</th>
+        <th>Client</th>
+        <th>Entreprise</th>
+        <th>Statut</th>
+        <th>Montant TTC</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let facture of filteredFacturesPaginated | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
+        <td>{{ facture.numFacture }}</td>
+        <td>{{ facture.dateEmission }}</td>
+        <td>{{ facture.client?.prenom }} {{ facture.client?.nom }}</td>
+        <td>{{ facture.client?.entreprise }}</td>
+        <td>
+          <span [ngClass]="{
+            'text-success': facture.statut === 'payee',
+            'text-warning': facture.statut === 'en_attente',
+            'text-danger': facture.statut === 'en_retard'
+          }">
+            {{ facture.statut.toUpperCase() }}
+          </span>
+        </td>
+        <td>{{ facture.montantTTC }} DT</td>
+        <td>
+          <button class="btn btn-primary btn-sm" (click)="afficherFacture(facture)">
+            Voir / Imprimer
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  <pagination-controls
+    (pageChange)="currentPage = $event"
+    class="mt-3"
+    previousLabel="Précédent"
+    nextLabel="Suivant">
+  </pagination-controls>
+
+  <!-- Aucune donnée -->
+  <div *ngIf="!isLoading && filteredFacturesPaginated.length === 0" class="alert alert-info">
+    Aucune facture trouvée.
+  </div>
+</div>

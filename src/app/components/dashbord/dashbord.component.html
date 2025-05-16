@@ -14,7 +14,6 @@
           <!-- Gérer compte -->
           <li class="nav-item">
             <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseAccount" style="cursor: pointer;">
-                <i class="fas fa-user-circle"></i>
               Utilisateurs
               <i class="fas fa-chevron-down float-end"></i>
             </span>
@@ -92,6 +91,18 @@
               </ul>
             </div>
           </li>
+
+          <li class="nav-item">
+            <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseContratAdmin" style="cursor: pointer;">
+              Facture
+              <i class="fas fa-chevron-down float-end"></i>
+            </span>
+            <div class="collapse" id="collapseContratAdmin">
+              <ul class="nav flex-column ms-3">
+                <li class="nav-item"><a class="nav-link" routerLink="ListeFacture">ListeFacture</a></li>
+              </ul>
+            </div>
+          </li>
         </ng-container>
 
         <!-- Menu CLIENT -->
@@ -146,6 +157,18 @@
             <div class="collapse" id="collapseContratClient">
               <ul class="nav flex-column ms-3">
                 <li class="nav-item"><a class="nav-link" routerLink="ListeContrat">ListeContrat</a></li>
+              </ul>
+            </div>
+          </li>
+
+           <li class="nav-item">
+            <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseContratAdmin" style="cursor: pointer;">
+              Facture
+              <i class="fas fa-chevron-down float-end"></i>
+            </span>
+            <div class="collapse" id="collapseContratAdmin">
+              <ul class="nav flex-column ms-3">
+                <li class="nav-item"><a class="nav-link" routerLink="ListeFacture">ListeFacture</a></li>
               </ul>
             </div>
           </li>

@@ -415,4 +415,25 @@ cancelContrat(contratId: number): Observable<any> {
       headers: this.getAuthHeaders()
     });
   }
+ genererFacture(interventionId: number, remise: number): Observable<any> {
+  return this.http.post(`${this.apiUrl}genererfacture/${interventionId}`, { remise });
+}
+
+previewFacture(interventionId: number): Observable<any> {
+  return this.http.get(`${this.apiUrl}facturepreview/${interventionId}`);
+}
+
+
+// Toutes les factures (admin)
+
+
+// Factures du client connecté (par email)
+getAllFactures(): Observable<any> {
+  return this.http.get(`${this.apiUrl}factures`);
+}
+
+getFacturesByClient(email: string): Observable<any> {
+  return this.http.get(`${this.apiUrl}facturesclient`, { params: { email } });
+}
+
 }

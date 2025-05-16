@@ -103,3 +103,9 @@
   color: #35536d;
   font-weight: bold;
 }
+.table th {
+    background-color: #fffefe;
+    color: #35536d;
+    vertical-align: middle;
+    white-space: nowrap;
+  }

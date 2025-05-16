@@ -51,7 +51,12 @@ export class ListeInterventionComponent implements OnInit {
     if (this.isAdmin) {
       this.authService.getAllInterventions().subscribe({
         next: (response) => {
-          this.interventions = response.data || [];
+         this.interventions = (response.data || []).map((interv: any) => {
+      return {
+        ...interv,
+        hasFacture: interv.facture != null // 👈 ajoute une propriété booléenne
+      };
+    });
           this.filteredInterventions = this.interventions; // Initialisation des données filtrées
           this.isLoading = false;
         },
@@ -75,42 +80,7 @@ export class ListeInterventionComponent implements OnInit {
     }
   }
 
-  // applyFilters(): void {
-  //   this.filteredInterventions = this.interventions.filter((intervention) => {
-  //     const matchesInterventionId = intervention.intervention_id
-  //       ? intervention.intervention_id.toString().includes(this.filterInterventionId.toLowerCase())
-  //       : true;
-
-  //     const matchesDemandeId = intervention.demande?.id
-  //       ? intervention.demande.id.toString().includes(this.filterDemandeId.toLowerCase())
-  //       : true;
-
-  //     const matchesClient = intervention.client?.entreprise
-  //       ?.toLowerCase()
-  //       .includes(this.filterClient.toLowerCase());
-
-  //     const matchesTechnicien = intervention.technicien?.prenom
-  //       ?.toLowerCase()
-  //       .includes(this.filterTechnicien.toLowerCase());
-
-  //     const matchesDateDebut = this.formatDate(intervention.affectation_date_prevu)
-  //       .toLowerCase()
-  //       .includes(this.filterDateDebut.toLowerCase());
-
-  //     const matchesDateFin = this.formatDate(intervention.date_fin)
-  //       .toLowerCase()
-  //       .includes(this.filterDateFin.toLowerCase());
-
-  //     return (
-  //       matchesInterventionId &&
-  //       matchesDemandeId &&
-  //       matchesClient &&
-  //       matchesTechnicien &&
-  //       matchesDateDebut &&
-  //       matchesDateFin
-  //     );
-  //   });
-  // }
+  
 
 get filteredIntervention() {
   const search = this.searchText.toLowerCase();
@@ -284,4 +254,81 @@ get filteredIntervention() {
       Swal.fire('Erreur', 'Impossible de charger les tâches : ' + err, 'error');
     });
   }
+  genererFacturePopup(intervention: any): void {
+  const dateEmission = new Date();
+  const dateEcheance = new Date();
+  dateEcheance.setDate(dateEmission.getDate() + 30);
+
+  this.authService.previewFacture(intervention.intervention_id).subscribe({
+    next: (facture) => {
+      const tachesHtml = facture.intervention.taches.map((t: any) => `
+        <tr>
+          <td>${t.tache}</td>
+          <td>${t.prixTache.toFixed(2)} DT</td>
+        </tr>
+      `).join('');
+
+      const htmlContent = `
+        <div style="text-align:left; font-size:14px">
+          <p><strong>Facture #prévisualisation</strong></p>
+          <p><strong>Date émission :</strong> ${dateEmission.toLocaleDateString()}</p>
+          <p><strong>Date échéance :</strong> ${dateEcheance.toLocaleDateString()}</p>
+
+          <p><strong>Client :</strong> ${intervention.client.nom} ${intervention.client.prenom} - ${intervention.client.entreprise}</p>
+
+          <hr />
+          <table class="table table-bordered" style="width:100%">
+            <thead><tr><th>Tâche</th><th>Prix (DT)</th></tr></thead>
+            <tbody>${tachesHtml}</tbody>
+          </table>
+
+          <p><strong>Montant HTVA :</strong> ${facture.montantHTVA.toFixed(2)} DT</p>
+          <p><strong>TVA (20%) :</strong> ${facture.TVA.toFixed(2)} DT</p>
+          <p><strong>Total TTC :</strong> ${facture.montantTTC.toFixed(2)} DT</p>
+
+          <label for="remise">Ajouter une remise (%) :</label>
+          <input type="number" id="remise" class="swal2-input" value="0" min="0" max="100" />
+        </div>
+      `;
+
+      Swal.fire({
+        title: `Facture intervention #${intervention.intervention_id}`,
+        html: htmlContent,
+        showCancelButton: true,
+        confirmButtonText: 'Enregistrer la facture',
+        cancelButtonText: 'Annuler',
+        width: 700,
+        preConfirm: () => {
+          const remise = parseFloat((document.getElementById('remise') as HTMLInputElement).value);
+          if (isNaN(remise) || remise < 0 || remise > 100) {
+            Swal.showValidationMessage('Remise invalide. Entrez un chiffre entre 0 et 100');
+            return;
+          }
+
+          return this.authService.genererFacture(intervention.intervention_id, remise).toPromise()
+            .then(res => {
+              return res;
+            }).catch(err => {
+              Swal.showValidationMessage('Erreur lors de la création de la facture');
+              throw err;
+            });
+        }
+      }).then(result => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Facture enregistrée',
+            text: `Numéro : ${result.value.numFacture}`,
+            timer: 2000,
+            showConfirmButton: false
+          });
+        }
+      });
+    },
+    error: () => {
+      Swal.fire('Erreur', 'Impossible de prévisualiser la facture', 'error');
+    }
+  });
+}
+
 }

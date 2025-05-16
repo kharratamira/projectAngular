@@ -11,6 +11,12 @@
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
+.table th {
+    background-color: #fffefe;
+    color: #35536d;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
 .titre-tech {
   color: #35536d;
   font-weight: bold;

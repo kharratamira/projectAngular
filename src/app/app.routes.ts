@@ -20,6 +20,7 @@ import { ListeInterventionComponent } from './components/liste-intervention/list
 import { DemandeContratComponent } from './components/demande-contrat/demande-contrat.component';
 import { ListedemandeContratComponent } from './components/listedemande-contrat/listedemande-contrat.component';
 import { ListeContratComponent } from './components/liste-contrat/liste-contrat.component';
+import { ListeFactureComponent } from './components/liste-facture/liste-facture.component';
 
 export const routes: Routes = [
   { path: 'acceuil', component: AccueillComponent },
@@ -106,6 +107,10 @@ export const routes: Routes = [
           data: { roles: ['ROLE_CLIENT','ROLE_ADMIN'] }},
           {path: 'ListeContrat',
          component: ListeContratComponent,
+          canActivate: [RoleGuard],
+          data: { roles: ['ROLE_CLIENT','ROLE_ADMIN'] }},
+           {path: 'ListeFacture',
+         component: ListeFactureComponent,
           canActivate: [RoleGuard],
           data: { roles: ['ROLE_CLIENT','ROLE_ADMIN'] }},
     ]

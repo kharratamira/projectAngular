@@ -37,6 +37,10 @@ export class ListedemandeContratComponent implements OnInit {
 
     this.loadDemandes(email, role);
   }
+  removeHtmlTags(text: string): string {
+  return text?.replace(/<[^>]*>/g, '') || '';
+}
+
   loadDemandes(email: string | null, role: string): void {
   this.isLoading = true;
 

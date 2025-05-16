@@ -16,4 +16,9 @@
     justify-content: flex-end; /* Aligner à droite */
     margin-top: 10px; /* Espacement au-dessus */
   }
-  
+  .table th {
+    background-color: #fffefe;
+    color: #35536d;
+    vertical-align: middle;
+    white-space: nowrap;
+  }

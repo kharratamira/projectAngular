@@ -1,7 +1,12 @@
 .table {
   font-size: 0.65vrem; /* Further reduce font size */
 }
-
+.table th {
+    background-color: #fffefe;
+    color: #35536d;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
 .table th, .table td {
   padding: 0.25rem; /* Further reduce padding */
 }

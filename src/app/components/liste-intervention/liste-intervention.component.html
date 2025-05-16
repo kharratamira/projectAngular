@@ -32,7 +32,7 @@
             <th>Dates</th>
             <th>Observation</th>
             <th>Tâches</th>
-            <th *ngIf="isTechnicien">Actions</th>
+            <th >Actions</th>
 
           </tr>
           <!-- Ligne des champs de filtre -->
@@ -81,6 +81,19 @@
             <td *ngIf="isTechnicien">
               <button class="btn btn-sm btn-primary" (click)="editIntervention(interv)">Modifier</button>
             </td>
+           
+<td *ngIf="isAdmin">
+  <button
+    *ngIf="!interv.facture" 
+    class="btn btn-success btn-sm"
+    (click)="genererFacturePopup(interv)"
+  >
+    Générer facture
+  </button>
+</td>
+
+
+
           </tr>
         </tbody>
       </table>
