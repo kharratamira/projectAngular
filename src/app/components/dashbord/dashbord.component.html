@@ -92,6 +92,8 @@
             </div>
           </li>
 
+
+
           <li class="nav-item">
             <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseContratAdmin" style="cursor: pointer;">
               Facture
@@ -103,8 +105,21 @@
               </ul>
             </div>
           </li>
-        </ng-container>
 
+
+
+           <li class="nav-item">
+            <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseContratAdmin" style="cursor: pointer;">
+              satisfaction
+              <i class="fas fa-chevron-down float-end"></i>
+            </span>
+            <div class="collapse" id="collapseContratAdmin">
+              <ul class="nav flex-column ms-3">
+                <li class="nav-item"><a class="nav-link" routerLink="listesatisfactionClient">ListSatisfactionClient</a></li>
+              </ul>
+            </div>
+          </li>
+        </ng-container>
         <!-- Menu CLIENT -->
         <ng-container *ngIf="hasRole('ROLE_CLIENT')">
           <!-- Demande Intervention -->
@@ -169,6 +184,19 @@
             <div class="collapse" id="collapseContratAdmin">
               <ul class="nav flex-column ms-3">
                 <li class="nav-item"><a class="nav-link" routerLink="ListeFacture">ListeFacture</a></li>
+              </ul>
+            </div>
+          </li>
+
+
+          <li class="nav-item">
+            <span class="dark-gray-title nav-link" data-bs-toggle="collapse" href="#collapseContratAdmin" style="cursor: pointer;">
+              satisfaction
+              <i class="fas fa-chevron-down float-end"></i>
+            </span>
+            <div class="collapse" id="collapseContratAdmin">
+              <ul class="nav flex-column ms-3">
+                <li class="nav-item"><a class="nav-link" routerLink="satisfactionClient">satisfactionClient</a></li>
               </ul>
             </div>
           </li>

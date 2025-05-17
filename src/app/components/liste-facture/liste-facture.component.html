@@ -39,8 +39,10 @@
         </td>
         <td>{{ facture.montantTTC }} DT</td>
         <td>
-          <button class="btn btn-primary btn-sm" (click)="afficherFacture(facture)">
-            Voir / Imprimer
+          <button  class="btn btn-light btn-sm w-50 mt-1" 
+           (click)="afficherFacture(facture)">
+            <i class="fas fa-file-alt text-muted"></i> 
+            Facture
           </button>
         </td>
       </tr>

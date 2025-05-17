@@ -105,7 +105,6 @@ afficherFacture(facture: any): void {
   this.htmlContent = contenuFacture;
 
   Swal.fire({
-    title: `Facture #${facture.numFacture}`,
     html: contenuFacture,
     width: 800,
     showCloseButton: true,

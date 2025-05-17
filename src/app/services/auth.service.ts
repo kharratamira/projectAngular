@@ -435,5 +435,11 @@ getAllFactures(): Observable<any> {
 getFacturesByClient(email: string): Observable<any> {
   return this.http.get(`${this.apiUrl}facturesclient`, { params: { email } });
 }
+satisfactionClient(data: any): Observable<any> {
+  return this.http.post(`${this.apiUrl}satisfaction`, data);
+}
+getAllSatisfaction(): Observable<any> {
+  return this.http.get(`${this.apiUrl}getSatisfaction`);
+}
 
 }

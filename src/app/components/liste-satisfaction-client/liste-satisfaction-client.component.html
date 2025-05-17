@@ -1,0 +1,44 @@
+<!-- src/app/components/liste-satisfaction-client/liste-satisfaction-client.component.html -->
+<div class="container mt-4">
+  <h2 class="titre-tech">Satisfaction client</h2>
+
+  <input type="text" [(ngModel)]="searchText" placeholder="Rechercher..." class="form-control mb-3" />
+
+  <div *ngIf="isLoading" class="text-center mt-3">
+    Chargement des satisfactions...
+  </div>
+
+  <div *ngIf="!isLoading && satisfaction.length > 0">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Email</th>
+          <th>Intervention</th>
+          <th>Niveau</th>
+          <th>Commentaire</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filteredSatisfaction | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
+          <td>
+            {{ item.client.nom }} {{ item.client.prenom }}<br />
+            {{ item.client.entreprise }}
+          </td>
+            <td>{{item.client.email}}</td>         
+            <td>{{ item.intervention.date_fin || 'Non terminée' }}</td>
+          <td>{{ item.satisfaction.niveau }}</td>
+          <td>{{ item.satisfaction.commentaire || '-' }}</td>
+          <td>{{ item.satisfaction.date_creation }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+  </div>
+
+  <div *ngIf="!isLoading && satisfaction.length === 0" class="text-center mt-3">
+    Aucune satisfaction trouvée.
+  </div>
+</div>
