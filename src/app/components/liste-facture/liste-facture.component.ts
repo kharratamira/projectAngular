@@ -140,4 +140,65 @@ printFacture(): void {
     alert("La fenêtre d'impression a été bloquée par le navigateur.");
   }
 }
+
+ouvrirPopupPaiement(facture: any): void {
+  this.authService.getAllModesPaiement().subscribe({
+    next: (res) => {
+      const modes = res.data || [];
+
+      Swal.fire({
+        title: `Modes de paiement pour la facture #${facture.numFacture}`,
+        html: `
+          <div style="text-align: left;">
+            ${modes.map((mode: any) => `
+              <div>
+                <input type="checkbox" id="mode-${mode.id}" value="${mode.id}" class="swal-mode-checkbox"/>
+                <label for="mode-${mode.id}">${mode.modePaiement}</label>
+              </div>
+            `).join('')}
+          </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Enregistrer',
+        cancelButtonText: 'Annuler',
+        preConfirm: () => {
+          const selected: number[] = [];
+          document.querySelectorAll('.swal-mode-checkbox:checked').forEach((el: any) => {
+            selected.push(parseInt(el.value, 10));
+          });
+
+          if (selected.length === 0 || selected.length > 2) {
+            Swal.showValidationMessage('Veuillez sélectionner 1 ou 2 modes de paiement.');
+            return false;
+          }
+
+          return selected;
+        }
+      }).then(result => {
+        if (result.isConfirmed && result.value) {
+          this.authService.setModesPaiement(facture.id, result.value).subscribe({
+            next: () => {
+              // Recharger les factures après un paiement réussi
+              const email = sessionStorage.getItem('userEmail') || '';
+              this.loadFactures(email);
+              
+              Swal.fire('Succès', 'Modes de paiement enregistrés avec succès.', 'success');
+            },
+            error: () => {
+              Swal.fire('Erreur', 'Échec de l"enregistrement des modes de paiement.', 'error');
+            }
+          });
+        }
+      });
+    },
+    error: () => {
+      Swal.fire('Erreur', 'Impossible de charger les modes de paiement.', 'error');
+    }
+  });
+}
+
+getNomModesPaiement(modes: any[]): string {
+  return modes.map(m => m.nom).join(', ');
+}
+
 }

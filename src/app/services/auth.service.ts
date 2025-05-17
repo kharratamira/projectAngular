@@ -441,5 +441,13 @@ satisfactionClient(data: any): Observable<any> {
 getAllSatisfaction(): Observable<any> {
   return this.http.get(`${this.apiUrl}getSatisfaction`);
 }
+getAllModesPaiement(): Observable<any> {
+  return this.http.get(`${this.apiUrl}getmodePaiement`);
+}
 
+ setModesPaiement(factureId: number, modeIds: number[]) {
+    return this.http.post(`${this.apiUrl}modes-paiement/${factureId}`, {
+      modes: modeIds
+    });
+  }
 }

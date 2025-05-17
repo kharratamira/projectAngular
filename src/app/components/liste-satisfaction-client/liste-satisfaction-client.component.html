@@ -27,7 +27,7 @@
             {{ item.client.entreprise }}
           </td>
             <td>{{item.client.email}}</td>         
-            <td>{{ item.intervention.date_fin || 'Non terminée' }}</td>
+            <td>{{ item.intervention.id || 'Non terminée' }}</td>
           <td>{{ item.satisfaction.niveau }}</td>
           <td>{{ item.satisfaction.commentaire || '-' }}</td>
           <td>{{ item.satisfaction.date_creation }}</td>

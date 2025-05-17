@@ -50,9 +50,11 @@ export class ListeSatisfactionClientComponent implements OnInit {
       item.client.prenom.toLowerCase().includes(search) ||
       item.client.entreprise.toLowerCase().includes(search) ||
       item.client.email.toLowerCase().includes(search) ||
+     item.intervention.observation?.toLowerCase().includes(search)||
       item.satisfaction.niveau.toString().toLowerCase().includes(search) ||
       item.satisfaction.commentaire?.toLowerCase().includes(search) ||
-      item.intervention.observation?.toLowerCase().includes(search)
+      item.intervention.observation?.toLowerCase().includes(search)||
+      item.satisfaction.date_creation?.toLowerCase().includes(search)
     );
   }
 }

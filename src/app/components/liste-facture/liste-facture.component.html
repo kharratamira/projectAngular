@@ -1,15 +1,9 @@
 <div class="container mt-4">
-  <h2 class="mb-3">Liste des Factures</h2>
-
-  <!-- Barre de recherche -->
+  <h2 class="titre-tech">Liste des Factures</h2>
   <input type="text" [(ngModel)]="searchText" class="form-control mb-3" placeholder="Rechercher...">
-
-  <!-- Chargement -->
   <div *ngIf="isLoading" class="text-center">
     <div class="spinner-border" role="status"><span class="visually-hidden">Chargement...</span></div>
   </div>
-
-  <!-- Table -->
   <table *ngIf="!isLoading && filteredFacturesPaginated.length > 0" class="table table-striped">
     <thead class="table-dark">
       <tr>
@@ -19,6 +13,7 @@
         <th>Entreprise</th>
         <th>Statut</th>
         <th>Montant TTC</th>
+        <th>ModePiement</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -38,12 +33,31 @@
           </span>
         </td>
         <td>{{ facture.montantTTC }} DT</td>
+       <td>
+  <ng-container *ngIf="facture.statut === 'en_attente'; else afficherModes">
+    <span class="text-muted">En attente de paiement</span>
+  </ng-container>
+  <ng-template #afficherModes>
+    <span *ngIf="facture.modePaiements && facture.modePaiements.length > 0; else aucunMode ">
+      {{ getNomModesPaiement(facture.modePaiements) }}
+    </span>
+    <ng-template #aucunMode>
+      <span class="text-danger">Aucun mode défini</span>
+    </ng-template>
+  </ng-template>
+</td>
+
+
         <td>
           <button  class="btn btn-light btn-sm w-50 mt-1" 
            (click)="afficherFacture(facture)">
             <i class="fas fa-file-alt text-muted"></i> 
             Facture
           </button>
+          <button *ngIf="!isAdmin " class="btn btn-success btn-sm w-50 mt-1" (click)="ouvrirPopupPaiement(facture)">
+  <i class="fas fa-money-check-alt"></i> Payer
+</button>
+
         </td>
       </tr>
     </tbody>
