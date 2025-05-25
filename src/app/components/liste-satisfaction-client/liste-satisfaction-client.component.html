@@ -23,11 +23,18 @@
       <tbody>
         <tr *ngFor="let item of filteredSatisfaction | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
           <td>
-            {{ item.client.nom }} {{ item.client.prenom }}<br />
-            {{ item.client.entreprise }}
+            {{ item.intervention.client.nom }} {{ item.intervention.client.prenom }}<br />
+            {{ item.intervention.client.entreprise }}
           </td>
-            <td>{{item.client.email}}</td>         
-            <td>{{ item.intervention.id || 'Non terminée' }}</td>
+            <td>{{item.intervention.client.email}}</td>   
+            
+<td>
+  <button  class="btn btn-light btn-sm btn-sm"
+          (click)="showTachesPopup(item.intervention)">
+            <i class="fas fa-file-alt text-muted"></i>
+    Intervention
+  </button>
+</td>
           <td>{{ item.satisfaction.niveau }}</td>
           <td>{{ item.satisfaction.commentaire || '-' }}</td>
           <td>{{ item.satisfaction.date_creation }}</td>

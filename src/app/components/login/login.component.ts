@@ -91,7 +91,7 @@ export class LoginComponent {
             Swal.fire({
               icon: 'error',
               title: 'Erreur inconnue',
-              text: 'Une erreur est survenue. Veuillez réessayer plus tard.',
+              text: 'Une erreur est survenue. Veuillez réessayer plus tard.au cette compte et inactive ',
             });
           }
         }

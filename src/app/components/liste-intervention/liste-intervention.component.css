@@ -51,3 +51,16 @@
   color: #35536d;
   font-weight: bold;
 }
+/* Style pour les boutons de facture */
+.btn-facture {
+  margin: 2px;
+  min-width: 120px;
+}
+
+/* Style pour le tableau de facture */
+.table-facture {
+  font-size: 14px;
+}
+.table-facture th {
+  white-space: nowrap;
+}

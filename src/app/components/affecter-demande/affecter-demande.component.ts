@@ -131,7 +131,7 @@ get techniciensFiltres(): any[] {
     this.authService.createAffectation(this.affectation).subscribe({
       next: () => {
         Swal.fire('Succès', 'Affectation créée avec succès.', 'success').then(() => {
-          this.router.navigate(['/dashbord/liste-demandes']);
+         ;
         });
       },
        error: (err) => {

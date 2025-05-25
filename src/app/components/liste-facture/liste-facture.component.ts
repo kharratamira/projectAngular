@@ -15,6 +15,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 export class ListeFactureComponent implements OnInit {
   factures: any[] = [];
   filteredFacture: any[] = [];
+  isClient = false;
 
   isLoading = true;
   isAdmin = false;
@@ -28,6 +29,7 @@ export class ListeFactureComponent implements OnInit {
     const roles = JSON.parse(sessionStorage.getItem('roles') || '[]');
     this.isAdmin = roles.includes('ROLE_ADMIN');
     const email = sessionStorage.getItem('userEmail') || '';
+    this.isClient = roles.includes('ROLE_CLIENT');
 
     this.loadFactures(email);
   }
@@ -78,7 +80,8 @@ afficherFacture(facture: any): void {
       <p><strong>Date émission :</strong> ${facture.dateEmission}</p>
       <p><strong>Date échéance :</strong> ${facture.dateEcheance}</p>
 
-      <p><strong>Client :</strong> ${facture.client?.prenom} ${facture.client?.nom} - ${facture.client?.entreprise}</p>
+      <p><strong>Client :</strong> ${facture.intervention?.prenom} ${facture.intervention?.nom} &nbsp;&nbsp;
+       <strong>Entreprise</strong> ${facture.intervention?.entreprise}</p>
 
       <hr />
       <table style="width:100%; border-collapse: collapse;" border="1">
@@ -140,8 +143,87 @@ printFacture(): void {
     alert("La fenêtre d'impression a été bloquée par le navigateur.");
   }
 }
+  showTachesPopup(intervention: any): void {
+  let tasksHtml = '<div class="text-start">';
+
+  if (intervention.taches && intervention.taches.length > 0) {
+    tasksHtml += `
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th>Tâche</th>
+            <th class="text-end">Prix</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    intervention.taches.forEach((tache: any) => {
+      tasksHtml += `
+        <tr>
+          <td>${tache.tache}</td>
+          <td class="text-end">${tache.prixTache?.toFixed(2) || '0.00'} DT</td>
+        </tr>
+      `;
+    });
+
+    tasksHtml += `
+        <tr class="table-active fw-bold">
+          <td>Total</td>
+          <td class="text-end">${this.calculateTotal(intervention.taches).toFixed(2)} DT</td>
+        </tr>
+        </tbody>
+      </table>
+    `;
+  } else {
+    tasksHtml += '<p class="text-muted">Aucune tâche enregistrée</p>';
+  }
+
+  tasksHtml += '</div>';
+
+  Swal.fire({
+    title: `Intervention #${intervention.id}`,
+    html: `
+      <div class="text-start mb-3">
+        <p><strong>Client:</strong> ${intervention.entreprise} &nbsp;&nbsp;
+        <strong>Responsable:</strong> ${intervention.prenom} ${intervention.nom}</p>
+       
+        <p><strong>Date Début:</strong> ${this.formatDate(intervention.datePrevu)} &nbsp;&nbsp;
+        <strong>Date Fin:</strong> ${this.formatDate(intervention.dateFin)}</p>
+         <p><strong>Technicien:</strong> ${intervention.prenomTechnicien} ${intervention.nomTechnicien}&nbsp;&nbsp;
+         <strong>Specialite:</strong> ${intervention.specialite} </p>
+        
+        <p><strong>Observation:</strong> ${intervention.observation || 'N/A'}</p>
+      </div>
+      ${tasksHtml}
+    `,
+    width: '650px',
+    showConfirmButton: true,
+    confirmButtonText: 'Fermer',
+    confirmButtonColor: '#3085d6'
+  });
+}
+
+calculateTotal(taches: any[]): number {
+  return taches.reduce((sum, t) => sum + (t.prixTache || 0), 0);
+}
+
+formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('fr-FR');
+}
 
 ouvrirPopupPaiement(facture: any): void {
+   if (facture.statut === 'Payée' || facture.statut === 'payé') {
+    Swal.fire({
+      icon: 'info',
+      title: 'Paiement déjà effectué',
+      text: `La facture #${facture.numFacture} est déjà marquée comme payée.`,
+      timer: 2500,
+      showConfirmButton: false
+    });
+    return;
+  }
   this.authService.getAllModesPaiement().subscribe({
     next: (res) => {
       const modes = res.data || [];
@@ -200,5 +282,45 @@ ouvrirPopupPaiement(facture: any): void {
 getNomModesPaiement(modes: any[]): string {
   return modes.map(m => m.nom).join(', ');
 }
-
+validerPaiement(facture: any) {
+    Swal.fire({
+      title: 'Confirmer le paiement',
+      text: `Voulez-vous vraiment marquer la facture #${facture.numFacture} comme payée ?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, valider',
+      cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.authService.validerPaiement(facture.id).subscribe({
+          next: (response: any) => {
+            if (response.success) {
+              // Mettre à jour la facture localement
+              facture.statut = 'Payée';
+              facture.date_paiement = response.date_paiement;
+              
+              Swal.fire(
+                'Validé !',
+                'La facture a été marquée comme payée.',
+                'success'
+              );
+            } else {
+              Swal.fire(
+                'Erreur',
+                response.message || 'Erreur lors de la validation',
+                'error'
+              );
+            }
+          },
+          error: (err) => {
+            Swal.fire(
+              'Erreur',
+              err.error?.message || 'Une erreur est survenue',
+              'error'
+            );
+          }
+        });
+      }
+    });
+  }
 }

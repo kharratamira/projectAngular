@@ -65,7 +65,22 @@
                 Non affectée
               </div>
             </ng-template>
+             <div *ngFor="let statut of demande.statutsAffectation">
+  <span 
+    [ngClass]="{
+      'text-success': statut === 'terminee',
+      'text-primary': statut === 'en_cours',
+      'text-': statut === 'en_attente'
+    }"
+    class="fw-semibold"
+  >
+    Intervention : {{ statut }}
+  </span>
+</div>
+
+
           </div>
+         
         </td>
         <td>{{ demande.dateDemande }}</td>
         <td>
@@ -127,7 +142,7 @@
             <!-- Détails -->
           </button>
           <button 
-          *ngIf="!isClient" 
+          *ngIf="!isClient && demande.statut === 'accepter'  " 
           class="btn btn-light btn-sm w-50 mt-1" 
   [routerLink]="['/dashboard/affecterDemande', demande.id]"  [disabled]="demande.isAffecter">
   <i class="fas fa-user-plus text-primary "></i> <!-- Icône pour Affecter -->

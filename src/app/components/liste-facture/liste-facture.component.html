@@ -8,6 +8,7 @@
     <thead class="table-dark">
       <tr>
         <th>#Facture</th>
+        <th>Intervention</th>
         <th>Date</th>
         <th>Client</th>
         <th>Entreprise</th>
@@ -20,9 +21,15 @@
     <tbody>
       <tr *ngFor="let facture of filteredFacturesPaginated | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
         <td>{{ facture.numFacture }}</td>
+        <td> 
+    <button class="btn btn-light btn-sm btn-sm" (click)="showTachesPopup(facture.intervention)">
+                  <i class="fas fa-file-alt text-muted"></i> 
+
+      Intervention
+    </button></td>
         <td>{{ facture.dateEmission }}</td>
-        <td>{{ facture.client?.prenom }} {{ facture.client?.nom }}</td>
-        <td>{{ facture.client?.entreprise }}</td>
+        <td>{{ facture.intervention?.prenom }} {{ facture.intervention?.nom }}</td>
+        <td>{{ facture.intervention?.entreprise }}</td>
         <td>
           <span [ngClass]="{
             'text-success': facture.statut === 'payee',
@@ -30,26 +37,52 @@
             'text-danger': facture.statut === 'en_retard'
           }">
             {{ facture.statut.toUpperCase() }}
+             <span *ngIf="facture.date_paiement" class="d-block text-muted small">
+       le {{ facture.date_paiement | date:'dd/MM/yyyy' }}
+    </span>
+    <button *ngIf="facture.statut === 'en_attente' && facture.modePaiements?.length!==0 && !isClient" 
+             class="btn btn-light btn-sm " 
+                (click)="validerPaiement(facture)">
+                 <i class="fas fa-check text-success"></i>
+        
+        </button>
+        <!-- <span *ngIf="facture.statut === 'en_retard'" class="badge bg-danger">
+          En retard
+        </span> -->
           </span>
         </td>
         <td>{{ facture.montantTTC }} DT</td>
-       <td>
-  <ng-container *ngIf="facture.statut === 'en_attente'; else afficherModes">
-    <span class="text-muted">En attente de paiement</span>
-  </ng-container>
-  <ng-template #afficherModes>
-    <span *ngIf="facture.modePaiements && facture.modePaiements.length > 0; else aucunMode ">
-      {{ getNomModesPaiement(facture.modePaiements) }}
-    </span>
-    <ng-template #aucunMode>
-      <span class="text-danger">Aucun mode défini</span>
-    </ng-template>
-  </ng-template>
+<td>
+  <!-- Cas 1: En attente sans modes de paiement -->
+  <span *ngIf="facture.statut === 'en_attente' && !facture.modePaiements?.length" 
+        class="text-muted">
+    En attente de paiement
+  </span>
+
+  <!-- Cas 2: En attente avec modes de paiement -->
+  <span *ngIf="facture.statut === 'en_attente' && facture.modePaiements?.length"
+        class="text">
+    {{ getNomModesPaiement(facture.modePaiements) }} 
+   
+    <span class="badge bg-warning text-dark">En attente de confirmation</span>
+  </span>
+
+  <!-- Cas 3: Payée/Retard avec modes de paiement -->
+  <span *ngIf="facture.statut !== 'en_attente' && facture.modePaiements?.length"
+        class="text-success">
+    {{ getNomModesPaiement(facture.modePaiements) }}
+   
+  </span>
+
+  <!-- Cas 4: Payée/Retard sans modes de paiement -->
+  <span *ngIf="facture.statut !== 'en_attente' && !facture.modePaiements?.length"
+        class="text-danger">
+    Aucun mode défini
+  </span>
 </td>
 
-
         <td>
-          <button  class="btn btn-light btn-sm w-50 mt-1" 
+          <button  class="btn btn-light btn-sm btn-sm" 
            (click)="afficherFacture(facture)">
             <i class="fas fa-file-alt text-muted"></i> 
             Facture

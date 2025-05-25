@@ -78,23 +78,7 @@ filters = {
       }
     });
   }
-  
 
-  
-  
-  
-  // filterDemandes() {
-  //   this.filteredDemandes = this.demandes.filter(demande =>
-  //     (this.filters.id ? demande.id.toString().includes(this.filters.id) : true) &&
-  //     (this.filters.idClient ? demande.client.id.toString().includes(this.filters.idClient) : true) &&
-  //     (this.filters.entreprise ? demande.client.entreprise.toLowerCase().includes(this.filters.entreprise.toLowerCase()) : true) &&
-  //     (this.filters.adresse ? demande.client.adresse.toLowerCase().includes(this.filters.adresse.toLowerCase()) : true) &&
-      
-  //     (this.filters.description ? demande.description.toLowerCase().includes(this.filters.description.toLowerCase()) : true) &&
-  //     (this.filters.statut ? demande.statut.toLowerCase().includes(this.filters.statut.toLowerCase()) : true) &&
-  //     (this.filters.dateDemande ? demande.dateDemande.toLowerCase().includes(this.filters.dateDemande.toLowerCase()) : true)
-  //   );
-  // }
 applyFilters(): void {
   const { entreprise, adresse, description, statut, dateDemande } = this.filters;
 
@@ -106,8 +90,6 @@ applyFilters(): void {
     (!dateDemande || demande.dateDemande?.toLowerCase().includes(dateDemande.toLowerCase()))
   );
 }
-
-  
 
 editDemande(demande: any): void {
   this.selectedDemande = { ...demande };

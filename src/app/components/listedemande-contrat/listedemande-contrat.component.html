@@ -33,7 +33,6 @@
         <tr
           *ngFor="let demande of filteredDemandes | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }"
           [ngClass]="{
-              'table-warning': demande.statut?.toLowerCase() === 'en_attente',
               'table-success': demande.statut?.toLowerCase() === 'accepter',
               'table-danger': demande.statut?.toLowerCase() === 'annulee',
               'disabled-row ': demande.disabled
@@ -57,9 +56,9 @@
       </ng-container>
 
       <br>
-      <button class="btn btn-sm mt-1" style="background-color: #1976d2; color: white;"
+      <button class="btn btn-sm mt-1" style="background-color: #5381af; color: white;"
         (click)="voirContrat(demande.id)">
-        <i class="fas fa-eye mr-1"></i> Contrat #{{ demande.contratNum }}
+        Contrat #{{ demande.contratNum }}
       </button>
     </ng-container>
 

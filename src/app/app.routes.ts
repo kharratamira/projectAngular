@@ -21,7 +21,6 @@ import { DemandeContratComponent } from './components/demande-contrat/demande-co
 import { ListedemandeContratComponent } from './components/listedemande-contrat/listedemande-contrat.component';
 import { ListeContratComponent } from './components/liste-contrat/liste-contrat.component';
 import { ListeFactureComponent } from './components/liste-facture/liste-facture.component';
-import { SatisfactionClientComponent } from './components/satisfaction-client/satisfaction-client.component';
 import { ListeSatisfactionClientComponent } from './components/liste-satisfaction-client/liste-satisfaction-client.component';
 
 export const routes: Routes = [
@@ -115,10 +114,7 @@ export const routes: Routes = [
          component: ListeFactureComponent,
           canActivate: [RoleGuard],
           data: { roles: ['ROLE_CLIENT','ROLE_ADMIN'] }},
-           {path: 'satisfactionClient',
-         component: SatisfactionClientComponent,
-          canActivate: [RoleGuard],
-          data: { roles: ['ROLE_CLIENT','ROLE_ADMIN'] }},
+           
            {path: 'listesatisfactionClient',
          component: ListeSatisfactionClientComponent,
           canActivate: [RoleGuard],

@@ -30,6 +30,7 @@ export class AjouterUserComponent {
       email: ['', [Validators.required, Validators.email]],
       numTel: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+
       // Champs spécifiques selon le type de user
       adresse:[''],
       entreprise:[''],
@@ -105,7 +106,7 @@ export class AjouterUserComponent {
         Swal.fire({
           icon: 'error',
           title: 'Erreur',
-          text: error.error?.message || 'Erreur lors de la création',
+          text: error.error?.message || 'Merci de remplir correctement tous les champs',
           confirmButtonColor: '#3085d6'
         });
       }

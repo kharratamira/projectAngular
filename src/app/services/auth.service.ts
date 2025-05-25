@@ -450,4 +450,7 @@ getAllModesPaiement(): Observable<any> {
       modes: modeIds
     });
   }
+   validerPaiement(factureId: number) {
+    return this.http.put(`${this.apiUrl}payeeFacture/${factureId}`, {});
+  }
 }

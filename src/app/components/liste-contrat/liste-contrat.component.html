@@ -1,10 +1,9 @@
-
 <div class="container mt-4">
   <h2 class="titre-tech">Liste des Contrats</h2>
 
   <!-- Barre de recherche -->
   <div class="mb-3">
-    <input type="text" [(ngModel)]="searchText"  class="form-control" placeholder="Rechercher par numéro, client ...">
+    <input type="text" [(ngModel)]="searchText" class="form-control" placeholder="Rechercher par numéro, client ...">
   </div>
 
   <!-- Indicateur de chargement -->
@@ -20,7 +19,7 @@
       <thead class="table-dark">
         <tr>
           <th>N° Contrat</th>
-          <th>N° Demande</th>
+          <!-- <th>N° Demande</th> -->
           <th>Client</th>
           <th>Entreprise</th>
           <th>Date Début</th>
@@ -31,32 +30,32 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let contrat of filteredContrats  | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
+        <tr
+          *ngFor="let contrat of filteredContrats  | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
           <td>{{ contrat.num || 'N/A' }}</td>
-          <td>{{contrat.demandecontrat}}</td>
+          <!-- <td>{{contrat.demandecontrat}}</td> -->
           <td>
-            
+
             {{ contrat.client?.nom }} {{ contrat.client?.prenom }}
             <small class="text-muted d-block">{{ contrat.client?.email }}</small>
           </td>
           <td>{{ contrat.client?.entreprise || 'Non spécifié' }}</td>
           <td>{{ contrat.dateDebut | date:'dd/MM/yyyy' }}</td>
           <td>{{ contrat.dateFin | date:'dd/MM/yyyy' }}</td>
-         <td>
-  <span class="badge text-black"  
-       [ngClass]="{
+          <td>
+            <span class="badge text-black" [ngClass]="{
          'bg-warning': contrat.statut === 'EN_ATTENTE',
          'bg-success': contrat.statut === 'ACCEPTER', 
          'bg-danger': contrat.statut === 'ANNULEE'
        }">
-    {{ contrat.vieContrat }}
-  </span>
-</td>
+              {{ contrat.vieContrat }}
+            </span>
+          </td>
           <td>
-            <button class="btn btn-primary btn-sm me-2" (click)="voirContrat(contrat.demande?.id)">
+            <button class="btn btn-sm mt-1" style="background-color: #5381af; color: white;" (click)="voirContrat(contrat.demande?.id)">
               <i class="fas fa-eye"></i> Contrat #{{ contrat.num }}
             </button>
-           
+
           </td>
         </tr>
       </tbody>
@@ -65,11 +64,7 @@
 
   <!-- Pagination -->
   <div class="d-flex justify-content-center mt-3" *ngIf="!isLoading && contrats.length > 0">
-    <pagination-controls
-      (pageChange)="currentPage = $event"
-      previousLabel="Précédent"
-      nextLabel="Suivant"
-      [maxSize]="5"
+    <pagination-controls (pageChange)="currentPage = $event" previousLabel="Précédent" nextLabel="Suivant" [maxSize]="5"
       [responsive]="true">
     </pagination-controls>
   </div>

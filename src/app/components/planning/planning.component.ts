@@ -144,8 +144,11 @@ export class PlanningComponent implements OnInit {
                     <p><b>Heure:</b> ${eventDate.toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})}</p>
           <p><b>Description:</b> ${description}</p>
                     <hr />
+                     
                     <p><b>Tâches intervention :</b></p>
                     ${checkboxHtml}
+                     <p><b>Date fin:</b></p>
+    <input type="datetime-local" id="dateFin-input" class="form-control mb-2" />
                     <p><b>Observation :</b></p>
                   <textarea id="observation-input" rows="4" style="width: 100%; resize: vertical;" placeholder="Ajouter une observation..."></textarea>
                 </div>
@@ -163,7 +166,9 @@ export class PlanningComponent implements OnInit {
               const data = {
                 affectation_id: event.id,
                 taches: checkedTacheIds.map((id: string) => parseInt(id)),
-                observation: (document.getElementById('observation-input') as HTMLTextAreaElement)?.value || ''
+                observation: (document.getElementById('observation-input') as HTMLTextAreaElement)?.value || '',
+                dateFin:(document.getElementById('dateFin-input') as HTMLInputElement)?.value
+
               };
 
               console.log('Payload intervention:', data);
