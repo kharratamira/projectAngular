@@ -352,7 +352,7 @@ showDetails(demande: any): void {
 
   const detailsHtml = `
     <div class="text-start">
-      <h4 class="mb-3">Demande #${demande.id}</h4>
+      
       <h5 class="mb-3"><strong>Détails de la Demande</strong></h5>
 
       <p><strong>Description:</strong> ${demande.description || '-'}</p>
@@ -377,7 +377,7 @@ showDetails(demande: any): void {
   `;
 
   Swal.fire({
-    title: `Détails de la Demande #${demande.id}`,
+    title: ` Demande #${demande.id}`,
     html: detailsHtml,
     width: '800px',
     showConfirmButton: true,
@@ -411,7 +411,7 @@ afficherFacture(facture: any, intervention: any): void {
 
       <p><strong>Client :</strong> ${client.prenom || ''} ${client.nom || '-'} -  ${client.entreprise || '-'}</p>
 <div style="text-align: left;">
-            <p><strong>Statut:</strong> <span style="color: ${facture.statut === 'PAYEE' ? '#27ae60' : '#e67e22'}">${facture.statut || 'N/A'}  Paiement</span></p>
+            <p><strong>Statut:</strong> ${facture.statut || 'N/A'}  </span></p>
           </div>
       <hr />
       <table style="width:100%; border-collapse: collapse;" border="1">
