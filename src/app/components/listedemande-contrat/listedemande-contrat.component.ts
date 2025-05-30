@@ -30,8 +30,8 @@ export class ListedemandeContratComponent implements OnInit {
      this.isAdmin = roles.includes('ROLE_ADMIN');
     const email = sessionStorage.getItem('userEmail');
     const role = roles.includes('ROLE_CLIENT') ? 'ROLE_CLIENT' : '';
-    console.log('EMAIL:', this.email); // 👈 à vérifier dans la console
-  console.log('ROLE:', this.role);
+  //   console.log('EMAIL:', this.email); // 👈 à vérifier dans la console
+  // console.log('ROLE:', this.role);
 
     this.isClient = roles.includes('ROLE_CLIENT');
 
@@ -49,7 +49,7 @@ export class ListedemandeContratComponent implements OnInit {
       const isDisabled = localStorage.getItem('disabled_demande_' + demande.id) === 'true';
       demande.disabled = isDisabled;
 
-      // 🔁 Récupère le numéro du contrat si déjà généré
+      // 🔁 Récupère le numéro du contrat si déjà généré  affichege de contrat dans liste demande 
       if (demande.isGenere) {
         this.authService.getContratByDemande(demande.id).subscribe({
           next: (res: any) => {
@@ -256,10 +256,33 @@ export class ListedemandeContratComponent implements OnInit {
         });
       }
     }
+    // disableRow(demande: any): void {
+    //   demande.disabled = true;
+    //   localStorage.setItem('disabled_demande_' + demande.id, 'true');
+    // }
     disableRow(demande: any): void {
+  Swal.fire({
+    title: 'Êtes-vous sûr ?',
+    text: 'Vous êtes sur le point de désactiver cette demande.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Oui, désactiver',
+    cancelButtonText: 'Annuler',
+  }).then((result) => {
+    if (result.isConfirmed) {
       demande.disabled = true;
       localStorage.setItem('disabled_demande_' + demande.id, 'true');
+
+      Swal.fire({
+        title: 'Désactivée !',
+        text: 'La demande a été désactivée avec succès.',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false,
+      });
     }
+  });
+}
     afficherCreatContratPopup(demande: any): void {
       console.log('Détails de la demande:', demande); // Ajoutez ce log
   console.log('Client:', demande.client);

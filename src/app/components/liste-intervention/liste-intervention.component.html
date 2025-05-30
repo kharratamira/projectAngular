@@ -83,7 +83,7 @@
             </button>
           </td>
          <td>
-  <button *ngIf="interv.facture" 
+  <button *ngIf="interv.facture && !isTechnicien" 
           class="btn btn-light btn-sm"
           (click)="afficherFacture(interv.facture, interv)">
     <i class="fas fa-file-alt text-muted"></i>

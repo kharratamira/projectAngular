@@ -101,8 +101,9 @@
 
             </ng-container>
             <button *ngIf="!isClient && !demande.isGenere && demande.statut === 'accepter'"
-              class="btn btn-light btn-sm w-50 mt-1" (click)="afficherCreatContratPopup(demande)">
+              class="btn btn-light btn-sm " (click)="afficherCreatContratPopup(demande)">
               <i class="fas fa-file-alt text-muted"></i>
+              Contrat
             </button>
             <!-- Boutons Accepter / Annuler le contrat (si généré) -->
             <div *ngIf="isClient && demande.isGenere && demande.contrat?.statut?.toLowerCase() === 'en_attente'">

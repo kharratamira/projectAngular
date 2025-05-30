@@ -41,6 +41,7 @@ filters = {
 
   ngOnInit() {
     this.loadDemandes();
+    
     this.checkUserRole();
     this.checkUserRoleAdmin();
   }
@@ -71,8 +72,12 @@ filters = {
           this.demandes = data;
         }
   
-        this.filteredDemandes = this.demandes;
-      },
+         this.demandes.forEach(demande => {
+        demande.disabled = localStorage.getItem('disabled_demande_' + demande.id) === 'true';
+      });
+
+      this.filteredDemandes = [...this.demandes];
+    },
       error: (error) => {
         console.error('Erreur lors de la récupération des demandes', error);
       }
@@ -170,42 +175,72 @@ editDemande(demande: any): void {
   });
 }
 
-  deleteDemande(demandeId: number): void {
-    Swal.fire({
-      title: 'Êtes-vous sûr ?',
-      text: 'Cette action supprimera définitivement la demande.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Oui, supprimer',
-      cancelButtonText: 'Annuler'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.authService.deleteDemande(demandeId).subscribe({
-          next: () => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Supprimé ',
-              text: 'La demande a été supprimée avec succès.',
-              timer: 3000,
-              timerProgressBar: true
-            });
+  // deleteDemande(demandeId: number): void {
+  //   Swal.fire({
+  //     title: 'Êtes-vous sûr ?',
+  //     text: 'Cette action supprimera définitivement la demande.',
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Oui, supprimer',
+  //     cancelButtonText: 'Annuler'
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       this.authService.deleteDemande(demandeId).subscribe({
+  //         next: () => {
+  //           Swal.fire({
+  //             icon: 'success',
+  //             title: 'Supprimé ',
+  //             text: 'La demande a été supprimée avec succès.',
+  //             timer: 3000,
+  //             timerProgressBar: true
+  //           });
             
-            this.loadDemandes(); // Reload after deletion
-          },
-          error: (error) => {
-            console.error('Erreur lors de la suppression de la demande', error);
-            Swal.fire(
-              'Erreur',
-              'Une erreur est survenue lors de la suppression.',
-              'error'
-            );
-          }
-        });
-      }
-    });
-  }
+  //           this.loadDemandes(); // Reload after deletion
+  //         },
+  //         error: (error) => {
+  //           console.error('Erreur lors de la suppression de la demande', error);
+  //           Swal.fire(
+  //             'Erreur',
+  //             'Une erreur est survenue lors de la suppression.',
+  //             'error'
+  //           );
+  //         }
+  //       });
+  //     }
+  //   });
+// Modifiez la méthode disableRow
+ disableRow(demande: any): void {
+  Swal.fire({
+    title: 'Confirmer la désactivation',
+    text: 'Voulez-vous vraiment désactiver définitivement cette demande ?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Oui, désactiver',
+    cancelButtonText: 'Annuler'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Marquer la demande comme désactivée
+      demande.disabled = true;
+      
+      // Stocker l'état dans le localStorage
+      localStorage.setItem('disabled_demande_' + demande.id, 'true');
+      
+      // Rafraîchir l'affichage
+      this.filteredDemandes = [...this.filteredDemandes];
+      
+      Swal.fire({
+        icon: 'success',
+        title: 'Désactivée',
+        text: 'La demande a été désactivée avec succès.',
+        timer: 2000
+      });
+    }
+  });
+}
   acceptDemande(demandeId: number): void {
     Swal.fire({
       title: 'Êtes-vous sûr ?',

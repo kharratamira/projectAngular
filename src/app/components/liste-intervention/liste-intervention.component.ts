@@ -339,6 +339,9 @@ export class ListeInterventionComponent implements OnInit {
               timer: 2000,
               showConfirmButton: false
             });
+            
+              // Rechargement de la page après la fermeture de l'alerte
+              window.location.reload();
           }
         });
       },
