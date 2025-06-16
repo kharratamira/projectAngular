@@ -39,7 +39,7 @@ export class ListeCompteComponent implements OnInit {
         }));
       
       },
-      // ... reste du code
+      
     });
   }
 
@@ -69,51 +69,7 @@ export class ListeCompteComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
-  // editUser(user: any) {
-  //   this.selectedUser = { ...user };
-  // }
-
-  
-  // updateUser() {
-  //   if (this.selectedUser) {
-  //     Swal.fire({
-  //       title: 'Confirmer la mise à jour',
-  //       text: 'Êtes-vous sûr de vouloir mettre à jour cet utilisateur ?',
-  //       icon: 'warning',
-  //       showCancelButton: true,
-  //       confirmButtonColor: '#3085d6',
-  //       cancelButtonColor: '#d33',
-  //       confirmButtonText: 'Oui, mettre à jour',
-  //       cancelButtonText: 'Annuler'
-  //     }).then((result) => {
-  //       if (result.isConfirmed) {
-  //         this.authService.updateTechnicien(this.selectedUser.id, this.selectedUser).subscribe({
-  //           next: (response) => {
-  //             Swal.fire({
-  //               icon: 'success',
-  //               title: 'Mise à jour réussie',
-  //               text: 'L\'utilisateur a été mis à jour avec succès.',
-  //               timer: 3000,
-  //               timerProgressBar: true
-  //             });
-  //             console.log('Technicien mis à jour avec succès', response);
-  //             this.loadUser(); // Recharger la liste des utilisateurs
-  //             this.isEditing = false;
-  //           },
-  //           error: (error) => {
-  //             Swal.fire({
-  //               icon: 'error',
-  //               title: 'Échec de la mise à jour',
-  //               text: 'Une erreur s\'est produite lors de la mise à jour de l\'utilisateur.',
-  //               confirmButtonColor: '#d33'
-  //             });
-  //             console.error('Erreur lors de la mise à jour du technicien', error);
-  //           }
-  //         });
-  //       }
-  //     });
-  //   }
-  // }
+ 
   editTechnicien(technicien: any): void {
   Swal.fire({
     title: 'Êtes-vous sûr ?',

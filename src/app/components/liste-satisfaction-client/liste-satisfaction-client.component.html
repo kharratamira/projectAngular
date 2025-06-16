@@ -2,7 +2,7 @@
 <div class="container mt-4">
   <h2 class="titre-tech">Satisfaction client</h2>
 
-  <input type="text" [(ngModel)]="searchText" placeholder="Rechercher..." class="form-control mb-3" />
+  <input type="text" [(ngModel)]="searchText" placeholder="Rechercher par client..." class="form-control mb-3" />
 
   <div *ngIf="isLoading" class="text-center mt-3">
     Chargement des satisfactions...
@@ -21,20 +21,21 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of filteredSatisfaction | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
+        <tr
+          *ngFor="let item of filteredSatisfaction | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
           <td>
-            {{ item.intervention.client.nom }} {{ item.intervention.client.prenom }}<br />
             {{ item.intervention.client.entreprise }}
+            <br>
+            Responsable :{{ item.intervention.client.nom }} {{ item.intervention.client.prenom }}<br />
           </td>
-            <td>{{item.intervention.client.email}}</td>   
-            
-<td>
-  <button  class="btn btn-light btn-sm btn-sm"
-          (click)="showTachesPopup(item.intervention)">
-            <i class="fas fa-file-alt text-muted"></i>
-    Intervention
-  </button>
-</td>
+          <td>{{item.intervention.client.email}}</td>
+
+          <td>
+            <button class="btn btn-light btn-sm btn-sm" (click)="showTachesPopup(item.intervention)">
+              <i class="fas fa-file-alt text-muted"></i>
+              Intervention
+            </button>
+          </td>
           <td>{{ item.satisfaction.niveau }}</td>
           <td>{{ item.satisfaction.commentaire || '-' }}</td>
           <td>{{ item.satisfaction.date_creation }}</td>

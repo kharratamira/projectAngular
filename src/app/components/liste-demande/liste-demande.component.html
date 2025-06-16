@@ -2,13 +2,9 @@
   <h2 class="titre-tech">Rechercher par client</h2>
 
   <th>
-    <input
-      class="form-control"
-      type="text"
-      [(ngModel)]="filters.entreprise"
-      placeholder="Rechercher par Entreprise"
-      (ngModelChange)="applyFilters()"
-    />
+    <input class="form-control" type="text" [(ngModel)]="searchText" placeholder="Rechercher par client ,adresse...."
+      (ngModelChange)="applyFilters()" />
+
   </th>
 
   <button class="btn btn-success mb-3" (click)="exportToExcel()">Exporter en Excel</button>
@@ -16,172 +12,132 @@
 
   <h2 class="titre-tech">Liste des Demandes Intervention</h2>
 
-  <input class="form-control mb-3"
-       type="text"
-       [(ngModel)]="searchText"
-       placeholder="Rechercher par Entreprise, Description, etc."
-       (ngModelChange)="applyFilters()" />
+  <!-- <input class="form-control mb-3" type="text" [(ngModel)]="searchText"
+    placeholder="Rechercher par Entreprise, Description, etc." (ngModelChange)="applyFilters()" /> -->
   <div id="print-section">
-  <!-- Table with Filter Inputs in Header -->
- <div class="table-responsive">
-    <table class="table table-striped table-hover">
-      <thead class="table-dark">
-    
-      <tr>
-        <th>ID</th>
-        <th>Client</th>
-        <th>Adresse</th>
-        <th>Description</th>
-        <th>Statut</th>
-        <th>Date Demande</th>
-        <th>Photo</th>
-        
-        <th class="no-print">Actions</th>
-      </tr>
-    
-    </thead>
-    <tbody>
-      <tr 
-       
-  *ngFor="let demande of filteredDemandes | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }" 
-  [ngClass]="{
+    <!-- Table with Filter Inputs in Header -->
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+
+          <tr>
+            <th>ID</th>
+            <th>Client</th>
+            <th>Responsable</th>
+            <th>Adresse</th>
+            <th>Description</th>
+            <th>Statut</th>
+            <th>Date Demande</th>
+            <th>Photo</th>
+
+            <th class="no-print">Actions</th>
+          </tr>
+
+        </thead>
+        <tbody>
+          <thead class="table-dark">
+
+          </thead>
+
+          <tr
+            *ngFor="let demande of filteredDemandes | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }"
+            [ngClass]="{
     'table-success': demande.statut === 'accepter', 
     'table-danger': demande.statut === 'annulee',
     'disabled-row': demande.disabled  
-  }"
-    [class.text-muted]="demande.disabled"
+  }" [class.text-muted]="demande.disabled">
+            <td>{{ demande.id }}</td>
+            <td>{{ demande.client.entreprise }}<br>
 
-
-      >
-        <td>{{ demande.id }}</td>
-        <td>{{ demande.client.entreprise }}</td>
-        <td>{{ demande.client.adresse }}</td>
-        <td>{{ demande.description }}</td>
-        <td>
-          {{ demande.statut }}
-          <div *ngIf="demande.actionDate" class="text-muted small">
-            {{ demande.actionDate | date:'dd/MM/yyyy HH:mm' }}
-          </div>
-          <div *ngIf="demande.statut === 'accepter'">
-            <div *ngIf="demande.isAffecter; else nonAffectee" class="text-success fw-bold">
-              "Intervention affectée à un technicien"            </div>
-            <ng-template #nonAffectee>
-              <div class="text-danger fw-bold">
-                Non affectée
+            </td>
+            <td> {{ demande.client.nom }} {{ demande.client.prenom }}
+            </td>
+            <td>{{ demande.client.adresse }}</td>
+            <td>{{ demande.description }}</td>
+            <td>
+              {{ demande.statut }}
+              <div *ngIf="demande.actionDate" class="text-muted small">
+                {{ demande.actionDate | date:'dd/MM/yyyy HH:mm' }}
               </div>
-            </ng-template>
-             <div *ngFor="let statut of demande.statutsAffectation">
-  <span 
-    [ngClass]="{
+              <div *ngIf="demande.statut === 'accepter'">
+                <div *ngIf="demande.isAffecter; else nonAffectee" class="text-success fw-bold">
+                  "Intervention affectée à un technicien" </div>
+                <ng-template #nonAffectee>
+                  <div class="text-danger fw-bold">
+                    Non affectée
+                  </div>
+                </ng-template>
+                <div *ngFor="let statut of demande.statutsAffectation">
+                  <span [ngClass]="{
       'text-success': statut === 'terminee',
       'text-primary': statut === 'en_cours',
       'text-': statut === 'en_attente'
-    }"
-    class="fw-semibold"
-  >
-    Intervention : {{ statut }}
-  </span>
-</div>
+    }" class="fw-semibold">
+                    Intervention : {{ statut }}
+                  </span>
+                </div>
 
 
-          </div>
-         
-        </td>
-        <td>{{ demande.dateDemande }}</td>
-        <td>
-          <div *ngIf="demande.photos?.length > 0; else noPhotos" class="d-flex flex-wrap gap-2">
-            <img 
-              *ngFor="let photo of demande.photos" 
-              [src]="photo" 
-              class="img-thumbnail" 
-              alt="Photo" 
-             style="max-width: 50px; max-height: 50px;"             />
-          </div>
-          <ng-template #noPhotos>
-            <p class="text-muted">Aucune photo disponible</p>
-          </ng-template>
-        
-        <td>
-          <!-- Bouton "Modifier" -->
-          <button 
-            *ngIf="demande.statut === 'en_attente' && !isAdmin" 
-            class="btn btn-light btn-sm w-50 mt-1" 
-            (click)="editDemande(demande)">
-            <i class="fas fa-edit text-primary"></i> 
+              </div>
 
-            <!-- Modifier -->
-          </button>
+            </td>
+            <td>{{ demande.dateDemande }}</td>
+            <td>
+              <div *ngIf="demande.photos?.length > 0; else noPhotos" class="d-flex flex-wrap gap-2">
+                <img *ngFor="let photo of demande.photos" [src]="photo" class="img-thumbnail" alt="Photo"
+                  style="max-width: 20px; max-height: 40px;" />
+              </div>
+              <ng-template #noPhotos>
+                <p class="text-muted">Aucune photo disponible</p>
+              </ng-template>
 
-          <!-- Bouton "Supprimer" -->
-        <button 
-      *ngIf="demande.statut === 'en_attente' && !isAdmin && !demande.disabled"  
-      class="btn btn-light btn-sm w-50 mt-1" 
-      (click)="disableRow(demande)">
-      <i class="fas fa-trash text-danger"></i>
-    </button>
+            <td>
+              <!-- Bouton "Modifier" -->
+              <button *ngIf="demande.statut === 'en_attente' && !isAdmin" class="btn btn-light btn-sm w-50 mt-1"
+                (click)="editDemande(demande)">
+                <i class="fas fa-edit text-primary"></i>
 
-          <!-- Bouton "Accepter" -->
-          <button 
-            *ngIf="demande.statut === 'en_attente'  && !isClient" 
-            class="btn btn-light btn-sm w-50 mt-1" 
-            (click)="acceptDemande(demande.id)">
-            <i class="fas fa-check text-success"></i>
-            <!-- Accepter -->
-          </button>
+                <!-- Modifier -->
+              </button>
 
-          <!-- Bouton "Annuler" -->
-          <button 
-            *ngIf="demande.statut === 'en_attente'  && !isClient" 
-            class="btn btn-light btn-sm w-50 mt-1" 
-            (click)="cancelDemande(demande.id)">
-            <i class="fas fa-times text-danger"></i>
-            <!-- Annuler -->
-          </button>
-          <button      
-             class="btn btn-light btn-sm " 
-          (click)="showDetails(demande)">
-            <i class="fas fa-file-alt text-muted"></i> <!-- Icône de script -->
-            
-            Détails
-          </button>
-          <button 
-          *ngIf="!isClient && demande.statut === 'accepter'  " 
-          class="btn btn-light btn-sm w-50 mt-1" 
-  [routerLink]="['/dashboard/affecterDemande', demande.id]"  [disabled]="demande.isAffecter">
-  <i class="fas fa-user-plus text-primary "></i> <!-- Icône pour Affecter -->
+              <!-- Bouton "Supprimer" -->
+              <button *ngIf="demande.statut === 'en_attente' && !isAdmin && !demande.disabled"
+                class="btn btn-light btn-sm w-50 mt-1" (click)="disableRow(demande)">
+                <i class="fas fa-trash text-danger"></i>
+              </button>
 
-  <!-- Affecter -->
-</button>
+              <!-- Bouton "Accepter" -->
+              <button *ngIf="demande.statut === 'en_attente'  && !isClient" class="btn btn-light btn-sm w-50 mt-1"
+                (click)="acceptDemande(demande.id)">
+                <i class="fas fa-check text-success"></i>
+                <!-- Accepter -->
+              </button>
 
-        </td>
-      </tr>
-    </tbody>
-  </table>
+              <!-- Bouton "Annuler" -->
+              <button *ngIf="demande.statut === 'en_attente'  && !isClient" class="btn btn-light btn-sm w-50 mt-1"
+                (click)="cancelDemande(demande.id)">
+                <i class="fas fa-times text-danger"></i>
+                <!-- Annuler -->
+              </button>
+              <button class="btn btn-light btn-sm " (click)="showDetails(demande)">
+                <i class="fas fa-file-alt text-muted"></i> <!-- Icône de script -->
 
-  
-  <div class="pagination-container">
-    <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
-  </div>
-</div>
-  
-  <!-- <div *ngIf="isUpdateMode" class="container my-4 p-4 border rounded shadow-sm bg-light">
-    <h3 class="mb-4 text-primary">Modifier la Demande</h3>
-    <form (ngSubmit)="updateDemande(selectedDemande)" #demandeForm="ngForm">
-      <div class="mb-3">
-        <label for="entreprise" class="form-label">Entreprise</label>
-        <input type="text" id="entreprise" class="form-control" [(ngModel)]="selectedDemande.client.entreprise" name="entreprise" required />
+                Détails
+              </button>
+              <button *ngIf="!isClient && demande.statut === 'accepter'  " class="btn btn-light btn-sm w-50 mt-1"
+                [routerLink]="['/dashboard/affecterDemande', demande.id]" [disabled]="demande.isAffecter">
+                <i class="fas fa-user-plus text-primary "></i> <!-- Icône pour Affecter -->
+
+                <!-- Affecter -->
+              </button>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <div class="pagination-container">
+        <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
       </div>
-      <div class="mb-3">
-        <label for="adresse" class="form-label">Adresse</label>
-        <input type="text" id="adresse" class="form-control" [(ngModel)]="selectedDemande.client.adresse" name="adresse" required />
-      </div>
-      <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <input type="text" id="description" class="form-control" [(ngModel)]="selectedDemande.description" name="description" required />
-      </div>
-      <button type="submit" class="btn btn-primary">Mettre à jour</button>
-      <button type="button" class="btn btn-secondary ms-2" (click)="cancelEdit()">Annuler</button>
-    </form>
-  </div>
-
-</div> -->
+    </div>

@@ -18,17 +18,18 @@ declare var bootstrap: any;
 })
 export class ListeDemandeComponent implements OnInit {
 
-  demandes: any[] = [];// Un tableau qui va contenir toutes les demandes récupérées depuis le backend.
-  filteredDemandes: any[] = [];//Un tableau qui contient les demandes après filtrage (affichées dans la vue)
-  selectedDemande: any = { client: {} };// L'objet actuellement sélectionné pour modification.
-  isUpdateMode: boolean = false;// Un booléen qui indique si l'utilisateur est en mode édition.
-  currentPage: number = 1; // Page actuelle
+  demandes: any[] = [];
+  filteredDemandes: any[] = [];
+  selectedDemande: any = { client: {} };
+  isUpdateMode: boolean = false;
+  currentPage: number = 1;
   itemsPerPage: number = 10; 
   isClient = false;
   isAdmin = false;
   baseUrl: string = 'http://localhost:8000/uploads/demandes/';
     searchText: string = '';
 filters = {
+  id: '',
   entreprise: '',
   adresse: '',
   description: '',
@@ -76,24 +77,39 @@ filters = {
         demande.disabled = localStorage.getItem('disabled_demande_' + demande.id) === 'true';
       });
 
-      this.filteredDemandes = [...this.demandes];
-    },
+ this.filteredDemandes = [...this.demandes]; // par défaut
+      this.applyFilters();    },
       error: (error) => {
         console.error('Erreur lors de la récupération des demandes', error);
       }
     });
   }
 
-applyFilters(): void {
-  const { entreprise, adresse, description, statut, dateDemande } = this.filters;
 
-  this.filteredDemandes = this.demandes.filter((demande) =>
-    (!entreprise || demande.client?.entreprise?.toLowerCase().includes(entreprise.toLowerCase())) &&
-    (!adresse || demande.client?.adresse?.toLowerCase().includes(adresse.toLowerCase())) &&
-    (!description || demande.description?.toLowerCase().includes(description.toLowerCase())) &&
-    (!statut || demande.statut?.toLowerCase().includes(statut.toLowerCase())) &&
-    (!dateDemande || demande.dateDemande?.toLowerCase().includes(dateDemande.toLowerCase()))
-  );
+applyFilters(): void {
+  const search = this.searchText.toLowerCase();
+
+  this.filteredDemandes = this.demandes.filter(demande => {
+    const id = demande.id?.toString() || '';
+    const entreprise = demande.client?.entreprise?.toLowerCase() || '';
+    const nom = demande.client?.nom?.toLowerCase() || '';
+    const prenom = demande.client?.prenom?.toLowerCase() || '';
+    const adresse = demande.client?.adresse?.toLowerCase() || '';
+    const description = demande.description?.toLowerCase() || '';
+    const statut = demande.statut?.toLowerCase() || '';
+    const dateDemande = demande.dateDemande?.toLowerCase() || '';
+
+    return (
+      entreprise.includes(search) ||
+      nom.includes(search) ||
+      prenom.includes(search) ||
+      adresse.includes(search) ||
+      description.includes(search) ||
+      statut.includes(search) ||
+      dateDemande.includes(search) ||
+      id.includes(search)
+    );
+  });
 }
 
 editDemande(demande: any): void {
@@ -175,41 +191,7 @@ editDemande(demande: any): void {
   });
 }
 
-  // deleteDemande(demandeId: number): void {
-  //   Swal.fire({
-  //     title: 'Êtes-vous sûr ?',
-  //     text: 'Cette action supprimera définitivement la demande.',
-  //     icon: 'warning',
-  //     showCancelButton: true,
-  //     confirmButtonColor: '#3085d6',
-  //     cancelButtonColor: '#d33',
-  //     confirmButtonText: 'Oui, supprimer',
-  //     cancelButtonText: 'Annuler'
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       this.authService.deleteDemande(demandeId).subscribe({
-  //         next: () => {
-  //           Swal.fire({
-  //             icon: 'success',
-  //             title: 'Supprimé ',
-  //             text: 'La demande a été supprimée avec succès.',
-  //             timer: 3000,
-  //             timerProgressBar: true
-  //           });
-            
-  //           this.loadDemandes(); // Reload after deletion
-  //         },
-  //         error: (error) => {
-  //           console.error('Erreur lors de la suppression de la demande', error);
-  //           Swal.fire(
-  //             'Erreur',
-  //             'Une erreur est survenue lors de la suppression.',
-  //             'error'
-  //           );
-  //         }
-  //       });
-  //     }
-  //   });
+  
 // Modifiez la méthode disableRow
  disableRow(demande: any): void {
   Swal.fire({
@@ -418,6 +400,7 @@ editDemande(demande: any): void {
         <h5 class="mb-3"><strong>Détails de la Demande</strong></h5>
         
         <p><strong>Client:</strong> ${demande.client?.entreprise || '-'}</p>
+        <p><strong>Responsable:</strong> ${demande.client?.nom || '-'}-${demande.client?.prenom || '-'}</p>
         <p><strong>Adresse:</strong> ${demande.client?.adresse || '-'}</p>
         <p><strong>Description:</strong> ${demande.description || '-'}</p>
         <p><strong>Statut:</strong> <span class="badge bg-${this.getStatusColor(demande.statut)}">${demande.statut || '-'}</span></p>
@@ -442,11 +425,11 @@ editDemande(demande: any): void {
   getStatusColor(statut: string): string {
     switch (statut.toLowerCase()) {
       case 'accepter':
-        return 'success'; // Vert
+        return 'success'; 
       case 'annulee':
-        return 'danger'; // Rouge
+        return 'danger'; 
         default:case 'en_attente':
-        return 'warning'; // Jaune
+        return 'warning'; 
       
        
     }

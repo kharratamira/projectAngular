@@ -35,7 +35,7 @@ export class LoginComponent {
           console.log('Login réussi:', response);
           console.log('User data:', response.user);
 
-          // Stockage dans sessionStorage
+          
           const user = response.user;
           sessionStorage.setItem('auth_token', response.token); // Ajout du token
 
@@ -45,9 +45,7 @@ export class LoginComponent {
           sessionStorage.setItem('userPrenom', response.user.prenom);
           sessionStorage.setItem('userPhoto', response.user.photo);
           sessionStorage.setItem('roles', JSON.stringify(response.roles));
-          // Stocker le token d'autorisation
-
-          // Debug logs
+          
           console.log('SessionStorage:', {
             userId: sessionStorage.getItem('userId'),
             userEmail: sessionStorage.getItem('userEmail'),
@@ -62,37 +60,37 @@ export class LoginComponent {
           this.router.navigate(['/dashboard']);
         },
         error: (error) => {
-          this.isLoading = false;
+  this.isLoading = false;
+  console.error('Erreur brute du backend :', error);
+  console.log('Contenu de error.error :', error.error);
 
-          console.error('Erreur complète:', error);
-        
-          const backendMessage = error?.error?.error || error?.message || null;
-          console.log('Message d’erreur reçu du backend:', backendMessage);
-        
-          if (backendMessage === 'Account is not active') {
-            Swal.fire({
-              icon: 'warning',
-              title: 'Compte inactif',
-              text: 'Votre compte est inactif. Veuillez contacter l\'administrateur.',
-            });
-          } else if (backendMessage === 'Account does not exist') {
-            Swal.fire({
-              icon: 'error',
-              title: 'Compte introuvable',
-              text: 'Aucun compte trouvé avec cet email.',
-            });
-          } else if (backendMessage === 'Invalid credentials') {
-            Swal.fire({
-              icon: 'error',
-              title: 'Identifiants invalides',
-              text: 'Email ou mot de passe incorrect.',
-            });
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Erreur inconnue',
-              text: 'Une erreur est survenue. Veuillez réessayer plus tard.au cette compte et inactive ',
-            });
-          }
-        }
-      });        }}}
+  const backendMessage = error?.error?.error || error?.error?.message || error?.message || null;
+
+  if (backendMessage === 'Account is not active') {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Compte inactif',
+      text: 'Votre compte est inactif. Veuillez contacter l\'administrateur.',
+    });
+  } else if (backendMessage === 'Account does not exist') {
+    Swal.fire({
+      icon: 'error',
+      title: 'Compte introuvable',
+      text: 'Aucun compte trouvé avec cet email.',
+    });
+  } else if (backendMessage === 'Invalid credentials') {
+    Swal.fire({
+      icon: 'error',
+      title: 'Identifiants invalides',
+      text: 'Email ou mot de passe incorrect.',
+    });
+  } else {
+    Swal.fire({
+      icon: 'error',
+      title: 'Erreur inconnue',
+      text: 'Une erreur est survenue. Veuillez réessayer plus tard.',
+    });
+  }
+}
+      });
+    }}}

@@ -39,7 +39,7 @@ export class ListeInterventionComponent implements OnInit {
   ngOnInit(): void {
     const roles = JSON.parse(sessionStorage.getItem('roles') || '[]');
     this.isAdmin = roles.includes('ROLE_ADMIN');
-    
+
     const email = sessionStorage.getItem('userEmail');
     const role = roles.includes('ROLE_CLIENT') ? 'ROLE_CLIENT' : 'ROLE_TECHNICIEN';
     this.isTechnicien = roles.includes('ROLE_TECHNICIEN'); // Vérifie si l'utilisateur a le rôle de technicien
@@ -88,8 +88,7 @@ export class ListeInterventionComponent implements OnInit {
     const search = this.searchText.toLowerCase();
 
     return this.interventions.filter(intervention =>
-      intervention.intervention_id?.toString().includes(search) ||
-      intervention.demande?.id?.toString().includes(search) ||
+      intervention.intervention_id.toString().includes(search) ||
       intervention.client?.entreprise?.toLowerCase().includes(search) ||
       intervention.client?.prenom?.toLowerCase().includes(search) ||
       intervention.client?.nom?.toLowerCase().includes(search) ||
@@ -189,28 +188,28 @@ export class ListeInterventionComponent implements OnInit {
     });
   }
   editIntervention(intervention: any): void {
-  const today = new Date();
-  const dateFin = new Date(intervention.date_fin);
+    const today = new Date();
+    const dateFin = new Date(intervention.date_fin);
 
-  const isSameDay =
-    today.getFullYear() === dateFin.getFullYear() &&
-    today.getMonth() === dateFin.getMonth() &&
-    today.getDate() === dateFin.getDate();
+    const isSameDay =
+      today.getFullYear() === dateFin.getFullYear() &&
+      today.getMonth() === dateFin.getMonth() &&
+      today.getDate() === dateFin.getDate();
 
-  if (!isSameDay) {
-    Swal.fire(
-      'Modification non autorisée',
-      'Vous ne pouvez modifier cette intervention que le jour où elle a été terminée.',
-      'warning'
-    );
-    return;
-  }
+    if (!isSameDay) {
+      Swal.fire(
+        'Modification non autorisée',
+        'Vous ne pouvez modifier cette intervention que le jour où elle a été terminée.',
+        'warning'
+      );
+      return;
+    }
 
-  this.loadAllTaches().then((tachesDisponibles) => {
-    // 🔁 Corrigé : Vérifie par nom de tâche
-    const tachesCheckboxes = tachesDisponibles.map((tache: any) => {
-      const isChecked = intervention.taches.some((t: any) => t.tache === tache.tache);
-      return `
+    this.loadAllTaches().then((tachesDisponibles) => {
+      // 🔁 Corrigé : Vérifie par nom de tâche
+      const tachesCheckboxes = tachesDisponibles.map((tache: any) => {
+        const isChecked = intervention.taches.some((t: any) => t.tache === tache.tache);
+        return `
         <div class="form-check">
           <input 
             class="form-check-input" 
@@ -223,11 +222,11 @@ export class ListeInterventionComponent implements OnInit {
           </label>
         </div>
       `;
-    }).join('');
+      }).join('');
 
-    Swal.fire({
-      title: `Modifier l'Intervention #${intervention.intervention_id}`,
-      html: `
+      Swal.fire({
+        title: `Modifier l'Intervention #${intervention.intervention_id}`,
+        html: `
         <div class="text-start">
           <label for="observation" class="form-label">Observation</label>
           <textarea id="observation" class="form-control">${intervention.observation || ''}</textarea>
@@ -237,37 +236,37 @@ export class ListeInterventionComponent implements OnInit {
           </div>
         </div>
       `,
-      showCancelButton: true,
-      confirmButtonText: 'Enregistrer',
-      cancelButtonText: 'Annuler',
-      preConfirm: () => {
-        const observation = (document.getElementById('observation') as HTMLTextAreaElement).value;
-        const taches = Array.from(document.querySelectorAll('#taches-container .form-check-input:checked'))
-          .map((checkbox: any) => parseInt(checkbox.value, 10));
-        return { observation, taches };
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const { observation, taches } = result.value!;
-        this.authService.updateIntervention(intervention.intervention_id, { observation, taches }).subscribe({
-          next: (response) => {
-            if (response.status === 'success') {
-              Swal.fire('Succès', 'Intervention mise à jour avec succès.', 'success');
-              this.loadInterventions(sessionStorage.getItem('userEmail'), this.isAdmin ? 'ROLE_ADMIN' : 'ROLE_TECHNICIEN');
-            } else {
-              Swal.fire('Erreur', response.message, 'error');
+        showCancelButton: true,
+        confirmButtonText: 'Enregistrer',
+        cancelButtonText: 'Annuler',
+        preConfirm: () => {
+          const observation = (document.getElementById('observation') as HTMLTextAreaElement).value;
+          const taches = Array.from(document.querySelectorAll('#taches-container .form-check-input:checked'))
+            .map((checkbox: any) => parseInt(checkbox.value, 10));
+          return { observation, taches };
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const { observation, taches } = result.value!;
+          this.authService.updateIntervention(intervention.intervention_id, { observation, taches }).subscribe({
+            next: (response) => {
+              if (response.status === 'success') {
+                Swal.fire('Succès', 'Intervention mise à jour avec succès.', 'success');
+                this.loadInterventions(sessionStorage.getItem('userEmail'), this.isAdmin ? 'ROLE_ADMIN' : 'ROLE_TECHNICIEN');
+              } else {
+                Swal.fire('Erreur', response.message, 'error');
+              }
+            },
+            error: () => {
+              Swal.fire('Erreur', 'Une erreur est survenue lors de la mise à jour.', 'error');
             }
-          },
-          error: () => {
-            Swal.fire('Erreur', 'Une erreur est survenue lors de la mise à jour.', 'error');
-          }
-        });
-      }
+          });
+        }
+      });
+    }).catch((err) => {
+      Swal.fire('Erreur', 'Impossible de charger les tâches : ' + err, 'error');
     });
-  }).catch((err) => {
-    Swal.fire('Erreur', 'Impossible de charger les tâches : ' + err, 'error');
-  });
-}
+  }
 
   genererFacturePopup(intervention: any): void {
     const dateEmission = new Date();
@@ -339,9 +338,9 @@ export class ListeInterventionComponent implements OnInit {
               timer: 2000,
               showConfirmButton: false
             });
-            
-              // Rechargement de la page après la fermeture de l'alerte
-              window.location.reload();
+
+            // Rechargement de la page après la fermeture de l'alerte
+            window.location.reload();
           }
         });
       },
@@ -350,10 +349,9 @@ export class ListeInterventionComponent implements OnInit {
       }
     });
   }
-showDetails(demande: any): void {
-    const client = demande?.client;
+  showDetails(demande: any): void {
 
-  const detailsHtml = `
+    const detailsHtml = `
     <div class="text-start">
       
       <h5 class="mb-3"><strong>Détails de la Demande</strong></h5>
@@ -366,47 +364,48 @@ showDetails(demande: any): void {
       
       <h5 class="mb-3"><strong>Photos</strong></h5>
       <div class="d-flex flex-wrap">
-        ${demande.photos && demande.photos.length > 0 
-          ? demande.photos.map((photo: string) => `
+        ${demande.photos && demande.photos.length > 0
+        ? demande.photos.map((photo: string) => `
               <img src="${photo.startsWith('http') ? photo : this.baseUrl + photo}" 
                    alt="Photo" 
                    class="img-thumbnail m-2" 
                    style="max-width: 150px;">
             `).join('')
-          : '<p class="text-muted">Aucune photo disponible</p>'
-        }
+        : '<p class="text-muted">Aucune photo disponible</p>'
+      }
       </div>
     </div>
-  `;
+  `; console.log(demande);
 
-  Swal.fire({
-    title: ` Demande #${demande.id}`,
-    html: detailsHtml,
-    width: '800px',
-    showConfirmButton: true,
-    confirmButtonText: 'Fermer'
-  });
-}
-htmlContent: string = ''; // Pour stocker le contenu à imprimer
 
-afficherFacture(facture: any, intervention: any): void {
-   const client = intervention?.client || facture.intervention?.client;
-  const taches = intervention?.taches || facture.intervention?.taches || [];
-  //const remise = facture.remise || 0; // Pourcentage de remise
-
-  if (!client) {
-    console.error('Données client manquantes');
-    Swal.fire('Erreur', 'Données client non disponibles', 'error');
-    return;
+    Swal.fire({
+      title: ` Demande #${demande.id}`,
+      html: detailsHtml,
+      width: '800px',
+      showConfirmButton: true,
+      confirmButtonText: 'Fermer'
+    });
   }
-  const tachesHtml = taches.map((t: any) => `
+  htmlContent: string = ''; // Pour stocker le contenu à imprimer
+
+  afficherFacture(facture: any, intervention: any): void {
+    const client = intervention?.client || facture.intervention?.client;
+    const taches = intervention?.taches || facture.intervention?.taches || [];
+    //const remise = facture.remise || 0; // Pourcentage de remise
+
+    if (!client) {
+      console.error('Données client manquantes');
+      Swal.fire('Erreur', 'Données client non disponibles', 'error');
+      return;
+    }
+    const tachesHtml = taches.map((t: any) => `
     <tr>
       <td style="padding: 8px;">${t.tache || 'Non spécifié'}</td>
       <td style="padding: 8px; text-align: right;">${(t.prix || 0).toFixed(2)} DT</td>
     </tr>
   `).join('');
 
-  const contenuFacture = `
+    const contenuFacture = `
     <div style="text-align:left; font-size:14px; padding:20px;">
       <h3 style="text-align:center;">Facture #${facture.numFacture}</h3>
       <p><strong>Date émission :</strong> ${facture.dateEmission}</p>
@@ -437,23 +436,23 @@ afficherFacture(facture: any, intervention: any): void {
     </div>
   `;
 
-  // Stocker dans la propriété pour impression
-  this.htmlContent = contenuFacture;
+    // Stocker dans la propriété pour impression
+    this.htmlContent = contenuFacture;
 
-  Swal.fire({
-    html: contenuFacture,
-    width: 800,
-    showCloseButton: true,
-    confirmButtonText: 'Fermer',
-    showDenyButton: true,
-    denyButtonText: '🖨️ Imprimer',
-    preDeny: () => this.printFacture()
-  });
-}
-printFacture(): void {
-  const windowPrt = window.open('', '', 'width=900,height=650');
-  if (windowPrt) {
-    windowPrt.document.write(`
+    Swal.fire({
+      html: contenuFacture,
+      width: 800,
+      showCloseButton: true,
+      confirmButtonText: 'Fermer',
+      showDenyButton: true,
+      denyButtonText: '🖨️ Imprimer',
+      preDeny: () => this.printFacture()
+    });
+  }
+  printFacture(): void {
+    const windowPrt = window.open('', '', 'width=900,height=650');
+    if (windowPrt) {
+      windowPrt.document.write(`
       <html>
         <head>
           <title>Impression Facture</title>
@@ -471,19 +470,19 @@ printFacture(): void {
         </body>
       </html>
     `);
-    windowPrt.document.close();
-  } else {
-    alert("La fenêtre d'impression a été bloquée par le navigateur.");
-  }
-}
-
-openSatisfactionPopup(intervention: any): void {
-  if (!intervention.date_fin) {
-    Swal.fire('Information', 'Vous pouvez évaluer l’intervention une fois qu’elle est terminée.', 'info');
-    return;
+      windowPrt.document.close();
+    } else {
+      alert("La fenêtre d'impression a été bloquée par le navigateur.");
+    }
   }
 
-  const htmlForm = `
+  openSatisfactionPopup(intervention: any): void {
+    if (!intervention.date_fin) {
+      Swal.fire('Information', 'Vous pouvez évaluer l’intervention une fois qu’elle est terminée.', 'info');
+      return;
+    }
+
+    const htmlForm = `
     <form id="satisfaction-form" class="text-start">
       <div class="mb-4">
         <label class="form-label fw-bold">Niveau de satisfaction :</label><br>
@@ -516,65 +515,65 @@ openSatisfactionPopup(intervention: any): void {
     </form>
   `;
 
-  Swal.fire({
-    title: `<h4 class="text-primary">Évaluation de l'intervention #${intervention.intervention_id}</h4>`,
-    html: htmlForm,
-    showCancelButton: true,
-    focusConfirm: false,
-    confirmButtonText: '<i class="bi bi-send-fill me-1"></i> Envoyer',
-    cancelButtonText: '<i class="bi bi-x-circle me-1"></i> Annuler',
-    customClass: {
-      popup: 'text-start',
-      confirmButton: 'btn btn-success px-4',
-      cancelButton: 'btn btn-outline-secondary me-2',
-    },
-    width: '700px',
-    preConfirm: () => {
-      const selectedRadio = document.querySelector('input[name="niveau"]:checked') as HTMLInputElement;
-      const commentaire = (document.getElementById('commentaire') as HTMLTextAreaElement).value;
+    Swal.fire({
+      title: `<h4 class="text-primary">Évaluation de l'intervention #${intervention.intervention_id}</h4>`,
+      html: htmlForm,
+      showCancelButton: true,
+      focusConfirm: false,
+      confirmButtonText: '<i class="bi bi-send-fill me-1"></i> Envoyer',
+      cancelButtonText: '<i class="bi bi-x-circle me-1"></i> Annuler',
+      customClass: {
+        popup: 'text-start',
+        confirmButton: 'btn btn-success px-4',
+        cancelButton: 'btn btn-outline-secondary me-2',
+      },
+      width: '700px',
+      preConfirm: () => {
+        const selectedRadio = document.querySelector('input[name="niveau"]:checked') as HTMLInputElement;
+        const commentaire = (document.getElementById('commentaire') as HTMLTextAreaElement).value;
 
-      if (!selectedRadio) {
-        Swal.showValidationMessage('Veuillez sélectionner un niveau de satisfaction.');
-        return false;
+        if (!selectedRadio) {
+          Swal.showValidationMessage('Veuillez sélectionner un niveau de satisfaction.');
+          return false;
+        }
+
+        return { niveau: selectedRadio.value, commentaire };
       }
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        const payload = {
+          niveau: result.value.niveau,
+          commentaire: result.value.commentaire,
+          intervention_id: intervention.intervention_id
+        };
 
-      return { niveau: selectedRadio.value, commentaire };
-    }
-  }).then((result) => {
-    if (result.isConfirmed && result.value) {
-      const payload = {
-        niveau: result.value.niveau,
-        commentaire: result.value.commentaire,
-        intervention_id: intervention.intervention_id
-      };
+        this.authService.satisfactionClient(payload).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Merci !',
+              text: 'Votre avis a été enregistré avec succès.',
+              timer: 2500,
+              timerProgressBar: true,
+              showConfirmButton: false,
 
-      this.authService.satisfactionClient(payload).subscribe({
-        next: () => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Merci !',
-            text: 'Votre avis a été enregistré avec succès.',
-            timer: 2500,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            
-          });
+            });
             window.location.reload();
 
-        },
-        error: () => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Erreur',
-            text: 'Une erreur est survenue lors de l’enregistrement.',
-            timer: 2500,
-            timerProgressBar: true,
-            showConfirmButton: false
-          });
-        }
-      });
-    }
-  });
-}
+          },
+          error: () => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur est survenue lors de l’enregistrement.',
+              timer: 2500,
+              timerProgressBar: true,
+              showConfirmButton: false
+            });
+          }
+        });
+      }
+    });
+  }
 
 }

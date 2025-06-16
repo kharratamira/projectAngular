@@ -30,8 +30,7 @@ export class ListedemandeContratComponent implements OnInit {
      this.isAdmin = roles.includes('ROLE_ADMIN');
     const email = sessionStorage.getItem('userEmail');
     const role = roles.includes('ROLE_CLIENT') ? 'ROLE_CLIENT' : '';
-  //   console.log('EMAIL:', this.email); // 👈 à vérifier dans la console
-  // console.log('ROLE:', this.role);
+  
 
     this.isClient = roles.includes('ROLE_CLIENT');
 
@@ -203,7 +202,7 @@ export class ListedemandeContratComponent implements OnInit {
           html: `
             <div class="text-start">
               <label for="description" class="form-label">Description</label>
-              <textarea id="description" class="form-control">${demandeContrat.description || ''}</textarea>
+              <textarea id="description" class="form-control">${this.removeHtmlTags(demandeContrat.description || '')}</textarea>
             </div>
           `,
           showCancelButton: true,
@@ -256,10 +255,7 @@ export class ListedemandeContratComponent implements OnInit {
         });
       }
     }
-    // disableRow(demande: any): void {
-    //   demande.disabled = true;
-    //   localStorage.setItem('disabled_demande_' + demande.id, 'true');
-    // }
+   
     disableRow(demande: any): void {
   Swal.fire({
     title: 'Êtes-vous sûr ?',

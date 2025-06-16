@@ -44,7 +44,7 @@ export class ListeFactureComponent implements OnInit {
     request$.subscribe({
       next: (res) => {
         this.factures = res.data || [];
-        this.filteredFacture = this.factures;
+        // this.filteredFacture = this.factures;
         this.isLoading = false;
       },
       error: () => {
@@ -54,16 +54,17 @@ export class ListeFactureComponent implements OnInit {
     });
   }
 
-  get filteredFacturesPaginated(): any[] {
-    const search = this.searchText.toLowerCase();
-    return this.filteredFacture.filter(f =>
-      f.numFacture?.toLowerCase().includes(search) ||
-      f.client?.nom?.toLowerCase().includes(search) ||
-      f.client?.prenom?.toLowerCase().includes(search) ||
-      f.client?.entreprise?.toLowerCase().includes(search) ||
-      f.statut?.toLowerCase().includes(search)
-    );
-  }
+ get filteredFacturesPaginated(): any[] {
+  const search = this.searchText.toLowerCase();
+  return this.factures.filter(f =>
+    f.numFacture?.toLowerCase().includes(search) ||
+    f.intervention?.nom?.toLowerCase().includes(search) ||
+    f.intervention?.prenom?.toLowerCase().includes(search) ||
+    f.intervention?.entreprise?.toLowerCase().includes(search) ||
+    f.statut?.toLowerCase().includes(search)
+  );
+}
+
 htmlContent: string = ''; // Pour stocker le contenu à imprimer
 
 afficherFacture(facture: any): void {

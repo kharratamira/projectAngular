@@ -24,10 +24,10 @@ export class AuthService {
 
       }),
       catchError((error) => {
-        console.error('Login failed:', error);
-        return throwError(() => new Error('Login failed. Please check your credentials.'));
-      })
-    );
+  console.error('Erreur backend dans AuthService:', error);
+  return throwError(() => error); // On renvoie l’erreur complète du backend
+})
+  );
   }
 
   isLoggedIn(): Observable<boolean> {

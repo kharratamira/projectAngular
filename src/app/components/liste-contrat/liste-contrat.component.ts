@@ -36,22 +36,7 @@ ngOnInit(): void {
   loadContrats(email: string | null, role: string): void {
     this.isLoading = true;
   const ajouterContratNum = (contrats: any[]) => {
-    // contrats.forEach((contrats: any) => {
-    //   const isDisabled = localStorage.getItem('disabled_demande_' + contrats.id) === 'true';
-    //   contrats.disabled = isDisabled;
 
-      // 🔁 Récupère le numéro du contrat si déjà généré
-      // if (contrats.isGenere) {
-      //   this.authService.getContratByDemande(contrats.id).subscribe({
-      //     next: (res: any) => {
-      //       contrats.contratNum = res.contrat.num;
-      //     },
-      //     error: () => {
-      //       console.warn(`Contrat introuvable pour la demande #${contrats.id}`);
-      //     }
-      //   });
-      // }
-    //});
   };
     if (this.isAdmin) {
       this.authService.getContrat().subscribe({

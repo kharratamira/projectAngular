@@ -47,6 +47,7 @@ export class AutorisationSortieComponent {
           Swal.fire('Erreur', 'La date de fin doit être supérieure à la date de début', 'error');
           return;
         }
+        
       
         // Récupérer l'ID du technicien depuis sessionStorage
         const idTechnicien = sessionStorage.getItem('userId');

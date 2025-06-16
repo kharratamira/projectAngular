@@ -99,7 +99,12 @@ get techniciensFiltres(): any[] {
   submitAffectation(): void {
     const datePrevu = new Date(this.affectation.date_prevu);
     const heure = datePrevu.getHours();
+  const jour = datePrevu.getDay(); // 0 = dimanche, 6 = samedi
 
+if (jour === 0 || jour === 6) {
+    Swal.fire('Jour non autorisé', 'Impossible d\'affecter un technicien le samedi ou le dimanche.', 'warning');
+    return;
+  }
     if (heure < 8 || heure >= 17) {
       Swal.fire('Heure invalide', 'L\'heure doit être entre 08:00 et 17:00.', 'warning');
       return;

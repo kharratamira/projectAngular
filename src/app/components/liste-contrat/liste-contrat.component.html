@@ -21,7 +21,6 @@
           <th>N° Contrat</th>
           <!-- <th>N° Demande</th> -->
           <th>Client</th>
-          <th>Entreprise</th>
           <th>Date Début</th>
           <th>Date Fin</th>
           <th>Statut</th>
@@ -35,11 +34,13 @@
           <td>{{ contrat.num || 'N/A' }}</td>
           <!-- <td>{{contrat.demandecontrat}}</td> -->
           <td>
-
-            {{ contrat.client?.nom }} {{ contrat.client?.prenom }}
+{{ contrat.client?.entreprise || 'Non spécifié' }}
+            <br>
+            Responsable :{{ contrat.client?.nom }} {{ contrat.client?.prenom }}
             <small class="text-muted d-block">{{ contrat.client?.email }}</small>
+           
           </td>
-          <td>{{ contrat.client?.entreprise || 'Non spécifié' }}</td>
+          
           <td>{{ contrat.dateDebut | date:'dd/MM/yyyy' }}</td>
           <td>{{ contrat.dateFin | date:'dd/MM/yyyy' }}</td>
           <td>
